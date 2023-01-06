@@ -1,15 +1,28 @@
-import Chatroom from './Chatroom';
-import But from '../../components/common/Button';
-import { Button, Container, useTheme, Box } from '@mui/material';
+import Chatroom from "./Chatroom";
+import { useTheme, Container, Grid } from "@mui/material";
+import ChatList from "../../components/chat/chatList";
 
 function Chat() {
-  const theme = useTheme();
-  return (
-    <Container>
-      <Box display="flex" justifyContent={'center'}>
-        <But />
-      </Box>
-    </Container>
-  );
+	const theme = useTheme();
+	return (
+		<Container
+			style={{
+				position: "relative",
+				marginLeft: "auto",
+				marginRight: "auto",
+				overflowX: "auto",
+				padding: 0,
+			}}
+		>
+			<Grid container spacing={0} direction="row">
+				<Grid xs={4}>
+					<ChatList />
+				</Grid>
+				<Grid xs={8}>
+					<Chatroom />
+				</Grid>
+			</Grid>
+		</Container>
+	);
 }
 export default Chat;
