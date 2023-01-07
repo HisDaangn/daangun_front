@@ -1,10 +1,7 @@
+import { Box } from "@mui/system";
 import EmptyRoom from "../../components/chat/emptyRoom";
 
 function Chatroom() {
-	return (
-		<>
-			<EmptyRoom />
-		</>
-	);
+	return <EmptyRoom />;
 }
 export default Chatroom;
