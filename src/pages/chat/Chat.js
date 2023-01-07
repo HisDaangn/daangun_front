@@ -6,21 +6,22 @@ function Chat() {
 	const theme = useTheme();
 	return (
 		<Container
+			maxWidth={"100%"}
 			style={{
-				position: "relative",
-				marginLeft: "auto",
-				marginRight: "auto",
 				overflowX: "auto",
 				padding: 0,
+				margin: 0,
 			}}
 		>
-			<Grid container spacing={0} direction="row">
-				<Grid item xs={4}>
+			<Grid container spacing={0} minWidth={"1212px"}>
+				<Grid></Grid>
+				<Grid item xs={3.5}>
 					<ChatList />
 				</Grid>
-				<Grid item xs={8}>
+				<Grid item xs={8.5}>
 					<Chatroom />
 				</Grid>
+				<Grid></Grid>
 			</Grid>
 		</Container>
 	);

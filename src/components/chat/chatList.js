@@ -13,6 +13,7 @@ import * as React from "react";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import tempData from "../../components/chat/tempData";
+import EmptyRoom from "./emptyRoom";
 
 function ChatList() {
 	const chatLists = tempData;
@@ -22,9 +23,10 @@ function ChatList() {
 			spacing={0}
 			direction="row"
 			style={{
-				minWidth: "380px",
+				clear: "both",
 			}}
 		>
+			{/* 1st */}
 			<Grid
 				item
 				style={{ display: "flex", justifyContent: "center" }}
@@ -42,6 +44,7 @@ function ChatList() {
 					/>
 				</Box>
 			</Grid>
+			{/* 2nd */}
 			<Grid
 				item
 				xs={10}

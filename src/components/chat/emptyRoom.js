@@ -5,11 +5,12 @@ import * as React from "react";
 function EmptyRoom() {
 	return (
 		<Grid
-			container
+			item
 			display={"flex"}
 			justifyContent={"center"}
 			alignItems={"center"}
 			direction={"column"}
+			minWidth={"800px"}
 			width={"100%"}
 			height={"100%"}
 			border={"1px solid gainsboro"}
