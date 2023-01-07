@@ -28,6 +28,7 @@ function Router() {
 						<>
 							<Route path="/" element={<Navigate to="/home" />} />
 							<Route path="/home" element={<Home />} />
+							<Route path="/chat/room/:id" element={<Chat />} />
 							<Route path="/chat" element={<Chat />} />
 							<Route path="/addpost" element={<AddPost />} />
 							<Route path="/editpost" element={<EditPost />} />

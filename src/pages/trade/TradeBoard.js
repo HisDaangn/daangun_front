@@ -3,7 +3,9 @@ import Header from "../../components/common/layout/Header";
 import PostDetail from "../../components/trade/postDetail";
 import { Box, Grid } from "@mui/material";
 
-const TradeBoard = (props) => {
+const TradeBoard = () => {
+  // 이게 상세보기겠죠...? 
+  const [modalOpen, setModalOpen] = useState(false);
 
   const onChat = chatBtn => {
     console.log("chatBtn click !");

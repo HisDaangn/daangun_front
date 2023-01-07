@@ -9,9 +9,7 @@ import {
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import Modal from "../../pages/trade/DeleteModal";
-import post from "./post";
 const postDetail = (props) => {
-    const postLists = post;
     const onEdit = EditBtn => {
         console.log("liftBtn click !");
     }
