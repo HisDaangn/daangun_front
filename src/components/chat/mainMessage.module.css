@@ -1,0 +1,31 @@
+.container {
+	/* min-width: 800px; */
+}
+
+.paper {
+	height: 69vh;
+	min-width: 68.1vw;
+	max-width: fit-content;
+	max-height: fit-content;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	position: relative;
+}
+
+.paper2 {
+	width: 80vw;
+	max-width: fit-content;
+	max-height: fit-content;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	position: relative;
+}
+
+.messagesBody {
+	width: 100%;
+	margin: 10;
+	overflow-y: scroll;
+	height: calc(100% - 50px);
+}
