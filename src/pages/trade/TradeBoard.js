@@ -1,7 +1,6 @@
 import Header from "../../components/common/layout/Header";
 import PostDetail from "../../components/trade/PostDetail";
 import { Box, Grid } from "@mui/material";
-
 const TradeBoard = () => {
   const onChat = chatBtn => {
     console.log("chatBtn click !");
