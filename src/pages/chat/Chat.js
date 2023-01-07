@@ -15,10 +15,10 @@ function Chat() {
 			}}
 		>
 			<Grid container spacing={0} direction="row">
-				<Grid xs={4}>
+				<Grid item xs={4}>
 					<ChatList />
 				</Grid>
-				<Grid xs={8}>
+				<Grid item xs={8}>
 					<Chatroom />
 				</Grid>
 			</Grid>

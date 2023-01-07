@@ -99,6 +99,7 @@ function ChatList() {
 			}}
 		>
 			<Grid
+				item
 				style={{ display: "flex", justifyContent: "center" }}
 				xs={2}
 				sx={{
@@ -115,6 +116,7 @@ function ChatList() {
 				</Box>
 			</Grid>
 			<Grid
+				item
 				xs={10}
 				sx={{
 					borderTop: "1px solid gainsboro",
