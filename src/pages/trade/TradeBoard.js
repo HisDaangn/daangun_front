@@ -1,7 +1,8 @@
 import { useState } from "react";
 import Modal from './DeleteModal';
-
-function TradeBoard() {
+import Post from "../components/Post";
+// import Header from ' ../../components/common/layout/Header'
+const TradeBoard = () => {
   // 이게 상세보기겠죠...? 
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -36,21 +37,6 @@ function TradeBoard() {
     fontWeight: "bold",
     fontSize: "20px",
   }
-  /*
-  api 연동코드
-  const getDetailInfo = async () => {
-    const json = await (
-      await fetch(
-        `https://yts.mx/api/v2/list_movies.json?minimum_rating=8.8&sort_by=year`
-      )
-    ).json();
-    setDetailInfo(json.data.movies);
-  }
-  useEffect(() => {
-    getDetailInfo();
-  }, []);
-  */
-
   return (
     <>
       <div>
