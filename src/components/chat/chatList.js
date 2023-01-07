@@ -4,8 +4,6 @@ import {
 	Grid,
 	List,
 	ListItem,
-	ListItemAvatar,
-	ListItemButton,
 	ListItemText,
 } from "@mui/material";
 import { Box } from "@mui/system";
@@ -13,15 +11,18 @@ import * as React from "react";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import tempData from "../../components/chat/tempData";
-import EmptyRoom from "./emptyRoom";
+import { Link } from "react-router-dom";
+import Room from "./room";
 
 function ChatList() {
+	const [userId, setUserId] = React.useState(-1);
+
+	// tempData 가져오기
 	const chatLists = tempData;
+
 	return (
 		<Grid
 			container
-			spacing={0}
-			direction="row"
 			style={{
 				clear: "both",
 			}}
@@ -36,12 +37,15 @@ function ChatList() {
 					border: "1px solid gainsboro",
 				}}
 			>
+				{/* 내 아바타 이미지 */}
 				<Box>
-					<Avatar
-						alt="default"
-						src="/img/profile_default.png"
-						sx={{ width: 52, height: 52, border: "2px solid orange" }}
-					/>
+					<Link to={"/chat"}>
+						<Avatar
+							alt="default"
+							src="/img/profile_default.png"
+							sx={{ width: 52, height: 52, border: "2px solid orange" }}
+						/>
+					</Link>
 				</Box>
 			</Grid>
 			{/* 2nd */}
@@ -64,6 +68,7 @@ function ChatList() {
 						<ListItem
 							sx={{
 								borderBottom: "1px solid gainsboro",
+								padding: 2,
 							}}
 						>
 							<ListItemText primary="사용자" sx={{ fontWeight: "bold" }} />
@@ -96,24 +101,8 @@ function ChatList() {
 						}}
 					>
 						{/* 실제 다른 유저와의 채팅룸 */}
-						{chatLists.map((chat) => (
-							<ListItemButton
-								key={chat.id}
-								sx={{ borderBottom: "1px solid", borderColor: "gainsboro" }}
-							>
-								<ListItemAvatar>
-									<Avatar
-										alt="default"
-										src="img/profile_default.png"
-										sx={{ width: 40, height: 40 }}
-									/>
-								</ListItemAvatar>
-								<ListItemText
-									primary={chat.chatUser}
-									secondary={chat.message}
-								/>
-								<img src={chat.itemImg} width={40} alt="default" />
-							</ListItemButton>
+						{chatLists.map((room) => (
+							<Room key={room.id} room={room} />
 						))}
 					</List>
 					<List disablePadding>

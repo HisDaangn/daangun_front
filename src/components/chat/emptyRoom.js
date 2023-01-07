@@ -5,7 +5,7 @@ import * as React from "react";
 function EmptyRoom() {
 	return (
 		<Grid
-			item
+			container
 			display={"flex"}
 			justifyContent={"center"}
 			alignItems={"center"}
