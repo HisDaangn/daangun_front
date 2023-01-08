@@ -19,7 +19,7 @@ const PostDetail = () => {
         setModalOpen(false);
     };
     const onEdit = EditBtn => {
-        console.log("liftBtn click !");
+        console.log("EditBtn click !");
     }
     const BtnStyle = {
         backgroundColor: "white",
