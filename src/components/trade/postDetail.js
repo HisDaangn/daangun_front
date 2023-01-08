@@ -1,4 +1,5 @@
-import { useState } from "react";
+import React, { useState } from 'react';
+import Modal from './DeleteModal';
 import {
     Avatar,
     Box,
@@ -8,10 +9,17 @@ import {
 } from "@mui/material";
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import Modal from "../../pages/trade/DeleteModal";
-const postDetail = (props) => {
+const PostDetail = () => {
+    const [modalOpen, setModalOpen] = useState(false);
+
+    const openModal = () => {
+        setModalOpen(true);
+    };
+    const closeModal = () => {
+        setModalOpen(false);
+    };
     const onEdit = EditBtn => {
-        console.log("liftBtn click !");
+        console.log("EditBtn click !");
     }
     const BtnStyle = {
         backgroundColor: "white",
@@ -45,8 +53,10 @@ const postDetail = (props) => {
                     </Grid>
                     <Grid item xs={7}>
                         <button style={BtnStyle} onClick={onEdit}>수정하기</button>
-                        <button style={BtnStyle} >삭제하기</button>
-                        {/* <Modal open={modalOpen} close={closeModal} header="Modal heading"></Modal> */}
+                        <button style={BtnStyle} onClick={openModal}>삭제하기</button>
+                        <Modal open={modalOpen} close={closeModal} header="Modal heading">
+                            게시물이 삭제됩니다!
+                        </Modal>
                     </Grid>
                     <Grid item xs>
                         <Box width={100}>
@@ -66,4 +76,4 @@ const postDetail = (props) => {
         </Box>
     )
 }
-export default postDetail;
+export default PostDetail;
