@@ -16,7 +16,7 @@ export default function Header() {
       <Toolbar sx={{ borderBottom: "1px solid", borderColor: "divider" }}>
         <Box sx={{ flexGrow: 1 }} />
 
-        <Button>로그인</Button>
+        <Button>확인</Button>
       </Toolbar>
     </AppBar>
   );
