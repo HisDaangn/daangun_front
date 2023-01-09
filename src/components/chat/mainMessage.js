@@ -54,7 +54,7 @@ export default function MainMessage({ data }) {
 						message="테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다"
 						timestamp="MM/DD 00:00"
 						photoURL=""
-						displayName="まさりぶ"
+						displayName="test"
 						avatarDisp={true}
 					/>
 					<MessageLeft
