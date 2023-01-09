@@ -15,13 +15,13 @@ function Room({ room }) {
 				<ListItemAvatar>
 					<Avatar
 						alt="default"
-						src="/img/profile_default.png"
+						src={room.profileImg}
 						sx={{ width: 40, height: 40 }}
 					/>
 				</ListItemAvatar>
 				<ListItemText
 					primary={room.chatUser}
-					secondary={room.message}
+					secondary={room.lastMessage}
 					style={{
 						color: "black",
 					}}
