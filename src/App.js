@@ -23,6 +23,8 @@ function App() {
 							width: "100%",
 							height: "auto",
 						},
+						padding: 0,
+						margin: 0,
 					}}
 				>
 					<Paper elevation={0}>
