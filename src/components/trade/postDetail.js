@@ -32,7 +32,7 @@ const PostDetail = () => {
     }
     return (
         <Box sx={{ flexGrow: 1 }}>
-            <Box >
+            <Grid container spacing={3}>
                 <Button startIcon={<ArrowBackIosIcon />}></Button>
                 <Box
                     component="img"
@@ -44,7 +44,7 @@ const PostDetail = () => {
                     src="https://img.danawa.com/prod_img/500000/489/206/img/10206489_1.jpg?shrink=330:330&_v=20200714161025"
                 />
                 <Button startIcon={<ArrowForwardIosIcon />}></Button>
-            </Box>
+            </Grid>
             <Box>
                 <Grid container spacing={3}>
                     <Grid item xs={2}>
