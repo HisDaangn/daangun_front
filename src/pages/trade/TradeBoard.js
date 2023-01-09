@@ -20,7 +20,7 @@ const TradeBoard = () => {
     marginLeft: "10px",
     position: "fixed",
     bottom: "20%",
-    right: "110px",
+    right: "510px",
   }
   const staticLiftBtn = {
     color: "white",
@@ -34,7 +34,7 @@ const TradeBoard = () => {
     marginLeft: "10px",
     position: "fixed",
     bottom: "20%",
-    right: "200px",
+    right: "600px",
   }
   return (
     <>
