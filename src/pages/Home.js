@@ -8,7 +8,7 @@ import styles from "./Home.module.css";
 
 function Home() {
 	return (
-		// 리팩토링과 컴포넌트화 필요함.
+		// 리팩토링과 컴포넌트화 필요함. 향후 수정 필요.
 		// 전체 컨테이너
 		<>
 			{/* 첫번째 섹션 */}
