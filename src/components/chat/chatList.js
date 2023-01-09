@@ -14,9 +14,7 @@ import tempData from "../../components/chat/tempData";
 import { Link } from "react-router-dom";
 import Room from "./room";
 
-function ChatList() {
-	const [userId, setUserId] = React.useState(-1);
-
+function ChatList({ roomId }) {
 	// tempData 가져오기
 	const chatLists = tempData;
 

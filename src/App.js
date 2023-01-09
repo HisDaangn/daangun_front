@@ -19,7 +19,7 @@ function App() {
 						flexWrap: "wrap",
 						"& > :not(style)": {
 							pt: 3,
-							mt: 1,
+							mt: 0,
 							width: "100%",
 							height: "auto",
 						},

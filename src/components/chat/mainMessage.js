@@ -8,6 +8,13 @@ export default function MainMessage({ data }) {
 		<div className={styles.container}>
 			<Paper className={styles.paper} zDepth={2}>
 				<Paper className={styles.messagesBody}>
+					{/* 여기를 백엔드와 연결해서 구현해야 함 */}
+					{/* 
+						if message가 상대방한테서 온 거면 
+						그 메시지 정보를 <MessageLeft> 컴포넌트에 props로 넘겨준다
+						if message가 내가 상대에게 보낸 거면
+						그 메시지 정보를 <MessageRight> 컴포넌트에 props로 넘겨준다
+					*/}
 					<MessageLeft
 						message="테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다"
 						timestamp="MM/DD 00:00"
