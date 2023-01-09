@@ -1,4 +1,3 @@
-import './AddPost.css'
 import React from 'react';
 import ClearIcon from '@mui/icons-material/Clear';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
@@ -8,8 +7,13 @@ import {
   ThemeProvider,
   Button,
   Grid,
+  Divider,
+  TextField,
+  Input,
+  Checkbox, FormControlLabel,
 } from "@mui/material";
 function AddPost() {
+  const ariaLabel = { 'aria-label': 'description' };
   const theme = createTheme({
     palette: {
       primary: {
@@ -23,6 +27,7 @@ function AddPost() {
   return (
     <>
       <div>
+        <br />
         <Grid container spacing={3}>
           <ThemeProvider theme={theme}>
             <Button startIcon={<ClearIcon />}></Button>
@@ -30,30 +35,31 @@ function AddPost() {
             <Button color="secondary">완료</Button>
           </ThemeProvider>
         </Grid>
-      </div>
-      <hr />
-      <div>
+
+        <Divider />
         <Grid>
           <ThemeProvider theme={theme}>
-            <Button startIcon={<CameraAltIcon />}>0/10</Button>
+            <Button variant="outlined" startIcon={<CameraAltIcon />}>0/10</Button>
           </ThemeProvider>
         </Grid>
-      </div>
-      <hr />
-      <div>
+
+        <Divider />
         <Grid>
-          <input placeholder="글제목"></input>
+          <Input placeholder="글제목" inputProps={ariaLabel} />
         </Grid>
-      </div>
-      <hr />
-      <div>
-        <input placeholder="가격"></input>
-        <input type="checkbox" id="share" name="share" value="나눔" />
-        <label htmlFor="share">나눔</label>
-      </div>
-      <hr />
-      <div className="contents">
-        <textarea placeholder="게시글 내용을 작성해주세요. (판매 금지 물품은 게시가 제한될 수 있어요.)"></textarea>
+
+        <Divider />
+        <Input placeholder="가격" inputProps={ariaLabel} />
+        <FormControlLabel control={<Checkbox defaultChecked />} label="나눔" />
+
+        <Divider />
+        <TextField
+          id="standard-multiline-static"
+          multiline
+          rows={6}
+          placeholder="게시글 내용을 작성해주세요. (판매 금지 물품은 게시가 제한될 수 있어요.)"
+          variant="standard"
+        />
       </div>
     </>
   );
