@@ -17,7 +17,7 @@ function Router() {
 					component="main"
 					sx={{
 						flexGrow: 1,
-						p: 3,
+						p: 0,
 						pt: 5,
 						pb: 0,
 						height: "100vh",

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import Modal from './DeleteModal';
+import DeleteModal from './DeleteModal';
+import EditModal from '../../pages/trade/EditPost';
 import {
     Avatar,
     Box,
@@ -9,18 +10,23 @@ import {
 } from "@mui/material";
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-const PostDetail = () => {
-    const [modalOpen, setModalOpen] = useState(false);
+const PostDetail = (props) => {
+    const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 
-    const openModal = () => {
-        setModalOpen(true);
+    const openDeleteModal = () => {
+        setDeleteModalOpen(true);
     };
-    const closeModal = () => {
-        setModalOpen(false);
+    const closeDeleteModal = () => {
+        setDeleteModalOpen(false);
     };
-    const onEdit = EditBtn => {
-        console.log("EditBtn click !");
-    }
+    const [editModalOpen, setEditModalOpen] = useState(false);
+
+    const openEditModal = () => {
+        setEditModalOpen(true);
+    };
+    const closeEditModal = () => {
+        setEditModalOpen(false);
+    };
     const BtnStyle = {
         backgroundColor: "white",
         borderRadius: "3px",
@@ -49,14 +55,16 @@ const PostDetail = () => {
                 <Grid container spacing={3}>
                     <Grid item xs={2}>
                         <Avatar src="https://cdn-icons-png.flaticon.com/512/1946/1946429.png" />
-                        <Box sx={{ fontSize: 16, fontWeight: 'regi;ar' }}>나는유저</Box>
+                        <Box sx={{ fontSize: 16, fontWeight: 'regiar' }}>나는유저</Box>
                     </Grid>
                     <Grid item xs={7}>
-                        <button style={BtnStyle} onClick={onEdit}>수정하기</button>
-                        <button style={BtnStyle} onClick={openModal}>삭제하기</button>
-                        <Modal open={modalOpen} close={closeModal} header="Modal heading">
+                        <button style={BtnStyle} onClick={openEditModal}>수정하기</button>
+                        <button style={BtnStyle} onClick={openDeleteModal}>삭제하기</button>
+                        <EditModal open={editModalOpen} close={closeEditModal}></EditModal>
+
+                        <DeleteModal open={deleteModalOpen} close={closeDeleteModal} header="Modal heading">
                             게시물이 삭제됩니다!
-                        </Modal>
+                        </DeleteModal>
                     </Grid>
                     <Grid item xs>
                         <Box width={100}>
