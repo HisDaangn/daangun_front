@@ -47,7 +47,7 @@ const EditPost = (props) => {
             </Grid>
             <Divider />
             <Input placeholder="가격" inputProps={ariaLabel} />
-            <FormControlLabel control={<Checkbox defaultChecked />} label="나눔" />
+            <FormControlLabel className="form_control_label" control={<Checkbox defaultChecked />} label="나눔" />
             <Divider />
             <TextField
               id="standard-multiline-static"
