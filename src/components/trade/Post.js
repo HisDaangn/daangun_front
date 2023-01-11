@@ -2,16 +2,52 @@ const Post = [
     {
         id: 0,
         title: "라면",
-        imgs: "https://img.danawa.com/prod_img/500000/489/206/img/10206489_1.jpg?shrink=330:330&_v=20200714161025",
+        imgs: "/img/Ramen.webp",
         price: "1,500원",
-        content: "새벽에 올려봅니다~"
+        interest: "관심 26",
+        chatting: "채팅 18"
     },
     {
         id: 1,
         title: "젤리",
-        imgs: "https://image.homeplus.kr/td/ed59716f-3bcf-4231-aca5-9db3fa5b9e03",
+        imgs: "/img/jelly.jpeg",
         price: "1,000원",
-    }
+        interest: "관심 17",
+        chatting: "채팅 30"
+    },
+    {
+        id: 2,
+        title: "포켓몬빵",
+        imgs: "/img/bread.jpeg",
+        price: "2,0000원",
+        interest: "관심 50",
+        chatting: "채팅 100"
+    },
+    {
+        id: 3,
+        title: "인형이에여",
+        imgs: "/img/doll.jpeg",
+        price: "4,000원",
+        interest: "관심 2",
+        chatting: "채팅 40"
+    },
+    {
+        id: 4,
+        title: "책상 급처합니다.",
+        imgs: "/img/desk.jpeg",
+        price: "10,000원",
+        interest: "관심 0",
+        chatting: "채팅 3"
+    },
+    {
+        id: 5,
+        title: "축구화",
+        imgs: "/img/soccershoes.jpeg",
+        price: "40,000",
+        interest: "관심 100",
+        chatting: "채팅 250"
+    },
+
 ];
 
 export default Post;

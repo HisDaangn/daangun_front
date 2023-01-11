@@ -1,5 +1,6 @@
 import React from 'react';
-const Modal = (props) => {
+import "./DeleteModal.css";
+const DeleteModal = (props) => {
     // 열기, 닫기, 모달 헤더 텍스트를 부모로부터 받아옴
     const { open, close, header } = props;
 
@@ -17,7 +18,7 @@ const Modal = (props) => {
                     <main>{props.children}</main>
                     <footer>
                         <button className="close" onClick={close}>
-                            close
+                            닫기
                         </button>
                     </footer>
                 </section>
@@ -25,4 +26,4 @@ const Modal = (props) => {
         </div>
     );
 };
-export default Modal;
+export default DeleteModal;

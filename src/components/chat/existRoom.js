@@ -49,7 +49,13 @@ function ExistRoom({ id }) {
 						borderColor: "gainsboro",
 					}}
 				>
-					<img src={data[id].itemImg} width={40} alt="" />
+					<Box
+						component={"img"}
+						src={data[id].itemImg}
+						width={"40px"}
+						// height={"684px"}
+					/>
+
 					<ListItemText
 						sx={{
 							paddingLeft: 2,
