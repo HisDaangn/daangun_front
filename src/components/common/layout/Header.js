@@ -5,6 +5,7 @@ import { theme } from "../../../theme/theme";
 import Logo from "../../../assets/HomeLogo.png";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import { NavLink } from "react-router-dom";
+import Btn from "./Btn.js";
 
 const StyledToolbar = styled(Toolbar)({
   display: "flex",
@@ -43,14 +44,6 @@ const SearchIcon = styled(SearchOutlinedIcon)({
     display: "block",
     cursor: "pointer",
   },
-});
-
-const Btn = styled(Button)({
-  border: "1px solid #d1d3d8",
-  padding: "5px 15px",
-  color: "#212124",
-  fontWeight: "bolder",
-  fontSize: "16px",
 });
 
 export default function Header() {
@@ -100,7 +93,7 @@ export default function Header() {
           <NavLink to={"/chat"} style={{ textDecoration: "none" }}>
             <Btn>채팅하기</Btn>
           </NavLink>
-          <NavLink to={"/chat"} style={{ textDecoration: "none" }}>
+          <NavLink to={"/mypage"} style={{ textDecoration: "none" }}>
             <Btn>마이페이지</Btn>
           </NavLink>
         </Stack>
