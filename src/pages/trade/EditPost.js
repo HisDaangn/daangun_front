@@ -65,13 +65,6 @@ const EditPost = (props) => {
         </section>
       ) : null}
     </div>
-      <br /><br /><br /><br />
-
-
-
-
-
-
     </>
   );
 }

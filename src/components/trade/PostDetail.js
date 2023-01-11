@@ -57,9 +57,8 @@ const PostDetail = (props) => {
                     <Box sx={{ fontSize: 16, fontWeight: 'regiar' }}>username <br /> 포항시 흥해읍</Box>
                     <Grid item xs={7}>
                         <button style={BtnStyle} onClick={openEditModal}>수정하기</button>
-                        <button style={BtnStyle} onClick={openDeleteModal}>삭제하기</button>
                         <EditModal open={editModalOpen} close={closeEditModal}></EditModal>
-
+                        <button style={BtnStyle} onClick={openDeleteModal}>삭제하기</button>
                         <DeleteModal open={deleteModalOpen} close={closeDeleteModal} header="Modal heading">
                             게시물이 삭제됩니다!
                         </DeleteModal>
