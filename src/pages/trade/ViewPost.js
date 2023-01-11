@@ -1,7 +1,6 @@
 import React from "react";
 import PostList from "../../components/trade/PostList";
 import Post from "../../components/trade/Post";
-import Card from "../../components/trade/Card";
 import CardList from "../../components/trade/CardList";
 
 function ViewPost() {
@@ -27,7 +26,6 @@ function ViewPost() {
             {ItemLists.map((Items, id) => (
               <div
               key = { id }
-              
               >
 							<CardList
                     imgs={Items.imgs}
