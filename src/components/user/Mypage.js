@@ -2,7 +2,6 @@ import { Avatar, Box, Button, Icon, Toolbar, Typography } from "@mui/material";
 import { Stack } from "@mui/system";
 import React from "react";
 import "./Mypage.css";
-import HistoryIcon from "@mui/icons-material/History";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import Btn from "../common/layout/Btn";
