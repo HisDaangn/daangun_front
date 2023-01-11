@@ -1,0 +1,67 @@
+.section {
+  border: 1px solid #d1d3d8;
+  border-radius: 10px;
+  width: 750px;
+  height: 550px;
+  display: flex;
+  margin: 5% auto;
+  justify-content: center;
+  align-items: center;
+}
+.second {
+  position: relative;
+  bottom: 20px;
+}
+.first,
+.second,
+.third,
+.fourth {
+  width: 600px;
+}
+
+#profPhoto {
+  display: flex;
+  align-items: center;
+}
+
+#userInfo {
+  margin-left: 15px;
+}
+
+#nickname {
+  font-weight: 700;
+  font-size: larger;
+}
+
+#minorInfo {
+  font-size: small;
+}
+
+#address {
+  font-weight: 400;
+  opacity: 40%;
+}
+
+#userId {
+  margin-left: 5px;
+  font-weight: 100;
+  opacity: 50%;
+}
+
+#tempDiv {
+  display: contents;
+}
+
+#temperature {
+  float: right;
+  color: #76c545;
+  margin-bottom: 10px;
+  margin-right: 23px;
+  font-weight: 600;
+}
+
+#loginHistory {
+  font-size: 12px;
+  font-weight: 700;
+  opacity: 40%;
+}

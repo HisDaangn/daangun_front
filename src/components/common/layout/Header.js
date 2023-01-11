@@ -1,12 +1,15 @@
 import styled from "@emotion/styled";
 import { AppBar, Button, InputBase, Toolbar, Typography } from "@mui/material";
-import { Stack } from "@mui/system";
+import { Box, Stack } from "@mui/system";
 import { theme } from "../../../theme/theme";
 import Logo from "../../../assets/HomeLogo.png";
+import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
+import { NavLink } from "react-router-dom";
+import Btn from "./Btn.js";
 
 const StyledToolbar = styled(Toolbar)({
   display: "flex",
-  justifyContent: "space-between",
+  justifyContent: "space-evenly",
   backgroundColor: "white",
   borderColor: "divider",
 });
@@ -24,33 +27,55 @@ const Search = styled("div")({
   padding: "4px 12px",
   borderRadius: theme.shape.borderRadius,
   width: "280px",
+  [theme.breakpoints.down("lg")]: {
+    display: "none",
+  },
 });
 
-const Btn = styled(Button)({
-  border: "1px solid #d1d3d8",
-  padding: "5px 15px",
-  color: "#212124",
-  fontWeight: "bolder",
-  fontSize: "16px",
+const SearchIcon = styled(SearchOutlinedIcon)({
+  color: "black",
+  fontSize: "30px",
+  opacity: "70%",
+  marginTop: "5px",
+  [theme.breakpoints.up("lg")]: {
+    display: "none",
+  },
+  [theme.breakpoints.down("lg")]: {
+    display: "block",
+    cursor: "pointer",
+  },
 });
 
 export default function Header() {
   return (
     <AppBar position="fixed">
       <StyledToolbar>
-        <Stack direction="row" spacing={4} style={{ marginLeft: "180px" }}>
-          <img
-            src={Logo}
-            alt="Danggeun"
-            style={{ width: "110px", height: "46px" }}
-          />
-          <Typo style={{ color: "#ff6f0f" }}>중고거래</Typo>
-          <Typo>인기매물</Typo>
-          <Typo>매물추가</Typo>
-          <Typo>동네설정</Typo>
+        <Stack direction="row" spacing={4}>
+          <NavLink to={"/home"} style={{ textDecoration: "none" }}>
+            <img
+              src={Logo}
+              alt="Danggeun"
+              style={{ width: "110px", height: "46px" }}
+            />
+          </NavLink>
+
+          <NavLink to={"/home"} style={{ textDecoration: "none" }}>
+            <Typo style={{ color: "#ff6f0f" }}>중고거래</Typo>
+          </NavLink>
+
+          <NavLink to={"/chat"} style={{ textDecoration: "none" }}>
+            <Typo>인기매물</Typo>
+          </NavLink>
+
+          <NavLink to={"/tradeboard"} style={{ textDecoration: "none" }}>
+            <Typo>매물추가</Typo>
+          </NavLink>
+          <NavLink to={"/editpost"} style={{ textDecoration: "none" }}>
+            <Typo>동네설정</Typo>
+          </NavLink>
         </Stack>
 
-        <Stack direction="row" spacing={1.5} marginRight="230px">
+        <Stack direction="row" spacing={1.5}>
           <Search>
             <InputBase
               placeholder="물품이나 동네를 검색해보세요"
@@ -62,8 +87,15 @@ export default function Header() {
               }}
             />
           </Search>
-          <Btn>채팅하기</Btn>
-          <Btn>마이페이지</Btn>
+          <Box>
+            <SearchIcon></SearchIcon>
+          </Box>
+          <NavLink to={"/chat"} style={{ textDecoration: "none" }}>
+            <Btn>채팅하기</Btn>
+          </NavLink>
+          <NavLink to={"/mypage"} style={{ textDecoration: "none" }}>
+            <Btn>마이페이지</Btn>
+          </NavLink>
         </Stack>
       </StyledToolbar>
     </AppBar>

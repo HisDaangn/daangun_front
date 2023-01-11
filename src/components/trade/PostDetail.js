@@ -53,24 +53,19 @@ const PostDetail = (props) => {
             </Grid>
             <Box>
                 <Grid container spacing={3}>
-                    <Grid item xs={2}>
-                        <Avatar src="https://cdn-icons-png.flaticon.com/512/1946/1946429.png" />
-                        <Box sx={{ fontSize: 16, fontWeight: 'regiar' }}>나는유저</Box>
-                    </Grid>
+                    <Avatar src="https://cdn-icons-png.flaticon.com/512/1946/1946429.png" />
+                    <Box sx={{ fontSize: 16, fontWeight: 'regiar' }}>username <br /> 포항시 흥해읍</Box>
                     <Grid item xs={7}>
                         <button style={BtnStyle} onClick={openEditModal}>수정하기</button>
-                        <button style={BtnStyle} onClick={openDeleteModal}>삭제하기</button>
                         <EditModal open={editModalOpen} close={closeEditModal}></EditModal>
-
+                        <button style={BtnStyle} onClick={openDeleteModal}>삭제하기</button>
                         <DeleteModal open={deleteModalOpen} close={closeDeleteModal} header="Modal heading">
                             게시물이 삭제됩니다!
                         </DeleteModal>
                     </Grid>
-                    <Grid item xs>
-                        <Box width={100}>
-                            <Slider defaultValue={36.5} aria-label="Default" valueLabelDisplay="auto" />
-                            <Avatar src="https://d1unjqcospf8gs.cloudfront.net/assets/home/articles/face-icon-set@2x-0bece009c619b4706f52a750aca82448334aa3e39d353579f2ce9c365639a03b.png" />
-                        </Box>
+                    <Grid>
+                        <Slider width={100} defaultValue={36.5} aria-label="Default" valueLabelDisplay="auto" />
+                        <Avatar src="https://d1unjqcospf8gs.cloudfront.net/assets/home/articles/face-icon-set@2x-0bece009c619b4706f52a750aca82448334aa3e39d353579f2ce9c365639a03b.png" />
                     </Grid>
                 </Grid>
 

@@ -1,10 +1,9 @@
-import { Image } from "@mui/icons-material";
 import { Typography } from "@mui/material";
 import { Button } from "@mui/material";
 import { Grid } from "@mui/material";
 import { Box } from "@mui/material";
 import { Container } from "@mui/system";
-import styles from "./Home.module.css";
+import { Link } from "react-router-dom";
 
 function Home() {
 	return (
@@ -80,7 +79,7 @@ function Home() {
 							<Grid item xs={4.4}>
 								<Typography
 									variant="h3"
-									paddingTop={"18rem"}
+									paddingTop={"15rem"}
 									fontWeight={"700"}
 									lineHeight={"1.3"}
 									marginBottom={"1.8rem"}
@@ -93,22 +92,26 @@ function Home() {
 									동네 주민들과 가깝고 따뜻한 거래를 지금 경험해보세요.
 								</Typography>
 								<Box marginTop={"2.5rem"}>
-									<Button
-										variant="contained"
-										size={"large"}
-										sx={{ fontWeight: "bold" }}
-										style={{ backgroundColor: "#F1F3F5", color: "black" }}
-									>
-										인기매물 보기
-									</Button>
-									<Button
-										variant="contained"
-										sx={{ marginLeft: "1.6rem", fontWeight: "bold" }}
-										size={"large"}
-										style={{ backgroundColor: "#F1F3F5", color: "black" }}
-									>
-										믿을 수 있는 중고거래
-									</Button>
+									<Link to={"/viewpost"} style={{ textDecoration: "none" }}>
+										<Button
+											variant="contained"
+											size={"large"}
+											sx={{ fontWeight: "bold" }}
+											style={{ backgroundColor: "#F1F3F5", color: "black" }}
+										>
+											인기매물 보기
+										</Button>
+									</Link>
+									<Link to={"/tradeboard"} style={{ textDecoration: "none" }}>
+										<Button
+											variant="contained"
+											sx={{ marginLeft: "1.6rem", fontWeight: "bold" }}
+											size={"large"}
+											style={{ backgroundColor: "#F1F3F5", color: "black" }}
+										>
+											믿을 수 있는 중고거래
+										</Button>
+									</Link>
 								</Box>
 							</Grid>
 						</Grid>
@@ -144,15 +147,17 @@ function Home() {
 									우리 동네의 이웃과 실시간 소통해요.
 								</Typography>
 								<Box marginTop={"2.5rem"}>
-									<Button
-										variant="contained"
-										size={"large"}
-										sx={{ fontWeight: "bold", width: "200px" }}
-										style={{ backgroundColor: "#F1F3F5", color: "black" }}
-										ico
-									>
-										채팅하러 가기
-									</Button>
+									<Link to={"/chat"} style={{ textDecoration: "none" }}>
+										<Button
+											variant="contained"
+											size={"large"}
+											sx={{ fontWeight: "bold", width: "200px" }}
+											style={{ backgroundColor: "#F1F3F5", color: "black" }}
+											ico
+										>
+											채팅하러 가기
+										</Button>
+									</Link>
 								</Box>
 							</Grid>
 							<Grid item xs={6}>

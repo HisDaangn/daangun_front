@@ -15,7 +15,12 @@ function EmptyRoom() {
 			height={"100%"}
 			border={"1px solid gainsboro"}
 		>
-			<img src="img/chatbubbles.png" alt="chatbubble" width={96}></img>
+			<Box
+				component={"img"}
+				src={"img/chatbubbles.png"}
+				width={"96px"}
+				height={"96px"}
+			/>
 			<Box paddingTop={5}>채팅할 상대를 선택해주세요</Box>
 		</Grid>
 	);

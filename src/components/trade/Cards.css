@@ -1,0 +1,38 @@
+.card-desc {
+  margin-top: 12px;
+}
+
+img {
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
+ }
+
+.card-title {
+  font-size: 16px;
+    letter-spacing: -0.02px;
+    color: #212529;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    margin-bottom: 4px;
+    line-height: 1.5;
+    font-weight: normal;
+}
+
+.card-price {
+  font-size: 15px;
+    font-weight: 700;
+    line-height: 1.5;
+    margin-bottom: 4px;
+}
+
+.card-content {
+  color: #868e96;
+  font-size: 13px;
+}
+
+.card-img {
+  height: 212px;
+  width: 212px;
+}
