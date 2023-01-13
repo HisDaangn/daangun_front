@@ -1,7 +1,6 @@
 import Header from "../../components/common/layout/Header";
 import PostDetail from "../../components/trade/PostDetail";
 import { Link } from "react-router-dom";
-
 import { Box, Grid } from "@mui/material";
 const TradeBoard = () => {
   const onChat = chatBtn => {
@@ -51,7 +50,6 @@ const TradeBoard = () => {
           </Grid>
           <Grid item xs></Grid>
         </Grid>
-
         <Grid>
           {/* 지금은 채팅방으로 연결했는데, 나중에 글 올린 유저한테 연결하면 될 듯 */}
           <Link to={"/chat"} style={{ textDecoration: "none" }}>
