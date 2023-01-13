@@ -10,7 +10,7 @@ function ImageUpload() {
     const ACCESS_KEY = 'AKIA3ZKVKUTIGQBPZ2CB';
     const SECRET_ACCESS_KEY = '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';
     const REGION = "ap-northeast-2";
-    const S3_BUCKET = 'daangn';
+    const S3_BUCKET = 'hisdaangn';
 
     AWS.config.update({
         accessKeyId: ACCESS_KEY,
@@ -25,10 +25,6 @@ function ImageUpload() {
     const handleFileInput = (e) => {
         const file = e.target.files[0];
         const fileExt = file.name.split('.').pop();
-        if (file.type !== 'image/jpeg' || fileExt !== 'jpg') {
-            alert('jpg 파일만 Upload 가능합니다.');
-            return;
-        }
         setProgress(0);
         setSelectedFile(e.target.files[0]);
     }
@@ -70,7 +66,7 @@ function ImageUpload() {
                     <Col>
                         <Input color="primary" type="file" onChange={handleFileInput} />
                         {selectedFile ? (
-                            <Button color="primary" onClick={() => uploadFile(selectedFile)}> Upload to S3</Button>
+                            <Button color="primary" onClick={() => uploadFile(selectedFile)}> 저장하기</Button>
                         ) : null}
                     </Col>
                 </Row>
