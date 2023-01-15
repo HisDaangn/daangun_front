@@ -47,6 +47,38 @@ const Post = [
         interest: "관심 100",
         chatting: "채팅 250"
     },
+    {
+        id: 5,
+        title: "축구화",
+        imgs: "/img/soccershoes.jpeg",
+        price: "40,000",
+        interest: "관심 100",
+        chatting: "채팅 250"
+    },
+    {
+        id: 5,
+        title: "축구화",
+        imgs: "/img/soccershoes.jpeg",
+        price: "40,000",
+        interest: "관심 100",
+        chatting: "채팅 250"
+    },
+    {
+        id: 5,
+        title: "축구화",
+        imgs: "/img/soccershoes.jpeg",
+        price: "40,000",
+        interest: "관심 100",
+        chatting: "채팅 250"
+    },
+    {
+        id: 5,
+        title: "축구화",
+        imgs: "/img/soccershoes.jpeg",
+        price: "40,000",
+        interest: "관심 100",
+        chatting: "채팅 250"
+    },
 
 ];
 
