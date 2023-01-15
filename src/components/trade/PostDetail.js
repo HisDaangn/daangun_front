@@ -1,14 +1,54 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import DeleteModal from './DeleteModal';
 import EditModal from '../../pages/trade/EditPost';
 import { Link } from "react-router-dom";
+import bad from "./img/bad.png";
+import good from "./img/good.png";
+import verygood from "./img/verygood.png";
+import excellent from "./img/excellent.png";
 import {
     Avatar,
     Box,
     Slider,
     Stack,
+    createTheme, ThemeProvider
 } from "@mui/material";
 const PostDetail = (props) => {
+    const temperature = 36.7;
+    // const [temperature, setTemperature] = useState();
+    const theme = createTheme({
+        palette: {
+            bad: {
+                main: '#1561a9',
+            },
+            good: {
+                main: '#319e45',
+            },
+            verygood: {
+                main: '#df9100',
+            },
+            excelent: {
+                main: '#de5d06',
+            },
+        },
+    });
+    const [color, setColor] = useState("#1561a9");
+    const [img, setImg] = useState();
+    useEffect(() => {
+        if (temperature < 36.5) {
+            setColor("bad");
+            setImg(bad);
+        } else if (temperature < 40) {
+            setColor("#319e45");
+            setImg(good);
+        } else if (temperature < 50) {
+            setColor("#df9100");
+            setImg(verygood);
+        } else {
+            setColor("#de5d06");
+            setImg(excellent);
+        }
+    }, [temperature]);
     const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 
     const openDeleteModal = () => {
@@ -64,7 +104,6 @@ const PostDetail = (props) => {
                 width: "60%",
                 height: "70%",
                 transform: "translate(-50%, -50%)",
-                // background: "black",
             }}>
                 <img style={{
                     width: "100%",
@@ -82,8 +121,10 @@ const PostDetail = (props) => {
                         <DeleteModal open={deleteModalOpen} close={closeDeleteModal} header="Modal heading">
                             게시물이 삭제됩니다!
                         </DeleteModal>
-                        <Slider disabled sx={{ width: "150px" }} defaultValue={36.5} aria-label="Default" valueLabelDisplay="auto" />
-                        <Avatar src="https://d1unjqcospf8gs.cloudfront.net/assets/home/articles/face-icon-set@2x-0bece009c619b4706f52a750aca82448334aa3e39d353579f2ce9c365639a03b.png" />
+                        <ThemeProvider theme={theme}>
+                            <Slider color='good' sx={{ width: "150px" }} value={temperature} aria-label="Default" valueLabelDisplay="auto" />
+                        </ThemeProvider>
+                        <Avatar alt="img" src={img} />
                     </Stack>
                 </div>
                 <hr />
