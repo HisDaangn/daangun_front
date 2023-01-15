@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import DeleteModal from './DeleteModal';
 import EditModal from '../../pages/trade/EditPost';
+import { Link } from "react-router-dom";
 import {
     Avatar,
     Box,
@@ -24,6 +25,12 @@ const PostDetail = (props) => {
     const closeEditModal = () => {
         setEditModalOpen(false);
     };
+    const onChat = chatBtn => {
+        console.log("chatBtn click !");
+    }
+    const onLift = liftBtn => {
+        console.log("liftBtn click !");
+    }
     const BtnStyle = {
         backgroundColor: "white",
         borderRadius: "3px",
@@ -31,6 +38,17 @@ const PostDetail = (props) => {
         fontSize: "10px",
         width: "80px",
         height: "30px",
+        marginLeft: "10px",
+    }
+    const staticBtnStyle = {
+        color: "white",
+        backgroundColor: "#ed7833",
+        borderRadius: "50px",
+        fontWeight: "bold",
+        fontSize: "10px",
+        width: "80px",
+        height: "30px",
+        border: "none",
         marginLeft: "10px",
     }
     return (
@@ -54,7 +72,7 @@ const PostDetail = (props) => {
                 }} src="https://img.danawa.com/prod_img/500000/489/206/img/10206489_1.jpg?shrink=330:330&_v=20200714161025" alt='img' />
 
                 <div >
-                    <Stack display="flex" direction="row" spacing={5} justifyContent="center">
+                    <Stack direction="row" spacing={5} justifyContent="center">
                         <Avatar src="https://cdn-icons-png.flaticon.com/512/1946/1946429.png" />
                         <Box sx={{ fontSize: 16, fontWeight: 'regiar' }}>username <br /> 포항시 흥해읍</Box>
                         <button style={BtnStyle} onClick={openEditModal}>수정하기</button>
@@ -67,15 +85,18 @@ const PostDetail = (props) => {
                         <Avatar src="https://d1unjqcospf8gs.cloudfront.net/assets/home/articles/face-icon-set@2x-0bece009c619b4706f52a750aca82448334aa3e39d353579f2ce9c365639a03b.png" />
                     </Stack>
                 </div>
-
-
                 <hr />
                 <div>
                     <Box sx={{ fontSize: 20, fontWeight: 'bold', m: 2 }}>라면 사실 분~</Box>
                     <Box sx={{ fontSize: 16, fontWeight: 'bold', m: 2 }}>1,500원</Box>
                     <Box sx={{ fontSize: 16, fontWeight: 'regular', m: 2 }}>새벽이라서 팔아봅니다~</Box>
                 </div>
-
+                <Stack direction="row" justifyContent="flex-end">
+                    <Link to={"/chat"} style={{ textDecoration: "none" }}>
+                        <button style={staticBtnStyle} onClick={onChat}>채팅하기</button>
+                    </Link>
+                    <button style={staticBtnStyle} onClick={onLift}>끌올하기</button>
+                </Stack>
             </div>
         </div >
     )
