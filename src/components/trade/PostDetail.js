@@ -73,6 +73,7 @@ const PostDetail = (props) => {
 
                 <div >
                     <Stack direction="row" spacing={5} justifyContent="center">
+
                         <Avatar src="https://cdn-icons-png.flaticon.com/512/1946/1946429.png" />
                         <Box sx={{ fontSize: 16, fontWeight: 'regiar' }}>username <br /> 포항시 흥해읍</Box>
                         <button style={BtnStyle} onClick={openEditModal}>수정하기</button>
@@ -97,7 +98,7 @@ const PostDetail = (props) => {
                     </Link>
                     <button style={staticBtnStyle} onClick={onLift}>끌올하기</button>
                 </Stack>
-            </div>
+            </div >
         </div >
     )
 }
