@@ -42,3 +42,53 @@ img {
   text-decoration: none;
   color: #212529;
 }
+
+.card-wrap {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  width: 100%;
+  margin: 0 auto;
+  position: relative;
+  
+}
+
+.card-wrap {
+  width: 980px;
+  margin: 0 auto;
+}
+
+.card-container {
+    width: calc(25% - 44px);
+    margin-right: 44px;
+    margin-bottom: 56px;
+}
+
+.margin-bottom {
+  width: 980px;
+  margin: 0 auto;
+  margin-bottom: 8rem;
+}
+
+.card-top {
+ margin-right: 44px;
+ margin-bottom: 56px;
+}
+
+.button-add {
+  float: right;
+  width: 100px;
+  margin-left: 8px;
+  
+  appearance: none;
+  padding: 12px 16px;
+  border-radius: 6px;
+  
+  border: solid 1px #e9ecef;
+  box-sizing: border-box;
+  font-size: 17px;
+  letter-spacing: -0.6px;
+  text-align: left;
+  background: black;
+  color: black
+}
