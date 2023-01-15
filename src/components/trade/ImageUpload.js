@@ -1,6 +1,7 @@
 import { useState } from "react";
 import AWS from 'aws-sdk';
 import { Row, Col, Button, Input, Alert } from 'reactstrap';
+import CameraAltIcon from '@mui/icons-material/CameraAlt';
 
 function ImageUpload() {
     const [progress, setProgress] = useState(0);
@@ -23,8 +24,6 @@ function ImageUpload() {
     });
 
     const handleFileInput = (e) => {
-        const file = e.target.files[0];
-        const fileExt = file.name.split('.').pop();
         setProgress(0);
         setSelectedFile(e.target.files[0]);
     }
@@ -53,7 +52,7 @@ function ImageUpload() {
     return (
         <div>
             <div>
-                <Row>
+                {/* <Row>
                     <Col>
                         {showAlert ?
                             <Alert color="primary">업로드 진행률 : {progress}%</Alert>
@@ -61,10 +60,13 @@ function ImageUpload() {
                             <Alert color="primary">파일을 선택해 주세요.</Alert>
                         }
                     </Col>
-                </Row>
+                </Row> */}
                 <Row>
                     <Col>
-                        <Input color="primary" type="file" onChange={handleFileInput} />
+                        <label className="input-file-button" htmlForfor="input-file">
+                            사진 선택
+                        </label>
+                        <Input id="input-file" style={{ display: "none" }} color="primary" type="file" onChange={handleFileInput} />
                         {selectedFile ? (
                             <Button color="primary" onClick={() => uploadFile(selectedFile)}> 저장하기</Button>
                         ) : null}
