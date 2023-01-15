@@ -1,4 +1,5 @@
 import { Button } from "@mui/material";
+import { Link } from "react-router-dom";
 
 function PostList(){
     return(
@@ -7,10 +8,13 @@ function PostList(){
         </h1>
         </>
         <p>
+            <Link to="/addpost">
             <Button variant="contained" 
                     style={{position: 'absolute', right: 0, marginRight: "100px"}}>
                     추가하기
                 </Button>{' '}
+            </Link>
+            
         </p>
                <p>
                 </p> 

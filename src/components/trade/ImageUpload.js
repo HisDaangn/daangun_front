@@ -2,7 +2,6 @@ import { useState } from "react";
 import AWS from 'aws-sdk';
 import { Row, Col, Button, Input, Alert } from 'reactstrap';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
-
 function ImageUpload() {
     const [progress, setProgress] = useState(0);
     const [selectedFile, setSelectedFile] = useState(null);
@@ -24,56 +23,60 @@ function ImageUpload() {
     });
 
     const handleFileInput = (e) => {
-        setProgress(0);
-        setSelectedFile(e.target.files[0]);
-    }
+        const file = e.target.files[0];
+        const fileExt = file.name.split('.').pop();
+        if (file.type !== 'image/jpeg' || fileExt !== 'jpg') {
+            alert('jpg 파일만 Upload 가능합니다.');
+            return;
+        }
 
-    const uploadFile = (file) => {
-        const params = {
-            ACL: 'public-read',
-            Body: file,
-            Bucket: S3_BUCKET,
-            Key: "upload/" + file.name
-        };
+        const uploadFile = (file) => {
+            const params = {
+                ACL: 'public-read',
+                Body: file,
+                Bucket: S3_BUCKET,
+                Key: "upload/" + file.name
+            };
 
-        myBucket.putObject(params)
-            .on('httpUploadProgress', (evt) => {
-                setProgress(Math.round((evt.loaded / evt.total) * 100))
-                setShowAlert(true);
-                setTimeout(() => {
-                    setShowAlert(false);
-                    setSelectedFile(null);
-                }, 3000)
-            })
-            .send((err) => {
-                if (err) console.log(err)
-            })
-    }
-    return (
-        <div>
+            myBucket.putObject(params)
+                .on('httpUploadProgress', (evt) => {
+                    setProgress(Math.round((evt.loaded / evt.total) * 100))
+                    setShowAlert(true);
+                    setTimeout(() => {
+                        setShowAlert(false);
+                        setSelectedFile(null);
+                    }, 3000)
+                })
+                .send((err) => {
+                    if (err) console.log(err)
+                })
+        }
+        return (
             <div>
-                {/* <Row>
-                    <Col>
-                        {showAlert ?
-                            <Alert color="primary">업로드 진행률 : {progress}%</Alert>
-                            :
-                            <Alert color="primary">파일을 선택해 주세요.</Alert>
-                        }
-                    </Col>
-                </Row> */}
-                <Row>
-                    <Col>
-                        <label className="input-file-button" htmlForfor="input-file">
-                            사진 선택
-                        </label>
-                        <Input id="input-file" style={{ display: "none" }} color="primary" type="file" onChange={handleFileInput} />
-                        {selectedFile ? (
-                            <Button color="primary" onClick={() => uploadFile(selectedFile)}> 저장하기</Button>
-                        ) : null}
-                    </Col>
-                </Row>
-            </div>
-        </div>
-    );
+                <div>
+                    <Row>
+                        <Col>
+                            {showAlert ?
+                                <Alert color="primary">업로드 진행률 : {progress}%</Alert>
+                                :
+                                <Alert color="primary">파일을 선택해 주세요.</Alert>
+                            }
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col>
+                            <label className="input-file-button" htmlForfor="input-file">
+                                사진 선택
+                            </label>
+                            <Input id="input-file" style={{ display: "none" }} color="primary" type="file" onChange={handleFileInput} />
+                            {selectedFile ? (
+                                <Button color="primary" onClick={() => uploadFile(selectedFile)}> 저장하기</Button>
+                            ) : null}
+                        </Col>
+                    </Row>
+                </div >
+            </div >
+        );
+    }
 }
 export default ImageUpload;

@@ -45,6 +45,7 @@ const TradeBoard = () => {
         </Link>
         <button style={staticLiftBtn} onClick={onLift}>끌올하기</button>
       </Grid>
+
     </>
   );
 }
