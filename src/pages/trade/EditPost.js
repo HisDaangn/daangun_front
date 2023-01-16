@@ -1,6 +1,7 @@
 import React from 'react';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import "./EditModal.css";
+import ImageUpload from '../../components/trade/ImageUpload';
 import {
   Box,
   createTheme,
@@ -40,6 +41,7 @@ const EditPost = (props) => {
           <main>
             <ThemeProvider theme={theme}>
               <Button variant="outlined" startIcon={<CameraAltIcon />}>0/10</Button>
+              <ImageUpload />
             </ThemeProvider>
             <Divider />
             <Grid>

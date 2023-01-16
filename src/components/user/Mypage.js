@@ -9,6 +9,7 @@ import GaugeBar from "../common/layout/GaugeBar";
 import purchaseHistory from "../../assets/purchaseHistory.png";
 import salesHistory from "../../assets/salesHistory.png";
 import watchlist from "../../assets/watchlist.png";
+import axios from "axios";
 
 export default function Mypage() {
   return (
@@ -122,3 +123,14 @@ export default function Mypage() {
     </Box>
   );
 }
+
+export const profileUpdate = async (googleId) => {
+  const response = await axios.patch(
+    `localhost:8080/user/profileUpdate/${googleId}`,
+    {
+      name: `{name}`,
+      address: `{address}`,
+    }
+  );
+  return response.data;
+};
