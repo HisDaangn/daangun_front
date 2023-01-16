@@ -18,7 +18,7 @@ const Post = [
     {
         id: 2,
         title: "포켓몬빵",
-        imgs: "/img/bread.jpeg",
+        imgs: "/img/bread2.jpeg",
         price: "2,0000원",
         interest: "관심 50",
         chatting: "채팅 100"
