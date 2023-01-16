@@ -1,41 +1,30 @@
-import React, { useEffect, useState } from "react";
-import "./Cards.css";
-import { Link } from "react-router-dom";
-import axios from "axios";
+import React from 'react'
+import  './Cards.css';
+import { Box } from "@mui/material";
+import { useNavigate } from 'react-router-dom';
 
-function Card(Items) {
-	const [chatCount, setChatCount] = useState(0);
-	useEffect(function async() {
-		getCount();
-	}, []);
+function Card({post}) {
 
-	// GET
-	async function getCount() {
-		try {
-			var postId = 3;
-			const response = await axios.get(`http://localhost:8080/chat/${postId}`);
+  const navigate = useNavigate();
 
-			console.log(response);
-			setChatCount(response.data);
-		} catch (e) {
-			console.log(e);
-		}
-	}
-
-	return (
-		<Link to="/tradeboard" className="card-link">
-			<div className="card-top">
-				<img className="card-img" src={Items.imgs} />
-				<div className="card-desc">
-					<h2 className="card-title">{Items.title}</h2>
-					<div className="card-price">{Items.price}</div>
-					<div className="card-content">
-						<span>{Items.interest}</span> ∙ <span>채팅 {chatCount}</span>
-					</div>
-				</div>
-			</div>
-		</Link>
-	);
+    return (
+      <Box 
+      onClick={( ) => navigate(`/trade/${post.id}`)}
+      > 
+        <div className="card-link">
+        <div className="card-top">
+        <img className="card-img" src= "./img/bad.png" />
+        <div className="card-desc">
+        <h2 className="card-title">{ post.title }</h2>
+        <div className="card-price">{ post.price }</div>
+        <div className="card-content">
+          <span>{ post.viewCnt }</span> ∙ <span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+  </Box>
+);
 }
 
 export default Card;

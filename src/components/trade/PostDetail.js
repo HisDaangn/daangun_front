@@ -7,6 +7,8 @@ import bad from "./img/bad.png";
 import good from "./img/good.png";
 import verygood from "./img/verygood.png";
 import excellent from "./img/excellent.png";
+
+import './Cards.css';
 import {
     Avatar,
     Box,
@@ -42,6 +44,7 @@ const PostDetail = (props) => {
             //응답 성공
             const response = await axios.patch(`http://localhost:8080/trade/lift/${postID}`, {
                 expose_at: `${value.expose_at}`,
+
             });
             console.log(response);
             console.log("liftBtn click !");
@@ -51,6 +54,7 @@ const PostDetail = (props) => {
         }
     }
     const temperature = 36.7;
+
     // const [temperature, setTemperature] = useState();
     const theme = createTheme({
         palette: {
@@ -108,13 +112,11 @@ const PostDetail = (props) => {
         console.log("liftBtn click !");
     }
     const BtnStyle = {
-        backgroundColor: "white",
-        borderRadius: "3px",
-        fontWeight: "bold",
-        fontSize: "10px",
-        width: "80px",
-        height: "30px",
-        marginLeft: "10px",
+        border: "1px solid #d1d3d8",
+        padding: "5px 15px",
+        color: "#212124",
+        fontWeight: "bolder",
+        fontSize: "13px",
     }
     const staticBtnStyle = {
         color: "white",
@@ -158,10 +160,11 @@ const PostDetail = (props) => {
                 }} src="https://www.shutterstock.com/image-photo/korean-spicy-instant-noodles-egg-260nw-1296771487.jpg" alt='img' />
 
                 <div >
+
                     <Stack direction="row" spacing={5} justifyContent="center">
 
                         <Avatar src="https://cdn-icons-png.flaticon.com/512/1946/1946429.png" />
-                        <Box sx={{ fontSize: 16, fontWeight: 'regiar' }}>username <br /> 포항시 흥해읍</Box>
+                        <Box sx={{ fontSize: 20, fontWeight: 'regiar' }}>username</Box>
                         <button style={BtnStyle} onClick={openEditModal}>수정하기</button>
                         <Modal
                             open={editModalOpen}
@@ -186,6 +189,7 @@ const PostDetail = (props) => {
                     <Box sx={{ fontSize: 20, fontWeight: 'bold', m: 2 }}>{value.title}</Box>
                     <Box sx={{ fontSize: 16, fontWeight: 'bold', m: 2 }}>{value.price}원</Box>
                     <Box sx={{ fontSize: 16, fontWeight: 'regular', m: 2 }}>{value.content}</Box>
+
                 </div>
                 <Stack direction="row" justifyContent="flex-end">
                     <Link to={"/chat"} style={{ textDecoration: "none" }}>

@@ -5,6 +5,7 @@ import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import "./EditModal.css";
 import ImageUpload from '../../components/trade/ImageUpload';
 import axios from 'axios';
+
 import {
   Box,
   createTheme,
@@ -55,6 +56,7 @@ const EditPost = (props) => {
         title: `${data.title}`,
         // price: `${value.price}`,
         // content: `${value.content}`,
+
       });
       console.log(response);
     } catch (error) {
