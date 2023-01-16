@@ -2,6 +2,8 @@ import React from 'react';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import "./EditModal.css";
 import ImageUpload from '../../components/trade/ImageUpload';
+import axios from 'axios';
+
 import {
   Box,
   createTheme,
@@ -14,6 +16,24 @@ import {
   Checkbox, FormControlLabel,
 } from "@mui/material";
 const EditPost = (props) => {
+  // const { postID } = useParams();
+  const postID = 2;
+  // //PATCH 게시글 수정
+  async function edit({ photoURL, title, price, content }) {
+    try {
+      //응답 성공
+      const response = await axios.patch(`http://localhost:8080/trade/${postID}`, {
+        photoURL: `${photoURL}`,
+        title: `${title}`,
+        price: `${price}`,
+        content: `${content}`,
+      });
+      console.log(response);
+    } catch (error) {
+      //응답 실패
+      console.error(error);
+    }
+  }
   const { open, close } = props;
   const ariaLabel = { 'aria-label': 'description' };
   const theme = createTheme({
@@ -60,7 +80,7 @@ const EditPost = (props) => {
             />
           </main>
           <footer>
-            <button className="close" onClick={close}>
+            <button className="close" onClick={close} >
               저장하기
             </button>
           </footer>

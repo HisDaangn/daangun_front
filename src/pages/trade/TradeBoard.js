@@ -6,5 +6,5 @@ const TradeBoard = () => {
       <PostDetail />
     </>
   );
-}
+};
 export default TradeBoard;

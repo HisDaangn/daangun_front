@@ -18,7 +18,7 @@ function ViewPost(Items) {
                     interest={Items.interest}
                     chatting={Items.chatting}
                     />
-        </div> 
+        </div>
     </div>
   );
 }

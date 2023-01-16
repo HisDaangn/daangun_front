@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import DeleteModal from './DeleteModal';
 import EditModal from '../../pages/trade/EditPost';
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import bad from "./img/bad.png";
 import good from "./img/good.png";
 import verygood from "./img/verygood.png";
@@ -16,6 +17,35 @@ import {
     createTheme, ThemeProvider
 } from "@mui/material";
 const PostDetail = (props) => {
+    const { postID } = useParams();
+    //GET 상세 게시글 조회
+    async function getData() {
+        try {
+            //응답 성공
+            const response = await axios.get(`http://localhost:8080/trade/${postID}`);
+            console.log(response);
+        } catch (error) {
+            //응답 실패
+            console.error(error);
+        }
+    }
+    useEffect(() => {
+        getData();
+    }, [])
+    //PATCH 끌어올리기
+    async function lift({ expose_at }) {
+        try {
+            //응답 성공
+            const response = await axios.patch(`http://localhost:8080/trade/lift/${postID}`, {
+                expose_at: `${expose_at}`,
+            });
+            console.log(response);
+            console.log("liftBtn click !");
+        } catch (error) {
+            //응답 실패
+            console.error(error);
+        }
+    }
     const temperature = 36.7;
     // const [temperature, setTemperature] = useState();
     const theme = createTheme({
@@ -122,7 +152,7 @@ const PostDetail = (props) => {
                     <Link to={"/chat"} style={{ textDecoration: "none" }}>
                         <button style={staticBtnStyle} onClick={onChat}>채팅하기</button>
                     </Link>
-                    <button style={staticBtnStyle} onClick={onLift}>끌올하기</button>
+                    <button style={staticBtnStyle} onClick={lift}>끌올하기</button>
                 </Stack>
             </div >
         </div >

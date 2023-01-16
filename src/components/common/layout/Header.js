@@ -1,32 +1,36 @@
 import styled from "@emotion/styled";
-import { AppBar, InputBase, Toolbar, Typography } from "@mui/material";
+import { AppBar, Box, InputBase, Toolbar, Typography } from "@mui/material";
 import { Stack } from "@mui/system";
 import { theme } from "../../../theme/theme";
 import Logo from "../../../assets/HomeLogo.png";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import { NavLink } from "react-router-dom";
 import Btn from "./Btn.js";
-import "./Header.css";
+import { useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
+import CloseIcon from "@mui/icons-material/Close";
+import "./Header.css";
+import GoogleButton from "./GoogleButton";
+import axios from "axios";
 
 const StyledToolbar = styled(Toolbar)({
   display: "flex",
   justifyContent: "space-evenly",
   backgroundColor: "white",
-  borderColor: "divider",
+  width: "90%",
+  margin: "0 auto",
+
   [theme.breakpoints.down("md")]: {
     justifyContent: "space-between",
   },
-});
 
-const Typo = styled(Typography)({
-  color: "#4d5159",
-  fontWeight: "700",
-  cursor: "pointer",
-  fontSize: "19px",
-  lineHeight: "50px",
-  [theme.breakpoints.down("md")]: {
-    display: "none",
+  [theme.breakpoints.down("sm")]: {
+    minHeight: "64px",
+  },
+
+  [theme.breakpoints.down("xs")]: {
+    flexDirection: "column",
+    minHeight: "64px",
   },
 });
 
@@ -53,70 +57,183 @@ const SearchIcon = styled(SearchOutlinedIcon)({
   },
 });
 
-const Hamberger = styled(MenuIcon)({
+const Berger = styled(MenuIcon)({
   color: "black",
   fontSize: "30px",
   fontWeight: "lighter",
+  cursor: "pointer",
+  marginTop: "4px",
+  [theme.breakpoints.up("md")]: {
+    display: "none",
+  },
+});
+
+const Close = styled(CloseIcon)({
+  color: "black",
+  fontSize: "30px",
   cursor: "pointer",
   [theme.breakpoints.up("md")]: {
     display: "none",
   },
 });
 
+const Typo = styled(Typography)({
+  color: "#4d5159",
+  fontWeight: "700",
+  cursor: "pointer",
+  fontSize: "18px",
+  lineHeight: "50px",
+  textAlign: "center",
+  textDecoration: "none",
+  [theme.breakpoints.down("md")]: {
+    textAlign: "center",
+    display: "none",
+  },
+});
+
+const Nstack = styled(Stack)({
+  [theme.breakpoints.down("md")]: {
+    flexDirection: "column",
+  },
+});
+
+const CusNavLink = styled(NavLink)({
+  textDecoration: "none",
+  [theme.breakpoints.down("md")]: {
+    float: "left",
+  },
+});
+
 export default function Header() {
+  const [isOpen, setOpen] = useState(true);
+
   return (
-    <AppBar position="fixed">
-      <StyledToolbar>
-        <NavLink to={"/home"} style={{ textDecoration: "none" }}>
-          <img
-            src={Logo}
-            alt="Danggeun"
-            style={{ width: "110px", height: "46px" }}
-          />
-        </NavLink>
-        <Stack direction="row" spacing={4}>
-          <NavLink to={"/home"} className="navbarTypo">
-            <Typo style={{ color: "#ff6f0f" }}>중고거래</Typo>
-          </NavLink>
+    <>
+      <AppBar
+        position="fixed"
+        sx={{
+          width: "100%",
+          backgroundColor: "white",
+          display: "flex",
+        }}
+      >
+        <StyledToolbar>
+          <Nstack direction="row" spacing={4}>
+            <NavLink to={"/home"} className="nav_logo">
+              <img
+                src={Logo}
+                alt="Danggeun"
+                style={{
+                  width: "110px",
+                  height: "46px",
+                }}
+              />
+            </NavLink>
+            {/* color: "#ff6f0f" */}
+            <CusNavLink to={"/home"}>
+              <Typo>중고거래</Typo>
+            </CusNavLink>
 
-          <NavLink to={"/viewpost"} className="navbarTypo">
-            <Typo>인기매물</Typo>
-          </NavLink>
+            <CusNavLink to={"/viewpost"}>
+              <Typo>인기매물</Typo>
+            </CusNavLink>
 
-          <NavLink to={"/tradeboard"} className="navbarTypo">
-            <Typo>매물추가</Typo>
-          </NavLink>
-          <NavLink to={"/editpost"} className="navbarTypo">
-            <Typo>동네설정</Typo>
-          </NavLink>
-        </Stack>
+            <CusNavLink to={"/tradeboard"}>
+              <Typo>매물추가</Typo>
+            </CusNavLink>
+            <CusNavLink to={"/editpost"}>
+              <Typo>동네설정</Typo>
+            </CusNavLink>
+          </Nstack>
 
-        <Stack
-          direction="row"
-          spacing={1.5}
-          sx={{ display: "flex", alignItems: "center" }}
-        >
-          <Search>
-            <InputBase
-              placeholder="물품이나 동네를 검색해보세요"
-              sx={{
-                fontSize: "15px",
-                width: "100%",
-                color: "#212124",
-                fontWeight: "400",
+          <Stack
+            direction="row"
+            spacing={1.5}
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              // border: "1px solid black",
+            }}
+          >
+            <Search>
+              <InputBase
+                placeholder="물품이나 동네를 검색해보세요"
+                sx={{
+                  fontSize: "15px",
+                  width: "100%",
+                  color: "#212124",
+                  fontWeight: "400",
+                }}
+              />
+            </Search>
+            <SearchIcon className="nav_search" />
+            {/* <NavLink to={"/chat"} style={{ textDecoration: "none" }}>
+              <Btn>채팅하기</Btn>
+            </NavLink>
+            <NavLink to={"/mypage"} style={{ textDecoration: "none" }}>
+              <Btn>마이페이지</Btn>
+            </NavLink> */}
+
+            <NavLink
+              style={{ textDecoration: "none" }}
+              onClick={() => {
+                const gBtn = document.getElementById("gBtn");
+                gBtn.childNodes[0].firstChild.click();
               }}
-            />
-          </Search>
-          <SearchIcon></SearchIcon>
-          <NavLink to={"/chat"} style={{ textDecoration: "none" }}>
-            <Btn>채팅하기</Btn>
-          </NavLink>
-          <NavLink to={"/mypage"} style={{ textDecoration: "none" }}>
-            <Btn>마이페이지</Btn>
-          </NavLink>
-          <Hamberger onClick={() => {}} />
-        </Stack>
-      </StyledToolbar>
-    </AppBar>
+            >
+              <Btn>로그인</Btn>
+            </NavLink>
+
+            <Box display={"none"} id="gBtn">
+              <GoogleButton />
+            </Box>
+
+            <Box>
+              {isOpen ? (
+                <Berger
+                  className="nav_berger"
+                  onClick={() => {
+                    setOpen((current) => !current);
+                    console.log(isOpen);
+                  }}
+                />
+              ) : (
+                <Close
+                  className="nav_close"
+                  onClick={() => {
+                    setOpen((e) => !e);
+                    console.log(isOpen);
+                  }}
+                />
+              )}
+            </Box>
+          </Stack>
+        </StyledToolbar>
+      </AppBar>
+      {/* <MuiDrawer /> */}
+    </>
   );
 }
+
+export const signup = async (e_address, name, googleId, address) => {
+  const ret = await axios.post(`localhost:8080/user/signup`, {
+    e_address: `{e_address}`,
+    name: `{name}`,
+    temperature: `36.5`,
+    googldId: `{googldId}`,
+    address: `{address}`,
+  });
+  return ret.data;
+};
+
+export const getUser = async (googleId) => {
+  const response = await axios.get(`localhost:8080/user/getUser/${googleId}`, {
+    e_address: `{e_address}`,
+    name: `{name}`,
+    created_at: `{created_at}`,
+    temperature: `36.5`,
+    googldId: `{googldId}`,
+    address: `{address}`,
+  });
+  return response.data;
+};
