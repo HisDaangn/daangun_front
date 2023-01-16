@@ -10,7 +10,7 @@ function ImageUpload() {
     const ACCESS_KEY = 'AKIA3ZKVKUTIGQBPZ2CB';
     const SECRET_ACCESS_KEY = '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';
     const REGION = "ap-northeast-2";
-    const S3_BUCKET = 'daangn';
+    const S3_BUCKET = 'hisdaangn';
 
     AWS.config.update({
         accessKeyId: ACCESS_KEY,

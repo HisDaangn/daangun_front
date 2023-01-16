@@ -18,7 +18,7 @@ const Post = [
     {
         id: 2,
         title: "포켓몬빵",
-        imgs: "/img/bread.jpeg",
+        imgs: "/img/bread2.jpeg",
         price: "2,0000원",
         interest: "관심 50",
         chatting: "채팅 100"
@@ -38,6 +38,38 @@ const Post = [
         price: "10,000원",
         interest: "관심 0",
         chatting: "채팅 3"
+    },
+    {
+        id: 5,
+        title: "축구화",
+        imgs: "/img/soccershoes.jpeg",
+        price: "40,000",
+        interest: "관심 100",
+        chatting: "채팅 250"
+    },
+    {
+        id: 5,
+        title: "축구화",
+        imgs: "/img/soccershoes.jpeg",
+        price: "40,000",
+        interest: "관심 100",
+        chatting: "채팅 250"
+    },
+    {
+        id: 5,
+        title: "축구화",
+        imgs: "/img/soccershoes.jpeg",
+        price: "40,000",
+        interest: "관심 100",
+        chatting: "채팅 250"
+    },
+    {
+        id: 5,
+        title: "축구화",
+        imgs: "/img/soccershoes.jpeg",
+        price: "40,000",
+        interest: "관심 100",
+        chatting: "채팅 250"
     },
     {
         id: 5,
