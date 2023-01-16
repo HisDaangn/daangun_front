@@ -22,7 +22,7 @@ export const theme = createTheme({
     values: {
       xs: 600,
       sm: 700,
-      md: 830,
+      md: 899,
       lg: 1200,
       xl: 1536,
     },
