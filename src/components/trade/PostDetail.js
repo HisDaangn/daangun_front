@@ -7,6 +7,8 @@ import bad from "./img/bad.png";
 import good from "./img/good.png";
 import verygood from "./img/verygood.png";
 import excellent from "./img/excellent.png";
+
+import  './Cards.css';
 import {
     Avatar,
     Box,
@@ -18,7 +20,6 @@ const PostDetail = (props) => {
     const { postID } = useParams();
     //GET 상세 게시글 조회
     async function getData() {
-
         try {
             //응답 성공
             const response = await axios.get(`http://localhost:8080/trade/${postID}`);
@@ -31,13 +32,20 @@ const PostDetail = (props) => {
     useEffect(() => {
         getData();
     }, [])
-
-    // //PATCH 게시글 수정
-    // async function edit(){
-    //     try{
-
-    //     }
-    // }
+    //PATCH 끌어올리기
+    async function lift({ expose_at }) {
+        try {
+            //응답 성공
+            const response = await axios.patch(`http://localhost:8080/trade/lift/${postID}`, {
+                expose_at: `${expose_at}`,
+            });
+            console.log(response);
+            console.log("liftBtn click !");
+        } catch (error) {
+            //응답 실패
+            console.error(error);
+        }
+    }
     const temperature = 36.7;
     // const [temperature, setTemperature] = useState();
     const theme = createTheme({
@@ -96,13 +104,11 @@ const PostDetail = (props) => {
         console.log("liftBtn click !");
     }
     const BtnStyle = {
-        backgroundColor: "white",
-        borderRadius: "3px",
-        fontWeight: "bold",
-        fontSize: "10px",
-        width: "80px",
-        height: "30px",
-        marginLeft: "10px",
+        border: "1px solid #d1d3d8",
+        padding: "5px 15px",
+        color: "#212124",
+        fontWeight: "bolder",
+        fontSize: "13px",
     }
     const staticBtnStyle = {
         color: "white",
@@ -116,29 +122,14 @@ const PostDetail = (props) => {
         marginLeft: "10px",
     }
     return (
-        <div style={{
-            position: "relative",
-            width: "100%",
-            height: "100%",
-        }}>
-            <div style={{
-                position: "absolute",
-                left: "50%",
-                top: "50%",
-                width: "60%",
-                height: "70%",
-                transform: "translate(-50%, -50%)",
-            }}>
-                <img style={{
-                    width: "100%",
-                    height: "400px",
-                }} src="https://img.danawa.com/prod_img/500000/489/206/img/10206489_1.jpg?shrink=330:330&_v=20200714161025" alt='img' />
-
-                <div >
+        <div>
+            <div className="detail-container">
+                <img className="detail-img" src= "/img/Ramen.webp" alt='img' />
+                <div className="detail-profile">
                     <Stack direction="row" spacing={5} justifyContent="center">
-
+                    
                         <Avatar src="https://cdn-icons-png.flaticon.com/512/1946/1946429.png" />
-                        <Box sx={{ fontSize: 16, fontWeight: 'regiar' }}>username <br /> 포항시 흥해읍</Box>
+                        <Box sx={{ fontSize: 20, fontWeight: 'regiar' }}>username</Box>
                         <button style={BtnStyle} onClick={openEditModal}>수정하기</button>
                         <EditModal open={editModalOpen} close={closeEditModal}></EditModal>
                         <button style={BtnStyle} onClick={openDeleteModal}>삭제하기</button>
@@ -152,7 +143,7 @@ const PostDetail = (props) => {
                     </Stack>
                 </div>
                 <hr />
-                <div>
+                <div className="detail-content">
                     <Box sx={{ fontSize: 20, fontWeight: 'bold', m: 2 }}>라면 사실 분~</Box>
                     <Box sx={{ fontSize: 16, fontWeight: 'bold', m: 2 }}>1,500원</Box>
                     <Box sx={{ fontSize: 16, fontWeight: 'regular', m: 2 }}>새벽이라서 팔아봅니다~</Box>
@@ -161,7 +152,7 @@ const PostDetail = (props) => {
                     <Link to={"/chat"} style={{ textDecoration: "none" }}>
                         <button style={staticBtnStyle} onClick={onChat}>채팅하기</button>
                     </Link>
-                    <button style={staticBtnStyle} onClick={onLift}>끌올하기</button>
+                    <button style={staticBtnStyle} onClick={lift}>끌올하기</button>
                 </Stack>
             </div >
         </div >
