@@ -10,7 +10,7 @@ function App() {
         anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
       >
         <CssBaseline />
-        {/* <Header /> */}
+
         <Box
           sx={{
             display: "flex",
@@ -29,7 +29,6 @@ function App() {
             <Router />
           </Paper>
         </Box>
-        {/* <Footer /> */}
       </SnackbarProvider>
     </ThemeProvider>
   );

@@ -2,6 +2,7 @@ import React from "react";
 import PostList from "../../components/trade/PostList";
 import CardList from "../../components/trade/CardList";
 
+
 function ViewPost(Items) {
 
   return (
@@ -15,7 +16,7 @@ function ViewPost(Items) {
                     interest={Items.interest}
                     chatting={Items.chatting}
                     />
-        </div> 
+        </div>
     </div>
   );
 }
