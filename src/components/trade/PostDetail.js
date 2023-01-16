@@ -30,7 +30,6 @@ const PostDetail = (props) => {
     useEffect(() => {
         getData();
     }, [])
-
     //PATCH 끌어올리기
     async function lift({ expose_at }) {
         try {
