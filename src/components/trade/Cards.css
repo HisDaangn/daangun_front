@@ -96,3 +96,42 @@ img {
   text-align: left;
   background: black;
 }
+
+.detail-container {
+  margin-top: 94px;
+    padding-bottom: 0;
+    position: relative;
+    width: 729px;
+    margin: 0 auto;
+}
+
+.detail-img {
+  width: 100%;
+  position: relative;
+  width: 729px;
+  margin: 0 auto;
+}
+
+.detail-profile {
+  width: 677px;
+  margin: 0 auto;
+  display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.detail-profile-link {
+  text-decoration: none;
+    display: block;
+    margin-top: 25px;
+    padding-bottom: 23px;
+    position: relative;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.detail-content {
+  adding: 32px 0;
+    width: 677px;
+    margin: 0 auto;
+    border-bottom: 1px solid #e9ecef;
+}
