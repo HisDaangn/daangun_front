@@ -1,6 +1,6 @@
-import { Button } from "@mui/material";
 import { Link } from "react-router-dom";
 import './Cards.css';
+import Btn from "../../components/common/layout/Btn";
 
 function PostList(){
     return(
@@ -9,11 +9,10 @@ function PostList(){
             중고거래 인기매물
         </h1>
         <p>
-            <Link to="/addpost">
-            <Button variant="outlined"
-                    className="button-add">
-                    추가하기
-                </Button>{' '}
+            <Link to="/addpost" style={{ textDecoration: "none" , float: "right" }}>
+            <Btn>
+                추가하기
+                </Btn>
             </Link>
         </p>
         </div>
