@@ -12,7 +12,9 @@ import {
     Box,
     Slider,
     Stack,
-    createTheme, ThemeProvider
+    createTheme,
+    ThemeProvider,
+    Modal,
 } from "@mui/material";
 const PostDetail = (props) => {
     const { postID } = useParams();
@@ -20,7 +22,10 @@ const PostDetail = (props) => {
     async function getData() {
         try {
             //응답 성공
-            const response = await axios.get(`http://localhost:8080/trade/${postID}`);
+            const response = await axios.get(`http://localhost:8080/trade/${postID}`)
+                .then(response => {
+                    setValue(response.data);
+                });
             console.log(response);
         } catch (error) {
             //응답 실패
@@ -30,12 +35,13 @@ const PostDetail = (props) => {
     useEffect(() => {
         getData();
     }, [])
+    const [value, setValue] = useState([]);
     //PATCH 끌어올리기
-    async function lift({ expose_at }) {
+    async function lift() {
         try {
             //응답 성공
             const response = await axios.patch(`http://localhost:8080/trade/lift/${postID}`, {
-                expose_at: `${expose_at}`,
+                expose_at: `${value.expose_at}`,
             });
             console.log(response);
             console.log("liftBtn click !");
@@ -121,6 +127,17 @@ const PostDetail = (props) => {
         border: "none",
         marginLeft: "10px",
     }
+    const style = {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: 400,
+        bgcolor: 'background.paper',
+        border: '2px solid #000',
+        boxShadow: 24,
+        p: 4,
+    };
     return (
         <div style={{
             position: "relative",
@@ -138,7 +155,7 @@ const PostDetail = (props) => {
                 <img style={{
                     width: "100%",
                     height: "400px",
-                }} src="https://img.danawa.com/prod_img/500000/489/206/img/10206489_1.jpg?shrink=330:330&_v=20200714161025" alt='img' />
+                }} src="https://www.shutterstock.com/image-photo/korean-spicy-instant-noodles-egg-260nw-1296771487.jpg" alt='img' />
 
                 <div >
                     <Stack direction="row" spacing={5} justifyContent="center">
@@ -146,7 +163,14 @@ const PostDetail = (props) => {
                         <Avatar src="https://cdn-icons-png.flaticon.com/512/1946/1946429.png" />
                         <Box sx={{ fontSize: 16, fontWeight: 'regiar' }}>username <br /> 포항시 흥해읍</Box>
                         <button style={BtnStyle} onClick={openEditModal}>수정하기</button>
-                        <EditModal open={editModalOpen} close={closeEditModal}></EditModal>
+                        <Modal
+                            open={editModalOpen}
+                            onClose={closeEditModal}
+                        >
+                            <Box sx={style}>
+                                <EditModal {...value} />
+                            </Box>
+                        </Modal>
                         <button style={BtnStyle} onClick={openDeleteModal}>삭제하기</button>
                         <DeleteModal open={deleteModalOpen} close={closeDeleteModal} header="Modal heading">
                             게시물이 삭제됩니다!
@@ -159,9 +183,9 @@ const PostDetail = (props) => {
                 </div>
                 <hr />
                 <div>
-                    <Box sx={{ fontSize: 20, fontWeight: 'bold', m: 2 }}>라면 사실 분~</Box>
-                    <Box sx={{ fontSize: 16, fontWeight: 'bold', m: 2 }}>1,500원</Box>
-                    <Box sx={{ fontSize: 16, fontWeight: 'regular', m: 2 }}>새벽이라서 팔아봅니다~</Box>
+                    <Box sx={{ fontSize: 20, fontWeight: 'bold', m: 2 }}>{value.title}</Box>
+                    <Box sx={{ fontSize: 16, fontWeight: 'bold', m: 2 }}>{value.price}원</Box>
+                    <Box sx={{ fontSize: 16, fontWeight: 'regular', m: 2 }}>{value.content}</Box>
                 </div>
                 <Stack direction="row" justifyContent="flex-end">
                     <Link to={"/chat"} style={{ textDecoration: "none" }}>
