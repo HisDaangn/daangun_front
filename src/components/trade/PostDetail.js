@@ -22,17 +22,22 @@ import { useNavigate } from "react-router-dom";
 
 const PostDetail = (props) => {
 	const { postID } = useParams();
+	const [value, setValue] = useState([]);
+	const [writer, setWriter] = useState();
+	const [init, setInit] = useState(false);
 	const [color, setColor] = useState("#1561a9");
 	const [img, setImg] = useState();
-	const [value, setValue] = useState([]);
+	// const [temperature, setTemperature] = useState();
 	const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 	const [editModalOpen, setEditModalOpen] = useState(false);
 	const [chatRoomId, setChatRoomId] = useState("");
 	const navigate = useNavigate();
 
-	useEffect(() => {
-		getData();
-	}, []);
+	const del = async () => {
+		console.log("del 실행");
+		// await deleteData();
+		closeDeleteModal();
+	};
 	useEffect(
 		function () {
 			if (chatRoomId !== "") {
@@ -45,9 +50,13 @@ const PostDetail = (props) => {
 		},
 		[chatRoomId]
 	);
-
+	useEffect(() => {
+		getData();
+	}, []);
+	useEffect(() => {
+		if (init) setWriter(value.writer);
+	}, [init]);
 	const temperature = 36.7;
-
 	useEffect(() => {
 		if (temperature < 36.5) {
 			setColor("bad");
@@ -77,17 +86,17 @@ const PostDetail = (props) => {
 			console.log(e);
 		}
 	}
-
 	//GET 상세 게시글 조회
 	async function getData() {
 		try {
 			//응답 성공
-			const response = await axios
+			await axios
 				.get(`http://localhost:8080/trade/${postID}`)
 				.then((response) => {
 					setValue(response.data);
+					setWriter(response.data.writer);
 				});
-			console.log(response);
+			setInit(true);
 		} catch (error) {
 			//응답 실패
 			console.error(error);
@@ -110,7 +119,21 @@ const PostDetail = (props) => {
 			console.error(error);
 		}
 	}
-
+	//DELETE 삭제하기
+	async function deleteData() {
+		// console.log(id.id);
+		try {
+			//응답 성공
+			const response = await axios.delete(
+				`http://localhost:8080/trade/${postID}`
+			);
+			console.log(response);
+			console.log(postID);
+		} catch (error) {
+			//응답 실패
+			console.error(error);
+		}
+	}
 	// const [temperature, setTemperature] = useState();
 	const theme = createTheme({
 		palette: {
