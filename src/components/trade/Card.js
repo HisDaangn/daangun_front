@@ -9,7 +9,7 @@ function Card({post}) {
 
     return (
       <Box 
-      onClick={( ) => navigate(`/trade/${post.id}`)}
+      onClick={( ) => navigate(`/post/${post.id}`)}
       > 
         <div className="card-link">
         <div className="card-top">
@@ -18,7 +18,7 @@ function Card({post}) {
         <h2 className="card-title">{ post.title }</h2>
         <div className="card-price">{ post.price }</div>
         <div className="card-content">
-          <span>{ post.viewCnt }</span> ∙ <span></span>
+          <span>관심 { post.viewCnt }</span> ∙ <span></span>
         </div>
       </div>
     </div>
