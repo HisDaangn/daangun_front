@@ -4,7 +4,7 @@ import {
     Box, Divider,
 } from "@mui/material";
 import "./DeleteModal.css";
-const DeleteModal = (id) => {
+const DeleteModal = () => {
     return (
         <Box>
             <Box sx={{ fontSize: 20, fontWeight: 'bold', m: 1 }}>

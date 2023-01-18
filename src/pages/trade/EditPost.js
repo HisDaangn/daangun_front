@@ -17,21 +17,21 @@ import {
   Checkbox, FormControlLabel,
 } from "@mui/material";
 const EditPost = (id) => {
-  async function edit() {
-    // console.log(id.id);
-    //응답 성공
-    console.log(id.title);
-    const response = await axios.patch(`http://localhost:8080/trade/lift/${id.id}`, {
-      // photoURL: `${id.photoURL}`,
-      title: `${id.title}`,
-      price: `${id.price}`,
-      content: `${id.content}`,
+  const [title, setTitle] = useState(id.title);
+  const [price, setPrice] = useState(id.price);
+  const [photoURL, setPhotoURL] = useState(id.photoURL);
+  const [content, setContent] = useState(id.content);
+  const edit = async (
+  ) => {
+    const response = await axios.patch(`http://localhost:8080/trade/${id.id}`, {
+      photoURL: `${id.photoURL}`,
+      title: `${title}`,
+      price: `${price}`,
+      content: `${content}`,
     });
+    console.log(id);
     console.log(id.title);
     return response.data;
-  }
-  const onSave = saveBtn => {
-    console.log("saveBtn click !");
   }
   const ariaLabel = { 'aria-label': 'description' };
   const BtnStyle = {
@@ -68,9 +68,9 @@ const EditPost = (id) => {
         <ImageUpload />
       </ThemeProvider>
       <Divider />
-      <Input placeholder="글제목" inputProps={ariaLabel} value={id.title} />
+      <Input placeholder="글제목" inputProps={ariaLabel} defaultValue={title} onChange={(event) => { setTitle(event.target.value) }} />
       <Divider />
-      <Input placeholder="가격" inputProps={ariaLabel} value={id.price} />
+      <Input placeholder="가격" inputProps={ariaLabel} defaultValue={price} onChange={(event) => { setPrice(event.target.value) }} />
       <FormControlLabel className="form_control_label" control={<Checkbox style={{ float: "right" }} defaultChecked />} label="나눔" />
       <Divider />
       <TextField
@@ -79,7 +79,8 @@ const EditPost = (id) => {
         rows={6}
         placeholder="게시글 내용을 작성해주세요. (판매 금지 물품은 게시가 제한될 수 있어요.)"
         variant="standard"
-        value={id.content}
+        defaultValue={content}
+        onChange={(event) => { setContent(event.target.value) }}
       />
       <button style={BtnStyle} onClick={edit}>
         저장하기
