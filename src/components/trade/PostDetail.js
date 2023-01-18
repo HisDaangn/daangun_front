@@ -7,6 +7,8 @@ import bad from "./img/bad.png";
 import good from "./img/good.png";
 import verygood from "./img/verygood.png";
 import excellent from "./img/excellent.png";
+// import GaugeBar from "./../common/layout/GaugeBar";
+import "./PostDetail.css";
 
 import "./Cards.css";
 import {
@@ -60,22 +62,40 @@ const PostDetail = (props) => {
     useEffect(() => {
         if (init) setWriter(value.writer);
     }, [init]);
-    const temperature = 36.7;
     useEffect(() => {
-        if (temperature < 36.5) {
-            setColor("bad");
-            setImg(bad);
-        } else if (temperature < 40) {
-            setColor("#319e45");
-            setImg(good);
-        } else if (temperature < 50) {
-            setColor("#df9100");
-            setImg(verygood);
-        } else {
-            setColor("#de5d06");
-            setImg(excellent);
+        if (init) {
+            if (writer.temperature < 36.5) {
+                setColor("black");
+                setImg(bad);
+            } else if (writer.temperature < 40) {
+                setColor("#1561a9");
+                setImg(good);
+            } else if (writer.temperature < 50) {
+                setColor("#df9100");
+                setImg(verygood);
+            } else {
+                setColor("#de5d06");
+                setImg(excellent);
+            }
         }
-    }, [temperature]);
+
+    }, [init]);
+    const theme = createTheme({
+        palette: {
+            bad: {
+                main: '#1561a9',
+            },
+            good: {
+                main: '#319e45',
+            },
+            verygood: {
+                main: '#df9100',
+            },
+            excelent: {
+                main: '#de5d06',
+            },
+        },
+    });
     useEffect(() => {
         if (init) {
             const gId = JSON.parse(localStorage.getItem("sessionInfo")).id;
@@ -90,7 +110,7 @@ const PostDetail = (props) => {
                 else setLoginChat(true);
             }
             console.log("gId: " + gId);
-            console.log("writer.postID: " + writer.id);
+            console.log("writer.id: " + writer.id);
         }
     }, [init])
     useEffect(
@@ -105,7 +125,6 @@ const PostDetail = (props) => {
         },
         [chatRoomId]
     );
-    // POST
     // POST
     async function moveToChatRoom() {
         try {
@@ -168,23 +187,6 @@ const PostDetail = (props) => {
             console.error(error);
         }
     }
-    // const [temperature, setTemperature] = useState();
-    const theme = createTheme({
-        palette: {
-            bad: {
-                main: "#1561a9",
-            },
-            good: {
-                main: "#319e45",
-            },
-            verygood: {
-                main: "#df9100",
-            },
-            excelent: {
-                main: "#de5d06",
-            },
-        },
-    });
     async function moveToChatRoom() {
         try {
             const response = await axios.post(`http://localhost:8080/chat/add`, {
@@ -317,7 +319,7 @@ const PostDetail = (props) => {
                     position: "absolute",
                     left: "50%",
                     top: "50%",
-                    width: "60%",
+                    width: "50%",
                     height: "70%",
                     transform: "translate(-50%, -50%)",
                 }}
@@ -327,10 +329,10 @@ const PostDetail = (props) => {
                         width: "100%",
                         height: "400px",
                     }}
-                    src={postID.photoURL}
+                    src={value.photoURL}
                     alt="img"
                 />
-
+                <br />
                 <div>
                     <Stack direction="row" spacing={5} justifyContent="center">
                         <Avatar />
@@ -348,7 +350,8 @@ const PostDetail = (props) => {
                                 {init ? writer.address : "address"}
                             </div>
                         </span>
-                        {loginmy ? <div><button style={BtnStyle} onClick={openEditModal}>수정하기</button>
+                        {loginmy ? <div>
+                            <button style={BtnStyle} onClick={openEditModal}>수정하기</button>
                             <Modal
                                 open={editModalOpen}
                                 onClose={closeEditModal}
@@ -375,7 +378,35 @@ const PostDetail = (props) => {
                             </Modal> </div> : <></>}
 
                         <ThemeProvider theme={theme}>
-                            <Slider color='good' sx={{ width: "150px" }} value={init ? writer.temperature : 36.5} valueLabelDisplay="on" aria-label="Default" />
+                            <Slider color='good' sx={{
+                                width: "150px",
+                                '& .MuiSlider-thumb': {
+                                    boxShadow: "none",
+                                    width: "0px",
+                                    height: "0px",
+                                },
+                                '.MuiSlider-track': {
+                                    color: { color },
+                                },
+                                '.MuiSlider-rail': {
+                                    color: '#A9A9A9',
+                                },
+                                '& .MuiSlider-valueLabel': {
+                                    fontSize: 12,
+                                    fontWeight: 'normal',
+                                    top: -6,
+                                    backgroundColor: 'unset',
+                                    color: theme.palette.text.primary,
+                                    '&:before': {
+                                        display: 'none',
+                                    },
+                                    '& *': {
+                                        background: 'transparent',
+                                        color: theme.palette.mode === 'dark' ? '#fff' : '#000',
+                                    },
+                                },
+
+                            }} value={init ? writer.temperature : 36.5} />
                         </ThemeProvider>
                         <Avatar alt="img" src={img} />
                     </Stack>
@@ -383,9 +414,7 @@ const PostDetail = (props) => {
                 <hr />
                 <div>
                     <Box sx={{ fontSize: 25, fontWeight: 'regular', m: 2 }}>{value.title}</Box>
-                    {/* <Divider /> */}
                     <Box sx={{ fontSize: 18, fontWeight: 'bold', m: 2 }}>{value.price} 원</Box>
-                    {/* <Divider /> */}
                     <Box sx={{ fontSize: 16, fontWeight: 'regular', m: 2 }}>{value.content}</Box>
 
                 </div >
