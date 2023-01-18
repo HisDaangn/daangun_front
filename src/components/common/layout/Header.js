@@ -12,6 +12,13 @@ import CloseIcon from "@mui/icons-material/Close";
 import "./Header.css";
 import GoogleButton from "./GoogleButton";
 
+window.onload = function () {
+  console.log(
+    "Hello",
+    JSON.parse(localStorage.getItem("sessionInfo")).e_address
+  );
+};
+
 const StyledToolbar = styled(Toolbar)({
   display: "flex",
   justifyContent: "space-evenly",
@@ -185,8 +192,8 @@ export default function Header() {
                   onClick={() => {
                     let isLogout = window.confirm("로그아웃 하시려구요?");
                     if (isLogout) {
-                      localStorage.clear();
-                      window.location.reload();
+                      window.location.href = "/home";
+                      localStorage.removeItem("sessionInfo");
                     }
                   }}
                   style={{ textDecoration: "none" }}
