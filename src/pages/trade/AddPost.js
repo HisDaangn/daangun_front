@@ -19,14 +19,25 @@ import {
 import { Api } from '@mui/icons-material';
 
 
-const AddPost = (props) => {
+const AddPost = ({onclose}) => {
+
+  const [user, setUser] = useState();
+  const [userInit, setUserInit] = useState(false);
+  const [photoURL, setPhotoURL] = useState("www.google.com");
+  const [title, setTitle] = useState("");
+  const [price, setPrice] = useState();
+  const [content, setContent] = useState("");
+  const [view, setView] = useState(0);
+  useEffect(()=>{
+    setUser(JSON.parse(localStorage.getItem("sessionInfo")));
+  }, [])
   
-  const user = JSON.parse(localStorage.getItem("sessionInfo"))
-
+  
   const navigate = useNavigate();
+ 
 
-  const addItem = async (photoURL, title, price, content) => {
-    const adding = await axios.post(
+  const addItem = async () => {
+    await axios.post(
       `http://localhost:8080/trade/add`,
       {
         writerId: `${user.id}`,
@@ -34,10 +45,11 @@ const AddPost = (props) => {
         title: `${title}`,
         price: `${price}`,
         content: `${content}`,
-        viewCnt: "0",
-      },
+        viewCnt: `${view}`,
+      }
     );
-    return adding.data;
+    onclose();
+    
   };
 
   // const addSubmit = useCallback(async () => {
@@ -52,7 +64,6 @@ const AddPost = (props) => {
   //   }
   // })
 
-  const { open, close } = props;
 
   const ariaLabel = { 'aria-label': 'description' };
 
@@ -96,9 +107,9 @@ const AddPost = (props) => {
       <ImageUpload />
     </ThemeProvider>
     <Divider />
-    <Input placeholder="글제목" inputProps={ariaLabel} value= {addItem.title}/>
+    <Input placeholder="글제목" inputProps={ariaLabel} onChange={(event)=>setTitle(event.target.value)} />
     <Divider />
-    <Input placeholder="가격" inputProps={ariaLabel} value={addItem.price}/>
+    <Input placeholder="가격" inputProps={ariaLabel} onChange={(event)=>setPrice(event.target.value)}/>
     <FormControlLabel className="form_control_label" control={<Checkbox defaultChecked />} label="나눔" />
     <Divider />
     <TextField
@@ -107,7 +118,8 @@ const AddPost = (props) => {
       rows={6}
       placeholder="게시글 내용을 작성해주세요. (판매 금지 물품은 게시가 제한될 수 있어요.)"
       variant="standard"
-      value = {addItem.content}
+      onChange={(event)=>setContent(event.target.value)}
+      // value = {addItem.content}
     />
     <button style={BtnStyle} onClick={addItem}>
       저장하기
