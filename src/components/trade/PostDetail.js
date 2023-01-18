@@ -7,7 +7,7 @@ import bad from "./img/bad.png";
 import good from "./img/good.png";
 import verygood from "./img/verygood.png";
 import excellent from "./img/excellent.png";
-import GaugeBar from "./../common/layout/GaugeBar";
+// import GaugeBar from "./../common/layout/GaugeBar";
 import "./PostDetail.css";
 
 import "./Cards.css";
@@ -62,22 +62,40 @@ const PostDetail = (props) => {
     useEffect(() => {
         if (init) setWriter(value.writer);
     }, [init]);
-    const temperature = 36.7;
     useEffect(() => {
-        if (temperature < 36.5) {
-            setColor("bad");
-            setImg(bad);
-        } else if (temperature < 40) {
-            setColor("#319e45");
-            setImg(good);
-        } else if (temperature < 50) {
-            setColor("#df9100");
-            setImg(verygood);
-        } else {
-            setColor("#de5d06");
-            setImg(excellent);
+        if (init) {
+            if (writer.temperature < 36.5) {
+                setColor("black");
+                setImg(bad);
+            } else if (writer.temperature < 40) {
+                setColor("#1561a9");
+                setImg(good);
+            } else if (writer.temperature < 50) {
+                setColor("#df9100");
+                setImg(verygood);
+            } else {
+                setColor("#de5d06");
+                setImg(excellent);
+            }
         }
-    }, [temperature]);
+
+    }, [init]);
+    const theme = createTheme({
+        palette: {
+            bad: {
+                main: '#1561a9',
+            },
+            good: {
+                main: '#319e45',
+            },
+            verygood: {
+                main: '#df9100',
+            },
+            excelent: {
+                main: '#de5d06',
+            },
+        },
+    });
     useEffect(() => {
         if (init) {
             const gId = JSON.parse(localStorage.getItem("sessionInfo")).id;
@@ -107,7 +125,6 @@ const PostDetail = (props) => {
         },
         [chatRoomId]
     );
-    // POST
     // POST
     async function moveToChatRoom() {
         try {
@@ -170,23 +187,6 @@ const PostDetail = (props) => {
             console.error(error);
         }
     }
-    // const [temperature, setTemperature] = useState();
-    const theme = createTheme({
-        palette: {
-            bad: {
-                main: "#1561a9",
-            },
-            good: {
-                main: "#319e45",
-            },
-            verygood: {
-                main: "#df9100",
-            },
-            excelent: {
-                main: "#de5d06",
-            },
-        },
-    });
     async function moveToChatRoom() {
         try {
             const response = await axios.post(`http://localhost:8080/chat/add`, {
@@ -332,7 +332,7 @@ const PostDetail = (props) => {
                     src={value.photoURL}
                     alt="img"
                 />
-
+                <br />
                 <div>
                     <Stack direction="row" spacing={5} justifyContent="center">
                         <Avatar />
@@ -378,8 +378,35 @@ const PostDetail = (props) => {
                             </Modal> </div> : <></>}
 
                         <ThemeProvider theme={theme}>
-                            <Slider color='good' sx={{ width: "150px" }} value={init ? writer.temperature : 36.5} />
-                            {/* <div>{writer.temperature}</div> */}
+                            <Slider color='good' sx={{
+                                width: "150px",
+                                '& .MuiSlider-thumb': {
+                                    boxShadow: "none",
+                                    width: "0px",
+                                    height: "0px",
+                                },
+                                '.MuiSlider-track': {
+                                    color: { color },
+                                },
+                                '.MuiSlider-rail': {
+                                    color: '#A9A9A9',
+                                },
+                                '& .MuiSlider-valueLabel': {
+                                    fontSize: 12,
+                                    fontWeight: 'normal',
+                                    top: -6,
+                                    backgroundColor: 'unset',
+                                    color: theme.palette.text.primary,
+                                    '&:before': {
+                                        display: 'none',
+                                    },
+                                    '& *': {
+                                        background: 'transparent',
+                                        color: theme.palette.mode === 'dark' ? '#fff' : '#000',
+                                    },
+                                },
+
+                            }} value={init ? writer.temperature : 36.5} />
                         </ThemeProvider>
                         <Avatar alt="img" src={img} />
                     </Stack>
