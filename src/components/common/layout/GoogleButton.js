@@ -1,42 +1,18 @@
-import GoogleLogin from "react-google-login";
+import { GoogleLogin } from "@react-oauth/google";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 import { useEffect, useState } from "react";
-import { gapi } from "gapi-script";
 import { Avatar, Button, Modal, TextField } from "@mui/material";
 import { Box } from "@mui/system";
+import axios from "axios";
+import jwt_decode from "jwt-decode";
 
 const clientId =
-  "163308438198-73f01cdp6rr2ivoeil8ri35nh87a5jfg.apps.googleusercontent.com";
+  "122497781005-52p7dqhbjak9fp8o4akg033jl78tjk4a.apps.googleusercontent.com";
+
+let localstorage = window.localStorage;
 
 function GoogleButton() {
-  useEffect(() => {
-    function start() {
-      gapi.client.init({
-        clientId,
-        scope: "",
-      });
-    }
-
-    gapi.load("client:auth2", start);
-  });
-
-  const onSuccess = (res) => {
-    console.log("Login Success :", res);
-    const userId = res.wt.cu;
-    console.log("id: ", res.wt.cu);
-    if (userId === "22001024@handong.ac.kr") {
-      alert("환영합니다"); // 임시
-    } else {
-      if (window.confirm("회원 등록이 필요합니다. 회원가입 하시겠습니까?")) {
-        setOpen("true");
-      } else {
-        alert("회원가입을 취소하셨습니다.");
-      }
-    }
-  };
-  const onFailure = (res) => {
-    console.log("Login Failed : ", res);
-  };
-
+  // 스타일
   const style = {
     position: "absolute",
     top: "50%",
@@ -48,16 +24,78 @@ function GoogleButton() {
     bgcolor: "white",
     boxShadow: 24,
   };
+
+  let EMAIL = "";
+  let GID = "";
+  // 구글 버튼 관련 함수
+  const onSuccess = async (res) => {
+    let userObject = jwt_decode(res.credential);
+
+    const GIDfromUser = userObject.sub;
+    const db = await getUser(GIDfromUser);
+    const GIDfromDB = db.googleId;
+
+    localstorage.setItem("sessionInfo", JSON.stringify(db));
+
+    if (GIDfromDB === undefined) {
+      let youWant = window.confirm("회원정보가 없음. 회원가입 하실?");
+      if (youWant) {
+        EMAIL = userObject.email;
+        GID = userObject.sub;
+        //signup
+        //res -> session
+      } else {
+        alert("회원가입을 안하다니");
+        window.history.go(0);
+      }
+
+      //회원가입 모달창 띄우기
+      setOpen(true);
+    } else {
+      alert("회원이시네용");
+      window.location.reload();
+    }
+  };
+
+  const onFailure = (res) => {
+    console.log("Login Failed : ", res);
+  };
+
+  // 추가 정보 입력
+  const onChangeValue = (e) => {
+    setExtra({
+      ...extra,
+      [e.target.name]: e.target.value,
+    });
+    console.log("[onChangeValue] ", extra);
+  };
+
+  const submit = () => {
+    console.log("final : ", userInfo);
+  };
+
+  const [userInfo, setUserInfo] = useState({
+    e_address: "",
+    name: "",
+    temperature: "",
+    googleId: "",
+    address: "",
+  });
+
+  const [extra, setExtra] = useState({
+    extraName: "",
+    extraAddress: "",
+  });
+
+  useEffect(() => {
+    console.log("Hello");
+  }, [userInfo]);
+
   const [open, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
   return (
-    <div>
-      <GoogleLogin
-        clientId={clientId}
-        buttonText="Login"
-        onSuccess={onSuccess}
-        onFailure={onFailure}
-      />
+    <GoogleOAuthProvider clientId={clientId}>
+      <GoogleLogin onSuccess={onSuccess} onFailure={onFailure} />
       <div>
         <Modal
           open={open}
@@ -79,16 +117,18 @@ function GoogleButton() {
                 sx={{ width: "140px", height: "140px", marginBottom: "30px" }}
               ></Avatar>
               <TextField
-                id="outlined-basic"
+                name="extraName"
                 label="별명을 입력해주세요"
                 variant="outlined"
                 style={{ width: "100%", margin: "10px auto" }}
+                onChange={onChangeValue}
               />
               <TextField
-                id="outlined-basic"
+                name="extraAddress"
                 label="사는 지역을 입력해주세요"
                 variant="outlined"
                 style={{ width: "100%", margin: "10px auto" }}
+                onChange={onChangeValue}
               />
             </Box>
 
@@ -106,14 +146,34 @@ function GoogleButton() {
                   backgroundColor: "#ff6f0f",
                 },
               }}
+              onClick={submit}
             >
               완료
             </Button>
           </Box>
         </Modal>
       </div>
-    </div>
+    </GoogleOAuthProvider>
   );
 }
 
 export default GoogleButton;
+
+export const signup = async (e_address, name, googleId, address) => {
+  const ret = await axios.post(`http://localhost:8080/user/signup`, {
+    e_address: `{e_address}`,
+    name: `{name}`,
+    temperature: `36.5`,
+    googleI: `{googleI}`,
+    address: `{address}`,
+  });
+  return ret.data;
+};
+
+export const getUser = async (googleId) => {
+  const response = await axios.get(
+    `http://localhost:8080/user/getUser/${googleId}`
+  );
+  console.log(response.data);
+  return response.data;
+};

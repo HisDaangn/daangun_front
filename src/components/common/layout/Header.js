@@ -6,12 +6,11 @@ import Logo from "../../../assets/HomeLogo.png";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import { NavLink } from "react-router-dom";
 import Btn from "./Btn.js";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import "./Header.css";
 import GoogleButton from "./GoogleButton";
-import axios from "axios";
 
 const StyledToolbar = styled(Toolbar)({
   display: "flex",
@@ -106,7 +105,16 @@ const CusNavLink = styled(NavLink)({
 
 export default function Header() {
   const [isOpen, setOpen] = useState(true);
+  const [sessionInfo, setSessionInfo] = useState(
+    JSON.parse(localStorage.getItem("sessionInfo"))
+  );
+  const [isLogin, setIsLogin] = useState(false);
 
+  useEffect(() => {
+    if (JSON.parse(localStorage.getItem("sessionInfo")) !== null) {
+      setIsLogin(true);
+    }
+  }, []);
   return (
     <>
       <AppBar
@@ -141,8 +149,8 @@ export default function Header() {
             <CusNavLink to={"/tradeboard"}>
               <Typo>매물추가</Typo>
             </CusNavLink>
-            <CusNavLink to={"/editpost"}>
-              <Typo>동네설정</Typo>
+            <CusNavLink to={"/chat"}>
+              <Typo>채팅하기</Typo>
             </CusNavLink>
           </Nstack>
 
@@ -166,27 +174,43 @@ export default function Header() {
                 }}
               />
             </Search>
-            <SearchIcon className="nav_search" />
-            {/* <NavLink to={"/chat"} style={{ textDecoration: "none" }}>
-              <Btn>채팅하기</Btn>
-            </NavLink>
-            <NavLink to={"/mypage"} style={{ textDecoration: "none" }}>
-              <Btn>마이페이지</Btn>
-            </NavLink> */}
 
-            <NavLink
-              style={{ textDecoration: "none" }}
-              onClick={() => {
-                const gBtn = document.getElementById("gBtn");
-                gBtn.childNodes[0].firstChild.click();
-              }}
-            >
-              <Btn>로그인</Btn>
-            </NavLink>
+            {isLogin ? (
+              <>
+                <SearchIcon className="nav_search" />
+                <NavLink to={"/mypage"} style={{ textDecoration: "none" }}>
+                  <Btn>마이페이지</Btn>
+                </NavLink>
+                <NavLink
+                  onClick={() => {
+                    let isLogout = window.confirm("로그아웃 하시려구요?");
+                    if (isLogout) {
+                      localStorage.clear();
+                      window.location.reload();
+                    }
+                  }}
+                  style={{ textDecoration: "none" }}
+                >
+                  <Btn>로그아웃</Btn>
+                </NavLink>
+              </>
+            ) : (
+              <>
+                <NavLink
+                  style={{ textDecoration: "none" }}
+                  onClick={() => {
+                    const gBtn = document.getElementById("gBtn");
+                    gBtn.firstChild.firstChild.firstChild.firstChild.click();
+                  }}
+                >
+                  <Btn>로그인</Btn>
+                </NavLink>
 
-            <Box display={"none"} id="gBtn">
-              <GoogleButton />
-            </Box>
+                <Box display={"none"} id="gBtn">
+                  <GoogleButton />
+                </Box>
+              </>
+            )}
 
             <Box>
               {isOpen ? (
@@ -214,26 +238,3 @@ export default function Header() {
     </>
   );
 }
-
-export const signup = async (e_address, name, googleId, address) => {
-  const ret = await axios.post(`localhost:8080/user/signup`, {
-    e_address: `{e_address}`,
-    name: `{name}`,
-    temperature: `36.5`,
-    googldId: `{googldId}`,
-    address: `{address}`,
-  });
-  return ret.data;
-};
-
-export const getUser = async (googleId) => {
-  const response = await axios.get(`localhost:8080/user/getUser/${googleId}`, {
-    e_address: `{e_address}`,
-    name: `{name}`,
-    created_at: `{created_at}`,
-    temperature: `36.5`,
-    googldId: `{googldId}`,
-    address: `{address}`,
-  });
-  return response.data;
-};
