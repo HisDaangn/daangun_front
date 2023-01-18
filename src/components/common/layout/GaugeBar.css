@@ -1,3 +1,7 @@
+:root {
+  --my-var: 36.5%;
+}
+
 .progress {
   margin: 0 auto;
   background: Rgb(217, 217, 217);
@@ -12,7 +16,6 @@
 
 .progress-value {
   animation: load 1s normal forwards;
-  /* box-shadow: 0 10px 40px -10px rgb(171, 40, 40); */
   border-radius: 100px;
   background: #76c545;
   height: 10px;
@@ -24,6 +27,6 @@
     width: 0;
   }
   100% {
-    width: 38.1%;
+    width: var(--my-var) "%";
   }
 }
