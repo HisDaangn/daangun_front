@@ -138,7 +138,7 @@ export default function Header() {
               />
             </NavLink>
             {/* color: "#ff6f0f" */}
-            <CusNavLink to={"/home"}>
+            <CusNavLink to={"/post"}>
               <Typo>중고거래</Typo>
             </CusNavLink>
 
