@@ -19,25 +19,30 @@ import {
     Modal,
 } from "@mui/material";
 const PostDetail = (props) => {
+    const [value, setValue] = useState([]);
+    const [writer, setWriter] = useState();
+    const [init, setInit] = useState(false);
+    const [color, setColor] = useState("#1561a9");
+    const [img, setImg] = useState();
+    // const [temperature, setTemperature] = useState();
+    const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+    const [editModalOpen, setEditModalOpen] = useState(false);
     const { postID } = useParams();
     //GET 상세 게시글 조회
     async function getData() {
         try {
             //응답 성공
-            const response = await axios.get(`http://localhost:8080/trade/${postID}`)
-                .then(response => {
+            await axios.get(`http://localhost:8080/trade/${postID}`)
+                .then((response) => {
                     setValue(response.data);
+                    setWriter(response.data.writer);
                 });
-            console.log(response);
+            setInit(true);
         } catch (error) {
             //응답 실패
             console.error(error);
         }
     }
-    useEffect(() => {
-        getData();
-    }, [])
-    const [value, setValue] = useState([]);
     //PATCH 끌어올리기
     async function lift() {
         try {
@@ -53,9 +58,48 @@ const PostDetail = (props) => {
             console.error(error);
         }
     }
-    const temperature = 36.7;
+    //DELETE 삭제하기
+    async function deleteData() {
+        // console.log(id.id);
+        try {
+            //응답 성공
+            const response = await axios.delete(`http://localhost:8080/trade/${postID}`);
+            console.log(response);
+            console.log(postID);
+        } catch (error) {
+            //응답 실패
+            console.error(error);
+        }
+    }
+    const del = async () => {
+        console.log("del 실행");
+        // await deleteData();
+        closeDeleteModal();
+    };
+    useEffect(() => {
+        getData();
+    }, [])
+    useEffect(() => {
+        if (init) setWriter(value.writer)
+    }, [init])
+    useEffect(() => {
+        if (init) {
+            if (writer.temperature < 36.5) {
+                setColor("bad");
+                setImg(bad);
+            } else if (writer.temperature < 40) {
+                setColor("#319e45");
+                setImg(good);
+            } else if (writer.temperature < 50) {
+                setColor("#df9100");
+                setImg(verygood);
+            } else {
+                setColor("#de5d06");
+                setImg(excellent);
+            }
+        }
 
-    // const [temperature, setTemperature] = useState();
+    }, [init]);
     const theme = createTheme({
         palette: {
             bad: {
@@ -72,24 +116,6 @@ const PostDetail = (props) => {
             },
         },
     });
-    const [color, setColor] = useState("#1561a9");
-    const [img, setImg] = useState();
-    useEffect(() => {
-        if (temperature < 36.5) {
-            setColor("bad");
-            setImg(bad);
-        } else if (temperature < 40) {
-            setColor("#319e45");
-            setImg(good);
-        } else if (temperature < 50) {
-            setColor("#df9100");
-            setImg(verygood);
-        } else {
-            setColor("#de5d06");
-            setImg(excellent);
-        }
-    }, [temperature]);
-    const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 
     const openDeleteModal = () => {
         setDeleteModalOpen(true);
@@ -97,7 +123,7 @@ const PostDetail = (props) => {
     const closeDeleteModal = () => {
         setDeleteModalOpen(false);
     };
-    const [editModalOpen, setEditModalOpen] = useState(false);
+
 
     const openEditModal = () => {
         setEditModalOpen(true);
@@ -107,9 +133,6 @@ const PostDetail = (props) => {
     };
     const onChat = chatBtn => {
         console.log("chatBtn click !");
-    }
-    const onLift = liftBtn => {
-        console.log("liftBtn click !");
     }
     const BtnStyle = {
         border: "1px solid #d1d3d8",
@@ -128,6 +151,18 @@ const PostDetail = (props) => {
         height: "30px",
         border: "none",
         marginLeft: "10px",
+    }
+    const delBtn = {
+        color: "white",
+        backgroundColor: "#ed7833",
+        borderRadius: "3px",
+        fontWeight: "bold",
+        fontSize: "10px",
+        width: "80px",
+        height: "30px",
+        marginLeft: "10px",
+        border: "none",
+        float: "right",
     }
     const style = {
         position: 'absolute',
@@ -158,28 +193,38 @@ const PostDetail = (props) => {
                     width: "100%",
                     height: "400px",
                 }} src="https://www.shutterstock.com/image-photo/korean-spicy-instant-noodles-egg-260nw-1296771487.jpg" alt='img' />
-
                 <div >
 
                     <Stack direction="row" spacing={5} justifyContent="center">
-
                         <Avatar src="https://cdn-icons-png.flaticon.com/512/1946/1946429.png" />
-                        <Box sx={{ fontSize: 20, fontWeight: 'regiar' }}>username</Box>
+                        <Box sx={{ fontSize: 20, fontWeight: 'regiar' }}>{init ? writer.name : "username"}</Box>
                         <button style={BtnStyle} onClick={openEditModal}>수정하기</button>
                         <Modal
                             open={editModalOpen}
                             onClose={closeEditModal}
                         >
                             <Box sx={style}>
-                                <EditModal {...value} />
+                                <EditModal id={postID} photoURL={value.photoURL} title={value.title} price={value.price} content={value.content} />
                             </Box>
                         </Modal>
                         <button style={BtnStyle} onClick={openDeleteModal}>삭제하기</button>
-                        <DeleteModal open={deleteModalOpen} close={closeDeleteModal} header="Modal heading">
-                            게시물이 삭제됩니다!
-                        </DeleteModal>
+                        <Modal
+                            open={deleteModalOpen}
+                            onClose={closeDeleteModal}
+                        >
+                            <Box sx={style}>
+                                <DeleteModal />
+                                <br />
+                                <button style={delBtn} onClick={del}>
+                                    확인
+                                </button>
+                                <button style={delBtn} onClick={closeDeleteModal}>
+                                    취소
+                                </button>
+                            </Box>
+                        </Modal>
                         <ThemeProvider theme={theme}>
-                            <Slider color='good' sx={{ width: "150px" }} value={temperature} aria-label="Default" valueLabelDisplay="auto" />
+                            <Slider color='good' sx={{ width: "150px" }} value={init ? writer.temperature : 36.5} aria-label="Default" valueLabelDisplay="auto" />
                         </ThemeProvider>
                         <Avatar alt="img" src={img} />
                     </Stack>
@@ -187,7 +232,7 @@ const PostDetail = (props) => {
                 <hr />
                 <div>
                     <Box sx={{ fontSize: 20, fontWeight: 'bold', m: 2 }}>{value.title}</Box>
-                    <Box sx={{ fontSize: 16, fontWeight: 'bold', m: 2 }}>{value.price}원</Box>
+                    <Box sx={{ fontSize: 16, fontWeight: 'bold', m: 2 }}>{value.price} 원</Box>
                     <Box sx={{ fontSize: 16, fontWeight: 'regular', m: 2 }}>{value.content}</Box>
 
                 </div>

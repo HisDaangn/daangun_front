@@ -6,13 +6,37 @@ import { ListItemButton } from "@mui/material";
 import { ListItem } from "@mui/material";
 import { Box } from "@mui/material";
 import { Grid } from "@mui/material";
+import axios from "axios";
+import { useState } from "react";
 import ChatMenu from "./chatMenu";
 import MainMessage from "./mainMessage";
-import Message from "./mainMessage";
 import tempData from "./tempData";
 
-function ExistRoom({ id }) {
+function ExistRoom({ roomId }) {
 	const data = tempData;
+	const [pubName, setPubName] = useState("");
+	const [photoURL, setPhotoURL] = useState("");
+	const [title, setTitle] = useState("");
+	const [price, setPrice] = useState(0);
+
+	// GET
+	async function getChatRoom() {
+		try {
+			const response = await axios.get(
+				`http://localhost:8080/chat/room/${roomId}`
+			);
+			console.log(response);
+			setPubName(response.data.pubName);
+			setPhotoURL(response.data.post.photoURL);
+			setTitle(response.post.title);
+			setPrice(response.post.price);
+		} catch (e) {
+			console.log(e);
+		}
+	}
+
+	getChatRoom();
+
 	return (
 		<Grid
 			container
@@ -37,10 +61,7 @@ function ExistRoom({ id }) {
 							sx={{ width: 40, height: 40 }}
 						></Avatar>
 					</ListItemAvatar>
-					<ListItemText
-						primary={data[id].chatUser}
-						sx={{ fontWeight: "bold" }}
-					/>
+					<ListItemText primary={pubName} sx={{ fontWeight: "bold" }} />
 					<ChatMenu />
 				</ListItem>
 				<ListItemButton
@@ -51,7 +72,7 @@ function ExistRoom({ id }) {
 				>
 					<Box
 						component={"img"}
-						src={data[id].itemImg}
+						src={photoURL}
 						width={"40px"}
 						// height={"684px"}
 					/>
@@ -60,8 +81,8 @@ function ExistRoom({ id }) {
 						sx={{
 							paddingLeft: 2,
 						}}
-						primary="상품명"
-						secondary="100,000원"
+						primary={title}
+						secondary={price}
 						style={{
 							color: "black",
 						}}
@@ -69,7 +90,9 @@ function ExistRoom({ id }) {
 					<div style={{ fontWeight: "bold", paddingRight: 2 }}>거래 현황</div>
 				</ListItemButton>
 			</List>
-			<MainMessage data={data[id]} />
+			<Box>
+				<MainMessage messages={null} profileImg={null} pubName={pubName} />
+			</Box>
 		</Grid>
 	);
 }
