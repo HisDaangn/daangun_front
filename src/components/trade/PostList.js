@@ -11,12 +11,14 @@ import {
     ThemeProvider,
     Modal,
 } from "@mui/material";
+import { PropaneSharp } from '@mui/icons-material';
 
 function PostList(){
 
+    
     const [title, setTitle] = useState();
     const [price, setPrice] = useState();
-    const [photoURL, setPhotoURL] = useState();
+    const [photoURL, setPhotoURL] = useState("www.google.com");
     const [content, setContent] = useState();
 
     const [addModalOpen, setAddModalOpen] = useState(false);
@@ -59,7 +61,13 @@ function PostList(){
                     onClose={closeAddModal}
                         >
                             <Box sx={style}>
-                                <AddPost />
+                                <AddPost
+                                    onclose = {closeAddModal}
+                                // photoURL = {value.photoURL}
+                                // title = {value.title}
+                                // price = {value.price}
+                                // content = {value.content} 
+                                />
                             </Box>
                         </Modal>
             </Box>
