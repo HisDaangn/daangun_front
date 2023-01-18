@@ -11,9 +11,7 @@ const DeleteModal = (id) => {
                 게시물이 삭제됩니다!
             </Box>
             <Divider />
-
         </Box>
-
     );
 };
 export default DeleteModal;
