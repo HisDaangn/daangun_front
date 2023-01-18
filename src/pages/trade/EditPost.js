@@ -3,7 +3,6 @@ import "./EditModal.css";
 import AWS from 'aws-sdk';
 import { Row, Col } from 'reactstrap';
 import axios from 'axios';
-
 import {
   Box,
   createTheme,
@@ -13,6 +12,7 @@ import {
   Input,
   Checkbox, FormControlLabel,
 } from "@mui/material";
+
 const EditPost = (id) => {
   const [title, setTitle] = useState(id.title);
   const [price, setPrice] = useState(id.price);
