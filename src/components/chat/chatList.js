@@ -19,6 +19,8 @@ function ChatList({ roomId, userId }) {
 	// tempData 가져오기
 	const chatLists = tempData;
 	const [chatList, setChatList] = useState([]);
+	const userDB = JSON.parse(localStorage.getItem("sessionInfo"));
+
 	useEffect(function async() {
 		getAllChatRoom();
 	}, []);
@@ -26,10 +28,11 @@ function ChatList({ roomId, userId }) {
 	// GET
 	async function getAllChatRoom() {
 		try {
-			userId = 1;
+			userId = userDB.id;
 			const response = await axios.get(
 				`http://localhost:8080/chat/user/${userId}`
 			);
+			// console.log(response);
 			setChatList(response.data);
 			// console.log(response);
 		} catch (e) {
@@ -88,7 +91,7 @@ function ChatList({ roomId, userId }) {
 								padding: 2,
 							}}
 						>
-							<ListItemText primary={userId} sx={{ fontWeight: "bold" }} />
+							<ListItemText primary={userDB.name} sx={{ fontWeight: "bold" }} />
 						</ListItem>
 						<ListItem
 							sx={{
