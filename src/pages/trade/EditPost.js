@@ -3,7 +3,6 @@ import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import "./EditModal.css";
 import ImageUpload from '../../components/trade/ImageUpload';
 import axios from 'axios';
-
 import {
   Box,
   createTheme,
@@ -14,6 +13,7 @@ import {
   Input,
   Checkbox, FormControlLabel,
 } from "@mui/material";
+
 const EditPost = (id) => {
   const [title, setTitle] = useState(id.title);
   const [price, setPrice] = useState(id.price);
