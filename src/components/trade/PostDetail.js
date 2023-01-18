@@ -32,6 +32,7 @@ const PostDetail = (props) => {
 	const [editModalOpen, setEditModalOpen] = useState(false);
 	const [chatRoomId, setChatRoomId] = useState("");
 	const navigate = useNavigate();
+	const userDB = JSON.parse(localStorage.getItem("sessionInfo"));
 
 	const del = async () => {
 		console.log("del 실행");
@@ -76,8 +77,8 @@ const PostDetail = (props) => {
 	async function moveToChatRoom() {
 		try {
 			const response = await axios.post(`http://localhost:8080/chat/add`, {
-				pubId: 5,
-				subId: 1,
+				pubId: writer.id,
+				subId: userDB.id,
 				postId: postID,
 			});
 			setChatRoomId(response.data);
