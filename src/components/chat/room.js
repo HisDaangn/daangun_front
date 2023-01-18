@@ -6,6 +6,7 @@ import { ListItemButton } from "@mui/material";
 import { Link } from "react-router-dom";
 
 function Room({ room }) {
+	console.log(room);
 	return (
 		<Link to={`/chat/room/${room.roomId}`} style={{ textDecoration: "none" }}>
 			<ListItemButton
@@ -28,7 +29,7 @@ function Room({ room }) {
 				/>
 				<Box
 					component={"img"}
-					src={room.photoURL}
+					src={room.post.photoURL}
 					width={"40px"}
 					// height={"684px"}
 				/>

@@ -3,7 +3,7 @@ import { MessageLeft, MessageRight } from "./message";
 import { TextInput } from "./textInput";
 import styles from "./mainMessage.module.css";
 
-export default function MainMessage({ data }) {
+export default function MainMessage({ messages, profileImg, pubName }) {
 	return (
 		<div className={styles.container}>
 			<Paper className={styles.paper} zdepth={2}>
@@ -19,14 +19,14 @@ export default function MainMessage({ data }) {
 						message="테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다"
 						timestamp="MM/DD 00:00"
 						photoURL="/img/profile_default.png"
-						displayName={"홍길동"}
+						displayName={pubName}
 						avatarDisp={true}
 					/>
 					<MessageLeft
 						message="테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다"
 						timestamp="MM/DD 00:00"
 						photoURL="/img/profile_default.png"
-						displayName={"홍길동"}
+						displayName={pubName}
 						avatarDisp={false}
 					/>
 					<MessageRight
@@ -47,7 +47,7 @@ export default function MainMessage({ data }) {
 						message="테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다"
 						timestamp="MM/DD 00:00"
 						photoURL="/img/profile_default.png"
-						displayName={"홍길동"}
+						displayName={pubName}
 						avatarDisp={false}
 					/>
 					<MessageRight
@@ -61,7 +61,7 @@ export default function MainMessage({ data }) {
 						message="테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다"
 						timestamp="MM/DD 00:00"
 						photoURL="/img/profile_default.png"
-						displayName={"홍길동"}
+						displayName={pubName}
 						avatarDisp={false}
 					/>
 					<MessageRight

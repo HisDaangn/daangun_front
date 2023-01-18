@@ -1,12 +1,14 @@
 import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
+
 import { useEffect, useState } from "react";
-import { gapi } from "gapi-script";
 import { Avatar, Button, Modal, TextField } from "@mui/material";
 import { Box } from "@mui/system";
 import axios from "axios";
-
+import jwtDecode from "jwt-decode";
 const clientId =
-  "163308438198-73f01cdp6rr2ivoeil8ri35nh87a5jfg.apps.googleusercontent.com";
+  "122497781005-52p7dqhbjak9fp8o4akg033jl78tjk4a.apps.googleusercontent.com";
+
+let localstorage = window.localStorage;
 
 function GoogleButton() {
   // 스타일
@@ -21,34 +23,35 @@ function GoogleButton() {
     bgcolor: "white",
     boxShadow: 24,
   };
-
   // 구글 버튼 관련 함수
   const onSuccess = async (res) => {
-    console.log("Login Success :", res);
+    let userObject = jwtDecode(res.credential);
 
-    const GIDfromUser = res.wt.NT;
+    const GIDfromUser = userObject.sub;
     const db = await getUser(GIDfromUser);
     const GIDfromDB = db.googleId;
 
-    console.log(`GIDfromUser : ${GIDfromUser}`);
-    console.log(`GIDfromDB : ${GIDfromDB}`);
+    localstorage.setItem("sessionInfo", JSON.stringify(db));
 
     if (GIDfromDB === undefined) {
-      alert("회원정보가 없음");
-      //회원가입 진행
-      setOpen(true);
+      let youWant = window.confirm("회원정보가 없음. 회원가입 하실?");
+      if (youWant) {
+        //회원가입 모달창 띄우기
+        setOpen(true);
+        await setExtra({ sub: userObject.sub, email: userObject.email });
+      } else {
+        alert("회원가입을 안하다니");
+        window.history.go(0);
+      }
     } else {
       alert("회원이시네용");
+      window.location.reload();
     }
   };
+
   const onFailure = (res) => {
     console.log("Login Failed : ", res);
   };
-
-  const [extra, setExtra] = useState({
-    extraName: "",
-    extraAddress: "",
-  });
 
   // 추가 정보 입력
   const onChangeValue = (e) => {
@@ -56,36 +59,21 @@ function GoogleButton() {
       ...extra,
       [e.target.name]: e.target.value,
     });
+    console.log(extra);
   };
 
-  const [userInfo, setUserInfo] = useState({
-    e_address: "",
-    name: "",
-    temperature: "",
-    googldId: "",
-    address: "",
+  const [extra, setExtra] = useState({
+    email: "",
+    extraName: "",
+    sub: "",
+    extraAddress: "",
   });
-
-  useEffect(() => {
-    console.log(userInfo);
-  }, [userInfo]);
-
-  const submit = () => {
-    setUserInfo({ name: extra.extraName, address: extra.extraAddress });
-
-    console.log(userInfo);
-  };
 
   const [open, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
   return (
-    <GoogleOAuthProvider>
-      <GoogleLogin
-        clientId={clientId}
-        buttonText="Login"
-        onSuccess={onSuccess}
-        onFailure={onFailure}
-      />
+    <GoogleOAuthProvider clientId={clientId}>
+      <GoogleLogin onSuccess={onSuccess} onFailure={onFailure} />
       <div>
         <Modal
           open={open}
@@ -136,7 +124,16 @@ function GoogleButton() {
                   backgroundColor: "#ff6f0f",
                 },
               }}
-              onClick={submit}
+              onClick={() => {
+                console.log(extra);
+                signup(
+                  extra.email,
+                  extra.extraName,
+                  36.5,
+                  extra.sub,
+                  extra.extraAddress
+                );
+              }}
             >
               완료
             </Button>
@@ -149,28 +146,25 @@ function GoogleButton() {
 
 export default GoogleButton;
 
-export const signup = async (e_address, name, googleId, address) => {
-  const ret = await axios.post(`http://localhost:8080/user/signup`, {
-    e_address: `{e_address}`,
-    name: `{name}`,
+export const signup = async (
+  e_address,
+  name,
+  temperature,
+  googleId,
+  address
+) => {
+  await axios.post(`http://localhost:8080/user/signup`, {
+    e_address: e_address,
+    name: name,
     temperature: `36.5`,
-    googldId: `{googldId}`,
-    address: `{address}`,
+    googleId: googleId,
+    address: address,
   });
-  return ret.data;
 };
 
 export const getUser = async (googleId) => {
   const response = await axios.get(
-    `http://localhost:8080/user/getUser/${googleId}`,
-    {
-      e_address: `{e_address}`,
-      name: `{name}`,
-      created_at: `{created_at}`,
-      temperature: `36.5`,
-      googldId: `{googldId}`,
-      address: `{address}`,
-    }
+    `http://localhost:8080/user/getUser/${googleId}`
   );
   console.log(response.data);
   return response.data;

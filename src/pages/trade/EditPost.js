@@ -1,6 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { useParams } from "react-router-dom";
-
+import React, { useState } from 'react';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import "./EditModal.css";
 import ImageUpload from '../../components/trade/ImageUpload';
@@ -23,15 +21,12 @@ const EditPost = (id) => {
   const [content, setContent] = useState(id.content);
   const edit = async (
   ) => {
-    const response = await axios.patch(`http://localhost:8080/trade/${id.id}`, {
+    await axios.patch(`http://localhost:8080/trade/${id.id}`, {
       photoURL: `${id.photoURL}`,
       title: `${title}`,
       price: `${price}`,
       content: `${content}`,
-    });
-    console.log(id);
-    console.log(id.title);
-    return response.data;
+    }).then(id.close);
   }
   const ariaLabel = { 'aria-label': 'description' };
   const BtnStyle = {
@@ -64,7 +59,7 @@ const EditPost = (id) => {
         <Box sx={{ fontSize: 20, fontWeight: 'bold', m: 1 }}>중고거래 글 수정하기</Box>
       </ThemeProvider>
       <ThemeProvider theme={theme}>
-        <Button variant="outlined" startIcon={<CameraAltIcon />}>0/10</Button>
+        <Button variant="outlined" startIcon={<CameraAltIcon />}>{id.photoURL}</Button>
         <ImageUpload />
       </ThemeProvider>
       <Divider />

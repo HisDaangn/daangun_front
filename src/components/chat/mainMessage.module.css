@@ -3,8 +3,8 @@
 }
 
 .paper {
-	height: calc(85vh - 64px);
-	min-width: 67.5vw;
+	height: calc(80.7vh - 64px);
+	min-width: 70vw;
 	max-width: fit-content;
 	max-height: fit-content;
 	display: flex;
