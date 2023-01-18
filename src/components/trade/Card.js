@@ -35,7 +35,7 @@ function Card({ post }) {
 						<h2 className="card-title">{post.title}</h2>
 						<div className="card-price">{post.price}</div>
 						<div className="card-content">
-							<span>{post.viewCnt}</span> ∙ <span>채팅: {chatCount}</span>
+							<span>조회: {post.viewCnt}</span> ∙ <span>채팅: {chatCount}</span>
 						</div>
 					</div>
 				</div>
