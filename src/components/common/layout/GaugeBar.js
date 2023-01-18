@@ -1,5 +1,4 @@
 import "./GaugeBar.css";
-import { animated, useSpring } from "@react-spring/web";
 
 export default function GaugeBar({ name }) {
   function load() {
