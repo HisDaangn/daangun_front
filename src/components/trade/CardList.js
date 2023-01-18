@@ -1,27 +1,37 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Card from "../../components/trade/Card";
 import './Cards.css';
-import Post from "../../components/trade/Post";
+import axios from 'axios';
 
 function CardList(){
 
     const [Items, setItems] = React.useState([]);
-    const ItemLists = Post;
+
+    useEffect(() => {
+        loadData();
+    }, []);
+
+    const loadData = async () => {
+        const response = await axios.get(`http://localhost:8080/trade/all`);
+        console.log(response);
+        setItems(response.data);
+    };
+
+    
 
     return (
                 <div className="card-wrap">
-                {ItemLists.map((Items, id) => (
-                <React.Fragment
-                key = { id }
-                >
+                {Items.map((Item) => (
+                
 				    <Card 
-                    imgs={ Items.imgs }
-                    title={ Items.title }
-                    price={ Items.price }
-                    interest={ Items.interest }
-                    chatting={ Items.chatting }
+                    key = { Item.id }
+                    post = {Item}
+                    // imgs={ Item.photoURL }
+                    // title={ Item.title }
+                    // price={ Item.price }
+                    // interest={ Item.viewCnt }
+                    // // chatting={ Item.chatCnt }
                     />
-                </React.Fragment>
 			    ))}
                 </div> 
     );

@@ -1,11 +1,10 @@
-import { GoogleLogin } from "@react-oauth/google";
-import { GoogleOAuthProvider } from "@react-oauth/google";
+import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
+
 import { useEffect, useState } from "react";
 import { Avatar, Button, Modal, TextField } from "@mui/material";
 import { Box } from "@mui/system";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
-
 const clientId =
   "122497781005-52p7dqhbjak9fp8o4akg033jl78tjk4a.apps.googleusercontent.com";
 
@@ -67,11 +66,6 @@ function GoogleButton() {
       ...extra,
       [e.target.name]: e.target.value,
     });
-    console.log("[onChangeValue] ", extra);
-  };
-
-  const submit = () => {
-    console.log("final : ", userInfo);
   };
 
   const [userInfo, setUserInfo] = useState({
@@ -164,7 +158,7 @@ export const signup = async (e_address, name, googleId, address) => {
     e_address: `{e_address}`,
     name: `{name}`,
     temperature: `36.5`,
-    googleI: `{googleI}`,
+    googldId: `{googldId}`,
     address: `{address}`,
   });
   return ret.data;

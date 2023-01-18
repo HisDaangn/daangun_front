@@ -1,24 +1,30 @@
 import React from 'react'
-import  './Cards.css';
-import { Link } from 'react-router-dom';
+import './Cards.css';
+import { Box } from "@mui/material";
+import { useNavigate } from 'react-router-dom';
 
-function Card(Items) {
+function Card({ post }) {
 
-    return (
-        <Link to="/tradeboard" className="card-link">
+  const navigate = useNavigate();
+
+  return (
+    <Box
+      onClick={() => navigate(`/post/${post.id}`)}
+    >
+      <div className="card-link">
         <div className="card-top">
-        <img className="card-img" src={ Items.imgs } />
-        <div className="card-desc">
-        <h2 className="card-title">{ Items.title }</h2>
-        <div className="card-price">{ Items.price }</div>
-        <div className="card-content">
-          <span>{ Items.interest }</span> ∙ <span>{ Items.chatting }</span>
+          <img className="card-img" src="./img/bad.png" />
+          <div className="card-desc">
+            <h2 className="card-title">{post.title}</h2>
+            <div className="card-price">{post.price}</div>
+            <div className="card-content">
+              <span>관심 {post.viewCnt}</span> ∙ <span></span>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-        </Link>
-        
-        );
+    </Box>
+  );
 }
 
 export default Card;
