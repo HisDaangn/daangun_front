@@ -88,7 +88,7 @@ function ChatList({ roomId, userId }) {
 								padding: 2,
 							}}
 						>
-							<ListItemText primary="사용자" sx={{ fontWeight: "bold" }} />
+							<ListItemText primary={userId} sx={{ fontWeight: "bold" }} />
 						</ListItem>
 						<ListItem
 							sx={{
