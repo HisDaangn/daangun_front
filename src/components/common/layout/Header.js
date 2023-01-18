@@ -68,7 +68,7 @@ const Berger = styled(MenuIcon)({
 });
 
 const Close = styled(CloseIcon)({
-  color: "black",
+  color: "yellow",
   fontSize: "30px",
   cursor: "pointer",
   [theme.breakpoints.up("md")]: {
