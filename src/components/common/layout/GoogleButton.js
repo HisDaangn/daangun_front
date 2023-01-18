@@ -1,12 +1,14 @@
 import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
+
 import { useEffect, useState } from "react";
-import { gapi } from "gapi-script";
 import { Avatar, Button, Modal, TextField } from "@mui/material";
 import { Box } from "@mui/system";
 import axios from "axios";
-
+import jwt_decode from "jwt-decode";
 const clientId =
-  "163308438198-73f01cdp6rr2ivoeil8ri35nh87a5jfg.apps.googleusercontent.com";
+  "122497781005-52p7dqhbjak9fp8o4akg033jl78tjk4a.apps.googleusercontent.com";
+
+let localstorage = window.localStorage;
 
 function GoogleButton() {
   // 스타일
@@ -22,33 +24,41 @@ function GoogleButton() {
     boxShadow: 24,
   };
 
+  let EMAIL = "";
+  let GID = "";
   // 구글 버튼 관련 함수
   const onSuccess = async (res) => {
-    console.log("Login Success :", res);
+    let userObject = jwt_decode(res.credential);
 
-    const GIDfromUser = res.wt.NT;
+    const GIDfromUser = userObject.sub;
     const db = await getUser(GIDfromUser);
     const GIDfromDB = db.googleId;
 
-    console.log(`GIDfromUser : ${GIDfromUser}`);
-    console.log(`GIDfromDB : ${GIDfromDB}`);
+    localstorage.setItem("sessionInfo", JSON.stringify(db));
 
     if (GIDfromDB === undefined) {
-      alert("회원정보가 없음");
-      //회원가입 진행
+      let youWant = window.confirm("회원정보가 없음. 회원가입 하실?");
+      if (youWant) {
+        EMAIL = userObject.email;
+        GID = userObject.sub;
+        //signup
+        //res -> session
+      } else {
+        alert("회원가입을 안하다니");
+        window.history.go(0);
+      }
+
+      //회원가입 모달창 띄우기
       setOpen(true);
     } else {
       alert("회원이시네용");
+      window.location.reload();
     }
   };
+
   const onFailure = (res) => {
     console.log("Login Failed : ", res);
   };
-
-  const [extra, setExtra] = useState({
-    extraName: "",
-    extraAddress: "",
-  });
 
   // 추가 정보 입력
   const onChangeValue = (e) => {
@@ -62,30 +72,24 @@ function GoogleButton() {
     e_address: "",
     name: "",
     temperature: "",
-    googldId: "",
+    googleId: "",
     address: "",
   });
 
+  const [extra, setExtra] = useState({
+    extraName: "",
+    extraAddress: "",
+  });
+
   useEffect(() => {
-    console.log(userInfo);
+    console.log("Hello");
   }, [userInfo]);
-
-  const submit = () => {
-    setUserInfo({ name: extra.extraName, address: extra.extraAddress });
-
-    console.log(userInfo);
-  };
 
   const [open, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
   return (
-    <GoogleOAuthProvider>
-      <GoogleLogin
-        clientId={clientId}
-        buttonText="Login"
-        onSuccess={onSuccess}
-        onFailure={onFailure}
-      />
+    <GoogleOAuthProvider clientId={clientId}>
+      <GoogleLogin onSuccess={onSuccess} onFailure={onFailure} />
       <div>
         <Modal
           open={open}
@@ -162,15 +166,7 @@ export const signup = async (e_address, name, googleId, address) => {
 
 export const getUser = async (googleId) => {
   const response = await axios.get(
-    `http://localhost:8080/user/getUser/${googleId}`,
-    {
-      e_address: `{e_address}`,
-      name: `{name}`,
-      created_at: `{created_at}`,
-      temperature: `36.5`,
-      googldId: `{googldId}`,
-      address: `{address}`,
-    }
+    `http://localhost:8080/user/getUser/${googleId}`
   );
   console.log(response.data);
   return response.data;

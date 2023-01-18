@@ -1,6 +1,15 @@
-import { Avatar, Box, Button, Icon, Toolbar, Typography } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  Button,
+  Icon,
+  Modal,
+  TextField,
+  Toolbar,
+  Typography,
+} from "@mui/material";
 import { Stack } from "@mui/system";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./Mypage.css";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
@@ -10,8 +19,40 @@ import purchaseHistory from "../../assets/purchaseHistory.png";
 import salesHistory from "../../assets/salesHistory.png";
 import watchlist from "../../assets/watchlist.png";
 import axios from "axios";
+import { NavLink } from "react-router-dom";
 
 export default function Mypage() {
+  const style = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: "50%",
+    maxWidth: "600px",
+    height: "55%",
+    bgcolor: "white",
+    boxShadow: 24,
+  };
+
+  const [user, setUser] = useState({});
+  const [year, setYear] = useState();
+  const [month, setMonth] = useState();
+  const [day, setDay] = useState();
+  const [open, setOpen] = useState(false);
+  const handleClose = () => setOpen(false);
+
+  //Mypage 한 번만 실행
+  useEffect(() => {
+    async function fetchData() {
+      const userDB = await getUser("106719395254757834672");
+      setUser(userDB);
+      setYear(userDB.created_at.substr(0, 4));
+      setMonth(userDB.created_at.substr(5, 2));
+      setDay(userDB.created_at.substr(8, 2));
+    }
+    fetchData();
+  }, []);
+
   return (
     <Box className="section">
       <Stack direction="column" spacing={3}>
@@ -26,22 +67,116 @@ export default function Mypage() {
               <Avatar sx={{ width: "90px", height: "90px" }}></Avatar>
 
               <Stack direction="column" spacing={0.3} id="userInfo">
-                <span id="nickname">날아다니는스푼</span>
+                <span id="nickname">{user.name}</span>
                 <div id="minorInfo">
-                  <span id="address">흥해읍</span>
-                  <span id="userId">#7827229</span>
+                  <span id="address">{user.address}</span>
+                  <span id="userId">#{user.googleId}</span>
                 </div>
               </Stack>
             </div>
-            <Btn>프로필 수정</Btn>
+            <NavLink
+              style={{ textDecoration: "none" }}
+              onClick={() => {
+                setOpen(true);
+              }}
+            >
+              <Btn>프로필 수정</Btn>
+            </NavLink>
+            <>
+              <Modal
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+              >
+                <Box sx={style} id="modal-modal-title">
+                  <Box
+                    sx={{
+                      margin: "20px auto",
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      width: "60%",
+                    }}
+                  >
+                    <Avatar
+                      sx={{
+                        width: "140px",
+                        height: "140px",
+                        marginBottom: "30px",
+                      }}
+                    ></Avatar>
+                    <TextField
+                      name="name"
+                      label="별명을 입력해주세요"
+                      variant="outlined"
+                      value={user.name}
+                      style={{ width: "100%", margin: "10px auto" }}
+                      onChange={(e) => {
+                        console.log(
+                          document
+                            .getElementsByName("name")[0]
+                            .getAttribute("value")
+                        );
+                        console.log(e.target.value);
+                        document
+                          .getElementsByName("name")[0]
+                          .setAttribute("value", "바뀜");
+                      }}
+                    />
+                    <TextField
+                      name="email"
+                      label="이메일을 입력해주세요"
+                      variant="outlined"
+                      value={user.e_address}
+                      style={{ width: "100%", margin: "10px auto" }}
+                      // onChange={onChangeValue}
+                    />
+                    <TextField
+                      name="address"
+                      label="사는 지역을 입력해주세요"
+                      variant="outlined"
+                      value={user.address}
+                      style={{ width: "100%", margin: "10px auto" }}
+                      // onChange={onChangeValue}
+                    />
+                  </Box>
+
+                  <Button
+                    sx={{
+                      backgroundColor: "#ff6f0f",
+                      width: "100%",
+                      borderRadius: "0px",
+                      color: "white",
+                      fontWeight: "700",
+                      fontSize: "18px",
+                      position: "fixed",
+                      bottom: "0px",
+                      "&:hover": {
+                        backgroundColor: "#ff6f0f",
+                      },
+                    }}
+                    onClick={() => {
+                      let googleId = JSON.parse(
+                        localStorage.getItem("sessionInfo")
+                      ).googleId;
+
+                      profileUpdate(googleId);
+                    }}
+                  >
+                    완료
+                  </Button>
+                </Box>
+              </Modal>
+            </>
           </Toolbar>
         </div>
         <div className="second">
           <Stack direction="column" id="tempDiv">
             <Typography variant="h5" id="temperature">
-              38.1°C
+              {user.temperature}°C
             </Typography>
-            <GaugeBar />
+            <GaugeBar name={user.temperature} />
           </Stack>
           <Toolbar
             sx={{
@@ -53,9 +188,8 @@ export default function Mypage() {
             variant="dense"
           >
             <span id="loginHistory">
-              최근 3일 이내 활동(2019년 12월 12일 가입)
+              최근 3일 이내 활동({year}년 {month}월 {day}일 가입)
             </span>
-            <Btn>로그아웃</Btn>
           </Toolbar>
         </div>
         <div className="third">
@@ -126,11 +260,19 @@ export default function Mypage() {
 
 export const profileUpdate = async (googleId) => {
   const response = await axios.patch(
-    `localhost:8080/user/profileUpdate/${googleId}`,
+    `http://localhost:8080/user/profileUpdate/${googleId}`,
     {
-      name: `{name}`,
+      name: `{user.name}`,
       address: `{address}`,
+      e_address: `{email}`,
     }
+  );
+  return response.data;
+};
+
+export const getUser = async (googleId) => {
+  const response = await axios.get(
+    `http://localhost:8080/user/getUser/${googleId}`
   );
   return response.data;
 };
