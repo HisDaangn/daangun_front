@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import DeleteModal from "./DeleteModal";
 import EditModal from "../../pages/trade/EditPost";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import bad from "./img/bad.png";
 import good from "./img/good.png";
 import verygood from "./img/verygood.png";
@@ -27,10 +27,11 @@ const PostDetail = (props) => {
     const [init, setInit] = useState(false);
     const [color, setColor] = useState("#1561a9");
     const [img, setImg] = useState();
-    // const [temperature, setTemperature] = useState();
     const [deleteModalOpen, setDeleteModalOpen] = useState(false);
     const [editModalOpen, setEditModalOpen] = useState(false);
     const [chatRoomId, setChatRoomId] = useState("");
+    const [logincheck, setLoginCheck] = useState(false);
+    const [cmp, setCmp] = useState(false);
     const navigate = useNavigate();
 
     const del = async () => {
@@ -62,6 +63,19 @@ const PostDetail = (props) => {
         }
 
     }, [init]);
+    useEffect(() => {
+        if (init) {
+            const gId = JSON.parse(localStorage.getItem("sessionInfo")).googleId;
+            if (gId == null) {
+                console.log("로그인부터 해라");
+            }
+            else if (gId != writer.postID) {
+                setCmp(true);
+            }
+            else setLoginCheck(true);
+            console.log(gId);
+        }
+    }, [init])
     const theme = createTheme({
         palette: {
             bad: {
@@ -78,7 +92,6 @@ const PostDetail = (props) => {
             },
         },
     });
-
     useEffect(
         function () {
             if (chatRoomId !== "") {
@@ -91,7 +104,6 @@ const PostDetail = (props) => {
         },
         [chatRoomId]
     );
-
     // POST
     async function moveToChatRoom() {
         try {
@@ -115,6 +127,7 @@ const PostDetail = (props) => {
                 .then((response) => {
                     setValue(response.data);
                     setWriter(response.data.writer);
+                    console.log(response);
                 });
             setInit(true);
         } catch (error) {
@@ -157,12 +170,12 @@ const PostDetail = (props) => {
         setDeleteModalOpen(false);
     };
 
-
     const openEditModal = () => {
         setEditModalOpen(true);
     };
     const closeEditModal = () => {
         setEditModalOpen(false);
+        window.location.reload();
     };
     const onChat = chatBtn => {
         console.log("chatBtn click !");
@@ -172,7 +185,10 @@ const PostDetail = (props) => {
         padding: "5px 15px",
         color: "#212124",
         fontWeight: "bolder",
-        fontSize: "13px",
+        fontSize: "16px",
+        backgroundColor: "white",
+        borderRadius: "5px",
+        marginLeft: "10px"
     }
     const staticBtnStyle = {
         color: "white",
@@ -231,60 +247,80 @@ const PostDetail = (props) => {
                         width: "100%",
                         height: "400px",
                     }}
-                    src="https://www.shutterstock.com/image-photo/korean-spicy-instant-noodles-egg-260nw-1296771487.jpg"
+                    src={postID.photoURL}
                     alt="img"
                 />
 
                 <div>
                     <Stack direction="row" spacing={5} justifyContent="center">
-                        <Avatar src="https://cdn-icons-png.flaticon.com/512/1946/1946429.png" />
-                        <Box sx={{ fontSize: 20, fontWeight: 'regiar' }}>{init ? writer.name : "username"}</Box>
-                        <button style={BtnStyle} onClick={openEditModal}>수정하기</button>
-                        <Modal
-                            open={editModalOpen}
-                            onClose={closeEditModal}
-                        >
-                            <Box sx={style}>
-                                <EditModal id={postID} photoURL={value.photoURL} title={value.title} price={value.price} content={value.content} />
-                            </Box>
-                        </Modal>
-                        <button style={BtnStyle} onClick={openDeleteModal}>삭제하기</button>
-                        <Modal
-                            open={deleteModalOpen}
-                            onClose={closeDeleteModal}
-                        >
-                            <Box sx={style}>
-                                <DeleteModal />
-                                <br />
-                                <button style={delBtn} onClick={del}>
-                                    확인
-                                </button>
-                                <button style={delBtn} onClick={closeDeleteModal}>
-                                    취소
-                                </button>
-                            </Box>
-                        </Modal>
+                        <Avatar />
+                        <span style={{ marginLeft: "8px", }}>
+                            <div style={{
+                                fontSize: "15px",
+                                fontWeight: "600",
+                            }}>
+                                {init ? writer.name : "username"}
+                            </div>
+                            <div style={{
+                                fontSize: "13px",
+                                lineHeight: "1.46",
+                            }}>
+                                {init ? writer.address : "address"}
+                            </div>
+                        </span>
+                        {logincheck ? <div><button style={BtnStyle} onClick={openEditModal}>수정하기</button>
+                            <Modal
+                                open={editModalOpen}
+                                onClose={closeEditModal}
+                            >
+                                <Box sx={style}>
+                                    <EditModal id={postID} photoURL={value.photoURL} title={value.title} price={value.price} content={value.content} close={closeEditModal} />
+                                </Box>
+                            </Modal>
+                            <button style={BtnStyle} onClick={openDeleteModal}>삭제하기</button>
+                            <Modal
+                                open={deleteModalOpen}
+                                onClose={closeDeleteModal}
+                            >
+                                <Box sx={style}>
+                                    <DeleteModal />
+                                    <br />
+                                    <button style={delBtn} onClick={del}>
+                                        확인
+                                    </button>
+                                    <button style={delBtn} onClick={closeDeleteModal}>
+                                        취소
+                                    </button>
+                                </Box>
+                            </Modal> </div> : <></>}
+
                         <ThemeProvider theme={theme}>
-                            <Slider color='good' sx={{ width: "150px" }} value={init ? writer.temperature : 36.5} aria-label="Default" valueLabelDisplay="auto" />
+                            <Slider color='good' sx={{ width: "150px" }} value={init ? writer.temperature : 36.5} valueLabelDisplay="on" aria-label="Default" />
                         </ThemeProvider>
                         <Avatar alt="img" src={img} />
                     </Stack>
                 </div>
                 <hr />
                 <div>
-                    <Box sx={{ fontSize: 20, fontWeight: 'bold', m: 2 }}>{value.title}</Box>
-                    <Box sx={{ fontSize: 16, fontWeight: 'bold', m: 2 }}>{value.price} 원</Box>
+                    <Box sx={{ fontSize: 25, fontWeight: 'regular', m: 2 }}>{value.title}</Box>
+                    {/* <Divider /> */}
+                    <Box sx={{ fontSize: 18, fontWeight: 'bold', m: 2 }}>{value.price} 원</Box>
+                    {/* <Divider /> */}
                     <Box sx={{ fontSize: 16, fontWeight: 'regular', m: 2 }}>{value.content}</Box>
 
-                </div>
-                <Stack direction="row" justifyContent="flex-end">
-                    <button style={staticBtnStyle} onClick={onChat}>
-                        채팅하기
-                    </button>
-                    <button style={staticBtnStyle} onClick={lift}>
-                        끌올하기
-                    </button>
-                </Stack>
+                </div >
+
+                {cmp ? <div>
+                    <Stack direction="row" justifyContent="flex-end">
+                        <button style={staticBtnStyle} onClick={onChat}>
+                            채팅하기
+                        </button>
+                        <button style={staticBtnStyle} onClick={lift}>
+                            끌올하기
+                        </button>
+                    </Stack>
+                </div> : <div></div>}
+
             </div>
         </div>
     );
