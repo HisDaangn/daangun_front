@@ -10,10 +10,8 @@ import axios from "axios";
 import { useState } from "react";
 import ChatMenu from "./chatMenu";
 import MainMessage from "./mainMessage";
-import tempData from "./tempData";
 
 function ExistRoom({ roomId }) {
-	const data = tempData;
 	const [pubName, setPubName] = useState("");
 	const [photoURL, setPhotoURL] = useState("");
 	const [title, setTitle] = useState("");
@@ -28,8 +26,8 @@ function ExistRoom({ roomId }) {
 			console.log(response);
 			setPubName(response.data.pubName);
 			setPhotoURL(response.data.post.photoURL);
-			setTitle(response.post.title);
-			setPrice(response.post.price);
+			setTitle(response.data.post.title);
+			setPrice(response.data.post.price);
 		} catch (e) {
 			console.log(e);
 		}
@@ -74,6 +72,7 @@ function ExistRoom({ roomId }) {
 						component={"img"}
 						src={photoURL}
 						width={"40px"}
+						height={"40px"}
 						// height={"684px"}
 					/>
 

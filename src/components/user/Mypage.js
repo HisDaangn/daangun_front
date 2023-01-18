@@ -29,7 +29,7 @@ export default function Mypage() {
     transform: "translate(-50%, -50%)",
     width: "50%",
     maxWidth: "600px",
-    height: "55%",
+    height: "50%",
     bgcolor: "white",
     boxShadow: 24,
   };
@@ -38,13 +38,19 @@ export default function Mypage() {
   const [year, setYear] = useState();
   const [month, setMonth] = useState();
   const [day, setDay] = useState();
+
+  const [nameContent, setNameContent] = useState();
+  const [addressContent, setAddressContent] = useState();
+
   const [open, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
 
   //Mypage 한 번만 실행
   useEffect(() => {
     async function fetchData() {
-      const userDB = await getUser("106719395254757834672");
+      const userDB = await getUser(
+        JSON.parse(localStorage.getItem("sessionInfo")).googleId
+      );
       setUser(userDB);
       setYear(userDB.created_at.substr(0, 4));
       setMonth(userDB.created_at.substr(5, 2));
@@ -69,8 +75,8 @@ export default function Mypage() {
               <Stack direction="column" spacing={0.3} id="userInfo">
                 <span id="nickname">{user.name}</span>
                 <div id="minorInfo">
+                  <span id="userId">{user.e_address}</span>
                   <span id="address">{user.address}</span>
-                  <span id="userId">#{user.googleId}</span>
                 </div>
               </Stack>
             </div>
@@ -92,7 +98,7 @@ export default function Mypage() {
                 <Box sx={style} id="modal-modal-title">
                   <Box
                     sx={{
-                      margin: "20px auto",
+                      margin: "40px auto",
                       display: "flex",
                       flexDirection: "column",
                       alignItems: "center",
@@ -107,36 +113,27 @@ export default function Mypage() {
                       }}
                     ></Avatar>
                     <TextField
+                      id={"tfName"}
+                      required
                       name="name"
                       label="별명을 입력해주세요"
                       variant="outlined"
-                      value={user.name}
                       style={{ width: "100%", margin: "10px auto" }}
+                      defaultValue={user.name}
                       onChange={(e) => {
-                        console.log(
-                          document
-                            .getElementsByName("name")[0]
-                            .getAttribute("value")
-                        );
-                        console.log(e.target.value);
-                        document
-                          .getElementsByName("name")[0]
-                          .setAttribute("value", "바뀜");
+                        setNameContent(e.target.value);
                       }}
                     />
                     <TextField
-                      name="email"
-                      label="이메일을 입력해주세요"
-                      variant="outlined"
-                      value={user.e_address}
-                      style={{ width: "100%", margin: "10px auto" }}
-                      // onChange={onChangeValue}
-                    />
-                    <TextField
+                      id={"tfAddress"}
+                      required
                       name="address"
                       label="사는 지역을 입력해주세요"
                       variant="outlined"
-                      value={user.address}
+                      defaultValue={user.address}
+                      onChange={(e) => {
+                        setAddressContent(e.target.value);
+                      }}
                       style={{ width: "100%", margin: "10px auto" }}
                       // onChange={onChangeValue}
                     />
@@ -161,7 +158,15 @@ export default function Mypage() {
                         localStorage.getItem("sessionInfo")
                       ).googleId;
 
-                      profileUpdate(googleId);
+                      let tf_name = document
+                        .getElementById("tfName")
+                        .getAttribute("value");
+                      console.log(tf_name);
+                      let tf_address = document
+                        .getElementById("tfAddress")
+                        .getAttribute("value");
+
+                      profileUpdate(googleId, tf_name, tf_address);
                     }}
                   >
                     완료
@@ -258,16 +263,11 @@ export default function Mypage() {
   );
 }
 
-export const profileUpdate = async (googleId) => {
-  const response = await axios.patch(
-    `http://localhost:8080/user/profileUpdate/${googleId}`,
-    {
-      name: `{user.name}`,
-      address: `{address}`,
-      e_address: `{email}`,
-    }
-  );
-  return response.data;
+export const profileUpdate = async (googleId, name, address) => {
+  await axios.patch(`http://localhost:8080/user/profileUpdate/${googleId}`, {
+    name: name,
+    address: address,
+  });
 };
 
 export const getUser = async (googleId) => {

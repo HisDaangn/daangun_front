@@ -31,67 +31,68 @@ const PostDetail = (props) => {
     const [editModalOpen, setEditModalOpen] = useState(false);
     const [chatRoomId, setChatRoomId] = useState("");
     const [logincheck, setLoginCheck] = useState(false);
-    const [cmp, setCmp] = useState(false);
+    const [loginmy, setLoginMy] = useState(false);
+    const [loginchat, setLoginChat] = useState(false);
+    const [loginlift, setLoginLift] = useState(false);
     const navigate = useNavigate();
+    const userDB = JSON.parse(localStorage.getItem("sessionInfo"));
 
     const del = async () => {
         console.log("del 실행");
         // await deleteData();
         closeDeleteModal();
     };
+    useEffect(
+        function () {
+            if (chatRoomId !== "") {
+                if (chatRoomId === "deleted") {
+                    alert("삭제된 물품입니다");
+                } else {
+                    navigate(`/chat/room/${chatRoomId}`);
+                }
+            }
+        },
+        [chatRoomId]
+    );
     useEffect(() => {
         getData();
-    }, [])
+    }, []);
     useEffect(() => {
-        if (init) setWriter(value.writer)
-    }, [init])
-    useEffect(() => {
-        if (init) {
-            if (writer.temperature < 36.5) {
-                setColor("bad");
-                setImg(bad);
-            } else if (writer.temperature < 40) {
-                setColor("#319e45");
-                setImg(good);
-            } else if (writer.temperature < 50) {
-                setColor("#df9100");
-                setImg(verygood);
-            } else {
-                setColor("#de5d06");
-                setImg(excellent);
-            }
-        }
-
+        if (init) setWriter(value.writer);
     }, [init]);
+    const temperature = 36.7;
+    useEffect(() => {
+        if (temperature < 36.5) {
+            setColor("bad");
+            setImg(bad);
+        } else if (temperature < 40) {
+            setColor("#319e45");
+            setImg(good);
+        } else if (temperature < 50) {
+            setColor("#df9100");
+            setImg(verygood);
+        } else {
+            setColor("#de5d06");
+            setImg(excellent);
+        }
+    }, [temperature]);
     useEffect(() => {
         if (init) {
-            const gId = JSON.parse(localStorage.getItem("sessionInfo")).googleId;
+            const gId = JSON.parse(localStorage.getItem("sessionInfo")).id;
             if (gId == null) {
                 console.log("로그인부터 해라");
             }
-            else if (gId != writer.postID) {
-                setCmp(true);
+            else {
+                if (gId == writer.id) {
+                    setLoginMy(true);
+                    setLoginLift(true);
+                }
+                else setLoginChat(true);
             }
-            else setLoginCheck(true);
-            console.log(gId);
+            console.log("gId: " + gId);
+            console.log("writer.postID: " + writer.id);
         }
     }, [init])
-    const theme = createTheme({
-        palette: {
-            bad: {
-                main: '#1561a9',
-            },
-            good: {
-                main: '#319e45',
-            },
-            verygood: {
-                main: '#df9100',
-            },
-            excelent: {
-                main: '#de5d06',
-            },
-        },
-    });
     useEffect(
         function () {
             if (chatRoomId !== "") {
@@ -105,6 +106,85 @@ const PostDetail = (props) => {
         [chatRoomId]
     );
     // POST
+    // POST
+    async function moveToChatRoom() {
+        try {
+            const response = await axios.post(`http://localhost:8080/chat/add`, {
+                pubId: writer.id,
+                subId: userDB.id,
+                postId: postID,
+            });
+            setChatRoomId(response.data);
+            console.log(response);
+        } catch (e) {
+            console.log(e);
+        }
+    }
+    //GET 상세 게시글 조회
+    async function getData() {
+        try {
+            //응답 성공
+            await axios
+                .get(`http://localhost:8080/trade/${postID}`)
+                .then((response) => {
+                    setValue(response.data);
+                    setWriter(response.data.writer);
+                });
+            setInit(true);
+        } catch (error) {
+            //응답 실패
+            console.error(error);
+        }
+    }
+    //PATCH 끌어올리기
+    async function lift() {
+        try {
+            //응답 성공
+            const response = await axios.patch(
+                `http://localhost:8080/trade/lift/${postID}`,
+                {
+                    expose_at: `${value.expose_at}`,
+                }
+            );
+            console.log(response);
+            console.log("liftBtn click !");
+        } catch (error) {
+            //응답 실패
+            console.error(error);
+        }
+    }
+    //DELETE 삭제하기
+    async function deleteData() {
+        // console.log(id.id);
+        try {
+            //응답 성공
+            const response = await axios.delete(
+                `http://localhost:8080/trade/${postID}`
+            );
+            console.log(response);
+            console.log(postID);
+        } catch (error) {
+            //응답 실패
+            console.error(error);
+        }
+    }
+    // const [temperature, setTemperature] = useState();
+    const theme = createTheme({
+        palette: {
+            bad: {
+                main: "#1561a9",
+            },
+            good: {
+                main: "#319e45",
+            },
+            verygood: {
+                main: "#df9100",
+            },
+            excelent: {
+                main: "#de5d06",
+            },
+        },
+    });
     async function moveToChatRoom() {
         try {
             const response = await axios.post(`http://localhost:8080/chat/add`, {
@@ -268,7 +348,7 @@ const PostDetail = (props) => {
                                 {init ? writer.address : "address"}
                             </div>
                         </span>
-                        {logincheck ? <div><button style={BtnStyle} onClick={openEditModal}>수정하기</button>
+                        {loginmy ? <div><button style={BtnStyle} onClick={openEditModal}>수정하기</button>
                             <Modal
                                 open={editModalOpen}
                                 onClose={closeEditModal}
@@ -309,20 +389,22 @@ const PostDetail = (props) => {
                     <Box sx={{ fontSize: 16, fontWeight: 'regular', m: 2 }}>{value.content}</Box>
 
                 </div >
-
-                {cmp ? <div>
-                    <Stack direction="row" justifyContent="flex-end">
+                <Stack direction="row" justifyContent="flex-end">
+                    {loginchat ? <div>
                         <button style={staticBtnStyle} onClick={onChat}>
                             채팅하기
                         </button>
+                    </div> : <div></div>}
+                    {loginlift ? <div>
                         <button style={staticBtnStyle} onClick={lift}>
                             끌올하기
                         </button>
-                    </Stack>
-                </div> : <div></div>}
+                    </div> : <div></div>}
+                </Stack>
+
 
             </div>
-        </div>
+        </div >
     );
 };
 export default PostDetail;
