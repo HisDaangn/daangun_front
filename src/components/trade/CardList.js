@@ -2,10 +2,6 @@ import React, { useEffect } from "react";
 import Card from "../../components/trade/Card";
 import './Cards.css';
 import axios from 'axios';
-import Post from "../../components/trade/Post";
-import { useLoaderData } from "react-router-dom";
-import { findByDisplayValue } from "@testing-library/react";
-
 
 function CardList(){
 
@@ -16,9 +12,6 @@ function CardList(){
     }, []);
 
     const loadData = async () => {
-        // Items(id).then(function (data){
-        //     setItems(data);
-        // });
         const response = await axios.get(`http://localhost:8080/trade/all`);
         console.log(response);
         setItems(response.data);
@@ -31,8 +24,7 @@ function CardList(){
                 {Items.map((Item) => (
                 
 				    <Card 
-                    key = { Item.id } 
-                    
+                    key = { Item.id }
                     post = {Item}
                     // imgs={ Item.photoURL }
                     // title={ Item.title }
