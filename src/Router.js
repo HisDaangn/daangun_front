@@ -35,7 +35,7 @@ function Router() {
               <Route path="/chat" element={<Chat />} />
               <Route path="/addpost" element={<AddPost />} />
               <Route path="/editpost" element={<EditPost />} />
-              <Route path="/trade/:postID" element={<TradeBoard />} />
+              <Route path="/post/:postID" element={<TradeBoard />} />
               <Route path="/post" element={<ViewPost />} />
               <Route path="/mypage" element={<Mypage />} />
               <Route path="/websockettest" element={<WebSocketTest />} />
