@@ -54,7 +54,23 @@ const PostDetail = (props) => {
         }
     }
     const temperature = 36.7;
-
+    //DELETE 삭제하기
+    async function deleteData() {
+        // console.log(id.id);
+        try {
+            //응답 성공
+            const response = await axios.delete(`http://localhost:8080/trade/${postID}`);
+            console.log(response);
+            console.log(postID);
+        } catch (error) {
+            //응답 실패
+            console.error(error);
+        }
+    }
+    const del = () => {
+        console.log("del 실행");
+        // deleteData();
+    };
     // const [temperature, setTemperature] = useState();
     const theme = createTheme({
         palette: {
@@ -129,6 +145,18 @@ const PostDetail = (props) => {
         border: "none",
         marginLeft: "10px",
     }
+    const delBtn = {
+        color: "white",
+        backgroundColor: "#ed7833",
+        borderRadius: "3px",
+        fontWeight: "bold",
+        fontSize: "10px",
+        width: "80px",
+        height: "30px",
+        marginLeft: "10px",
+        border: "none",
+        float: "right",
+    }
     const style = {
         position: 'absolute',
         top: '50%',
@@ -171,13 +199,25 @@ const PostDetail = (props) => {
                             onClose={closeEditModal}
                         >
                             <Box sx={style}>
-                                <EditModal {...value} />
+                                <EditModal id={postID} />
                             </Box>
                         </Modal>
                         <button style={BtnStyle} onClick={openDeleteModal}>삭제하기</button>
-                        <DeleteModal open={deleteModalOpen} close={closeDeleteModal} header="Modal heading">
-                            게시물이 삭제됩니다!
-                        </DeleteModal>
+                        <Modal
+                            open={deleteModalOpen}
+                            onClose={closeDeleteModal}
+                        >
+                            <Box sx={style}>
+                                <DeleteModal id={postID} />
+                                <br />
+                                <button style={delBtn} onClick={del, closeDeleteModal}>
+                                    확인
+                                </button>
+                                <button style={delBtn} onClick={closeDeleteModal}>
+                                    취소
+                                </button>
+                            </Box>
+                        </Modal>
                         <ThemeProvider theme={theme}>
                             <Slider color='good' sx={{ width: "150px" }} value={temperature} aria-label="Default" valueLabelDisplay="auto" />
                         </ThemeProvider>
