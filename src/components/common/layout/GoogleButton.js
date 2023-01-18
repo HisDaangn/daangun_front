@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Avatar, Button, Modal, TextField } from "@mui/material";
 import { Box } from "@mui/system";
 import axios from "axios";
-import jwt_decode from "jwt-decode";
+import jwtDecode from "jwt-decode";
 const clientId =
   "122497781005-52p7dqhbjak9fp8o4akg033jl78tjk4a.apps.googleusercontent.com";
 
@@ -28,7 +28,7 @@ function GoogleButton() {
   let GID = "";
   // 구글 버튼 관련 함수
   const onSuccess = async (res) => {
-    let userObject = jwt_decode(res.credential);
+    let userObject = jwtDecode(res.credential);
 
     const GIDfromUser = userObject.sub;
     const db = await getUser(GIDfromUser);
@@ -140,7 +140,7 @@ function GoogleButton() {
                   backgroundColor: "#ff6f0f",
                 },
               }}
-              onClick={submit}
+              // onClick={submit}
             >
               완료
             </Button>
