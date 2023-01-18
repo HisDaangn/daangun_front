@@ -7,6 +7,8 @@ import bad from "./img/bad.png";
 import good from "./img/good.png";
 import verygood from "./img/verygood.png";
 import excellent from "./img/excellent.png";
+import GaugeBar from "./../common/layout/GaugeBar";
+import "./PostDetail.css";
 
 import "./Cards.css";
 import {
@@ -90,7 +92,7 @@ const PostDetail = (props) => {
                 else setLoginChat(true);
             }
             console.log("gId: " + gId);
-            console.log("writer.postID: " + writer.id);
+            console.log("writer.id: " + writer.id);
         }
     }, [init])
     useEffect(
@@ -317,7 +319,7 @@ const PostDetail = (props) => {
                     position: "absolute",
                     left: "50%",
                     top: "50%",
-                    width: "60%",
+                    width: "50%",
                     height: "70%",
                     transform: "translate(-50%, -50%)",
                 }}
@@ -327,7 +329,7 @@ const PostDetail = (props) => {
                         width: "100%",
                         height: "400px",
                     }}
-                    src={postID.photoURL}
+                    src={value.photoURL}
                     alt="img"
                 />
 
@@ -348,7 +350,8 @@ const PostDetail = (props) => {
                                 {init ? writer.address : "address"}
                             </div>
                         </span>
-                        {loginmy ? <div><button style={BtnStyle} onClick={openEditModal}>수정하기</button>
+                        {loginmy ? <div>
+                            <button style={BtnStyle} onClick={openEditModal}>수정하기</button>
                             <Modal
                                 open={editModalOpen}
                                 onClose={closeEditModal}
@@ -375,7 +378,8 @@ const PostDetail = (props) => {
                             </Modal> </div> : <></>}
 
                         <ThemeProvider theme={theme}>
-                            <Slider color='good' sx={{ width: "150px" }} value={init ? writer.temperature : 36.5} valueLabelDisplay="on" aria-label="Default" />
+                            <Slider color='good' sx={{ width: "150px" }} value={init ? writer.temperature : 36.5} />
+                            {/* <div>{writer.temperature}</div> */}
                         </ThemeProvider>
                         <Avatar alt="img" src={img} />
                     </Stack>
@@ -383,9 +387,7 @@ const PostDetail = (props) => {
                 <hr />
                 <div>
                     <Box sx={{ fontSize: 25, fontWeight: 'regular', m: 2 }}>{value.title}</Box>
-                    {/* <Divider /> */}
                     <Box sx={{ fontSize: 18, fontWeight: 'bold', m: 2 }}>{value.price} 원</Box>
-                    {/* <Divider /> */}
                     <Box sx={{ fontSize: 16, fontWeight: 'regular', m: 2 }}>{value.content}</Box>
 
                 </div >
