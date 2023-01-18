@@ -18,6 +18,8 @@ import {
 	ThemeProvider,
 	Modal,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+
 const PostDetail = (props) => {
 	const { postID } = useParams();
 	const [color, setColor] = useState("#1561a9");
@@ -26,10 +28,23 @@ const PostDetail = (props) => {
 	const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 	const [editModalOpen, setEditModalOpen] = useState(false);
 	const [chatRoomId, setChatRoomId] = useState("");
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		getData();
 	}, []);
+	useEffect(
+		function () {
+			if (chatRoomId !== "") {
+				if (chatRoomId === "deleted") {
+					alert("삭제된 물품입니다");
+				} else {
+					navigate(`/chat/room/${chatRoomId}`);
+				}
+			}
+		},
+		[chatRoomId]
+	);
 
 	const temperature = 36.7;
 
@@ -126,10 +141,12 @@ const PostDetail = (props) => {
 	const closeEditModal = () => {
 		setEditModalOpen(false);
 	};
+
 	const onChat = (chatBtn) => {
 		console.log("chatBtn click !");
 		moveToChatRoom();
 	};
+
 	const onLift = (liftBtn) => {
 		console.log("liftBtn click !");
 	};
@@ -236,11 +253,9 @@ const PostDetail = (props) => {
 					</Box>
 				</div>
 				<Stack direction="row" justifyContent="flex-end">
-					<Link to={"/chat"} style={{ textDecoration: "none" }}>
-						<button style={staticBtnStyle} onClick={onChat}>
-							채팅하기
-						</button>
-					</Link>
+					<button style={staticBtnStyle} onClick={onChat}>
+						채팅하기
+					</button>
 					<button style={staticBtnStyle} onClick={lift}>
 						끌올하기
 					</button>
