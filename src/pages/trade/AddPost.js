@@ -1,9 +1,10 @@
 import React from 'react';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
-import "./EditModal.css";
 import axios from 'axios';
 import ImageUpload from '../../components/trade/ImageUpload';
+import { useNavigate } from 'react-router-dom';
 import { useState, useEffect, useCallback } from 'react';
+import { useParams } from "react-router-dom";
 import {
   Box,
   createTheme,
@@ -15,45 +16,46 @@ import {
   Input,
   Checkbox, FormControlLabel,
 } from "@mui/material";
+import { Api } from '@mui/icons-material';
 
 
 const AddPost = (props) => {
+  
+  const user = JSON.parse(localStorage.getItem("sessionInfo"))
 
-  const [data, setData] = useState({
-    id: null
-  });
-  useEffect(() => {
-    if (props.data) {
-      setData(prevState => ({
-        ...prevState,
-        id: props.data.id
-      }));
-    }
-  }, [props.data]);
-  const onChangeHandler = useCallback((type, event) => {
-    setData(prevState => ({
-      ...prevState,
-      [type]: event.value
-    }))
-  }, [data]);
+  const navigate = useNavigate();
 
-  const addItem = async (photoURL, writerId, title, price, content, viewCnt) => {
+  const addItem = async (photoURL, title, price, content) => {
     const adding = await axios.post(
       `http://localhost:8080/trade/add`,
       {
+        writerId: `${user.id}`,
         photoURL: `${photoURL}`,
-        writerId: `${writerId}`,
         title: `${title}`,
         price: `${price}`,
         content: `${content}`,
-        viewCnt: `${viewCnt}`,
+        viewCnt: "0",
       },
     );
     return adding.data;
   };
 
+  // const addSubmit = useCallback(async () => {
+  //   try{
+  //     const formData = new FormData();
+  //     formData.append(photoURL);
+  //     formData.append(title);
+  //     formData.append(price);
+  //     formData.append(content);
+
+  //     await 
+  //   }
+  // })
+
   const { open, close } = props;
+
   const ariaLabel = { 'aria-label': 'description' };
+
   const theme = createTheme({
     palette: {
       primary: {
@@ -80,6 +82,8 @@ const AddPost = (props) => {
     right: "30px",
     bottom: "30px",
   }
+
+  
   
 
   return (
@@ -92,9 +96,9 @@ const AddPost = (props) => {
       <ImageUpload />
     </ThemeProvider>
     <Divider />
-    <Input placeholder="글제목" inputProps={ariaLabel} value={addItem.data.title} />
+    <Input placeholder="글제목" inputProps={ariaLabel} value= {addItem.title}/>
     <Divider />
-    <Input placeholder="가격" inputProps={ariaLabel} />
+    <Input placeholder="가격" inputProps={ariaLabel} value={addItem.price}/>
     <FormControlLabel className="form_control_label" control={<Checkbox defaultChecked />} label="나눔" />
     <Divider />
     <TextField
@@ -103,11 +107,11 @@ const AddPost = (props) => {
       rows={6}
       placeholder="게시글 내용을 작성해주세요. (판매 금지 물품은 게시가 제한될 수 있어요.)"
       variant="standard"
+      value = {addItem.content}
     />
     <button style={BtnStyle} onClick={addItem}>
       저장하기
     </button>
-
   </Box>
   );
 }
