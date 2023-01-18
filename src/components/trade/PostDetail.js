@@ -21,6 +21,7 @@ import {
 import { useNavigate } from "react-router-dom";
 
 const PostDetail = (props) => {
+<<<<<<< HEAD
 	const { postID } = useParams();
 	const [color, setColor] = useState("#1561a9");
 	const [img, setImg] = useState();

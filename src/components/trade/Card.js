@@ -25,7 +25,6 @@ function Card({ post }) {
 			console.error(error);
 		}
 	}
-
 	return (
 		<Box onClick={() => navigate(`/post/${post.id}`)}>
 			<div className="card-link">
