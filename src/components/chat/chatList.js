@@ -7,16 +7,35 @@ import {
 	ListItemText,
 } from "@mui/material";
 import { Box } from "@mui/system";
-import * as React from "react";
+import React, { useEffect, useState } from "react";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import tempData from "../../components/chat/tempData";
 import { Link } from "react-router-dom";
 import Room from "./room";
+import axios from "axios";
 
-function ChatList({ roomId }) {
+function ChatList({ roomId, userId }) {
 	// tempData 가져오기
 	const chatLists = tempData;
+	const [chatList, setChatList] = useState([]);
+	useEffect(function async() {
+		getAllChatRoom();
+	}, []);
+
+	// GET
+	async function getAllChatRoom() {
+		try {
+			userId = 1;
+			const response = await axios.get(
+				`http://localhost:8080/chat/user/${userId}`
+			);
+			setChatList(response.data);
+			// console.log(response);
+		} catch (e) {
+			console.log(e);
+		}
+	}
 
 	return (
 		<Grid
@@ -95,13 +114,14 @@ function ChatList({ roomId }) {
 					<List
 						style={{
 							overflow: "scroll",
-							maxHeight: "70vh",
 						}}
 					>
-						{/* 실제 다른 유저와의 채팅룸 */}
-						{chatLists.map((room) => (
-							<Room key={room.id} room={room} />
-						))}
+						<Box minHeight={"calc(78vh - 64px)"}>
+							{/* 실제 다른 유저와의 채팅룸 */}
+							{chatList.map((room) => (
+								<Room key={room.roomId} room={room} />
+							))}
+						</Box>
 					</List>
 					<List disablePadding>
 						<ListItem

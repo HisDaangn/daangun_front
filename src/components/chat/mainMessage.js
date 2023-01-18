@@ -6,7 +6,7 @@ import styles from "./mainMessage.module.css";
 export default function MainMessage({ data }) {
 	return (
 		<div className={styles.container}>
-			<Paper className={styles.paper} zDepth={2}>
+			<Paper className={styles.paper} zdepth={2}>
 				<Paper className={styles.messagesBody}>
 					{/* 여기를 백엔드와 연결해서 구현해야 함 */}
 					{/* 
@@ -19,14 +19,14 @@ export default function MainMessage({ data }) {
 						message="테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다"
 						timestamp="MM/DD 00:00"
 						photoURL="/img/profile_default.png"
-						displayName={data.chatUser}
+						displayName={"홍길동"}
 						avatarDisp={true}
 					/>
 					<MessageLeft
 						message="테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다"
 						timestamp="MM/DD 00:00"
 						photoURL="/img/profile_default.png"
-						displayName={data.chatUser}
+						displayName={"홍길동"}
 						avatarDisp={false}
 					/>
 					<MessageRight
@@ -47,7 +47,7 @@ export default function MainMessage({ data }) {
 						message="테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다"
 						timestamp="MM/DD 00:00"
 						photoURL="/img/profile_default.png"
-						displayName={data.chatUser}
+						displayName={"홍길동"}
 						avatarDisp={false}
 					/>
 					<MessageRight
@@ -61,7 +61,7 @@ export default function MainMessage({ data }) {
 						message="테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다"
 						timestamp="MM/DD 00:00"
 						photoURL="/img/profile_default.png"
-						displayName={data.chatUser}
+						displayName={"홍길동"}
 						avatarDisp={false}
 					/>
 					<MessageRight
