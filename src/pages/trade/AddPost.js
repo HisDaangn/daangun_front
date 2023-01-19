@@ -1,22 +1,18 @@
 import React from 'react';
-import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import axios from 'axios';
-import ImageUpload from '../../components/trade/ImageUpload';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect, useCallback } from 'react';
 import { useParams } from "react-router-dom";
+import { Row, Col } from 'reactstrap';
+import AWS from 'aws-sdk';
+import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import {
   Box,
-  createTheme,
-  ThemeProvider,
-  Button,
-  Grid,
-  Divider,
   TextField,
   Input,
+  Button,
   Checkbox, FormControlLabel,
 } from "@mui/material";
-import { Api } from '@mui/icons-material';
 
 
 const AddPost = ({onclose}) => {
@@ -52,32 +48,46 @@ const AddPost = ({onclose}) => {
     
   };
 
-  // const addSubmit = useCallback(async () => {
-  //   try{
-  //     const formData = new FormData();
-  //     formData.append(photoURL);
-  //     formData.append(title);
-  //     formData.append(price);
-  //     formData.append(content);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const ACCESS_KEY = 'AKIA3ZKVKUTIGQBPZ2CB';
+  const SECRET_ACCESS_KEY = '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';
+  const REGION = "ap-northeast-2";
+  const S3_BUCKET = 'hisdaangn';
 
-  //     await 
-  //   }
-  // })
-
-
-  const ariaLabel = { 'aria-label': 'description' };
-
-  const theme = createTheme({
-    palette: {
-      primary: {
-        main: '#000000',
-      },
-      secondary: {
-        main: '#ed7833',
-      }
-    },
+  AWS.config.update({
+    accessKeyId: ACCESS_KEY,
+    secretAccessKey: SECRET_ACCESS_KEY
   });
 
+  const myBucket = new AWS.S3({
+    params: { Bucket: S3_BUCKET },
+    region: REGION,
+  });
+
+  const handleFileInput = (e) => {
+    setSelectedFile(e.target.files[0]);
+  }
+
+  const uploadFile = (file) => {
+    const params = {
+      ACL: 'public-read',
+      Body: file,
+      Bucket: S3_BUCKET,
+      Key: file.name
+    };
+
+    myBucket.putObject(params)
+      .on('httpUploadProgress', (evt) => {
+        setTimeout(() => {
+          setSelectedFile(null);
+        }, 3000)
+      })
+      .send((err) => {
+        if (err) console.log(err)
+      })
+  }
+
+  const ariaLabel = { 'aria-label': 'description' };
   const BtnStyle = {
     color: "white",
     backgroundColor: "#ed7833",
@@ -99,20 +109,30 @@ const AddPost = ({onclose}) => {
 
   return (
     <Box>
-    <ThemeProvider theme={theme}>
       <Box sx={{ fontSize: 20, fontWeight: 'bold', m: 1 }}>중고거래 글쓰기</Box>
-    </ThemeProvider>
-    <ThemeProvider theme={theme}>
-      <Button variant="outlined" startIcon={<CameraAltIcon />}>0/10</Button>
-      <ImageUpload />
-    </ThemeProvider>
-    <Divider />
+      <br />
+      <div>
+        <Row>
+          <Col>
+            <label htmlFor="ex_file">
+            <img style={{ width: "50px", height: "30px" }} src={"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3vPBRhfTywuwJGnpnUj-jesurCPI7Cw-L_w&usqp=CAU"} alt="url" />
+            {/* <Button variant="outlined" startIcon={<CameraAltIcon />}></Button> */}
+              <br />
+            </label>
+            <Input style={{ display: "none" }} id="ex_file" color="primary" type="file" onChange={(event) => {
+              setPhotoURL('https://' + S3_BUCKET + '.s3.' + REGION + '.amazonaws.com/' + document.getElementById("ex_file").files[0].name);
+              handleFileInput(event);
+            }}
+            />
+          </Col>
+        </Row>
+      </div>
+     <hr style={{ marginLeft: "10px" }} />
     <Input placeholder="글제목" inputProps={ariaLabel} onChange={(event)=>setTitle(event.target.value)} />
-    <Divider />
     <Input placeholder="가격" inputProps={ariaLabel} onChange={(event)=>setPrice(event.target.value)}/>
     <FormControlLabel className="form_control_label" control={<Checkbox defaultChecked />} label="나눔" />
-    <Divider />
     <TextField
+    fullWidth sx={{ m: 1 }}
       id="standard-multiline-static"
       multiline
       rows={6}
@@ -121,7 +141,10 @@ const AddPost = ({onclose}) => {
       onChange={(event)=>setContent(event.target.value)}
       // value = {addItem.content}
     />
-    <button style={BtnStyle} onClick={addItem}>
+    <button style={BtnStyle} onClick={() => {
+        addItem();
+        uploadFile(selectedFile);
+      }}>
       저장하기
     </button>
   </Box>

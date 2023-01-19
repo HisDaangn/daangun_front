@@ -11,13 +11,13 @@ import "./PostDetail.css";
 
 import "./Cards.css";
 import {
-    Avatar,
-    Box,
-    Slider,
-    Stack,
-    createTheme,
-    ThemeProvider,
-    Modal,
+	Avatar,
+	Box,
+	Slider,
+	Stack,
+	createTheme,
+	ThemeProvider,
+	Modal,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
@@ -95,24 +95,6 @@ const PostDetail = (props) => {
             },
         },
     });
-    useEffect(() => {
-        if (init) {
-            if (writer.temperature < 36.5) {
-                setColor("black");
-                setImg(bad);
-            } else if (writer.temperature < 40) {
-                setColor("#1561a9");
-                setImg(good);
-            } else if (writer.temperature < 50) {
-                setColor("#df9100");
-                setImg(verygood);
-            } else {
-                setColor("#de5d06");
-                setImg(excellent);
-            }
-        }
-
-    }, [init]);
     useEffect(() => {
         if (init) {
             const gId = JSON.parse(localStorage.getItem("sessionInfo"))?.id;
@@ -205,64 +187,6 @@ const PostDetail = (props) => {
             console.error(error);
         }
     }
-    async function moveToChatRoom() {
-        try {
-            const response = await axios.post(`http://localhost:8080/chat/add`, {
-                pubId: 5,
-                subId: 1,
-                postId: postID,
-            });
-            setChatRoomId(response.data);
-            console.log(response);
-        } catch (e) {
-            console.log(e);
-        }
-    }
-
-    //GET 상세 게시글 조회
-    async function getData() {
-        try {
-            //응답 성공
-            await axios.get(`http://localhost:8080/trade/${postID}`)
-                .then((response) => {
-                    setValue(response.data);
-                    setWriter(response.data.writer);
-                    console.log(response);
-                });
-            setInit(true);
-        } catch (error) {
-            //응답 실패
-            console.error(error);
-        }
-    }
-    //PATCH 끌어올리기
-    async function lift() {
-        try {
-            //응답 성공
-            const response = await axios.patch(`http://localhost:8080/trade/lift/${postID}`, {
-                expose_at: `${value.expose_at}`,
-
-            });
-            console.log(response);
-            console.log("liftBtn click !");
-        } catch (error) {
-            //응답 실패
-            console.error(error);
-        }
-    }
-    //DELETE 삭제하기
-    async function deleteData() {
-        // console.log(id.id);
-        try {
-            //응답 성공
-            const response = await axios.delete(`http://localhost:8080/trade/${postID}`);
-            console.log(response);
-            console.log(postID);
-        } catch (error) {
-            //응답 실패
-            console.error(error);
-        }
-    }
     const openDeleteModal = () => {
         setDeleteModalOpen(true);
     };
@@ -279,6 +203,7 @@ const PostDetail = (props) => {
     };
     const onChat = chatBtn => {
         console.log("chatBtn click !");
+        moveToChatRoom();
     }
     const BtnStyle = {
         border: "1px solid #d1d3d8",

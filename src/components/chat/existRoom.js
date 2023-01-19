@@ -23,7 +23,7 @@ function ExistRoom({ roomId }) {
 			const response = await axios.get(
 				`http://localhost:8080/chat/room/${roomId}`
 			);
-			console.log(response);
+			// console.log(response);
 			setPubName(response.data.pubName);
 			setPhotoURL(response.data.post.photoURL);
 			setTitle(response.data.post.title);
@@ -90,7 +90,12 @@ function ExistRoom({ roomId }) {
 				</ListItemButton>
 			</List>
 			<Box>
-				<MainMessage messages={null} profileImg={null} pubName={pubName} />
+				<MainMessage
+					messages={null}
+					profileImg={null}
+					pubName={pubName}
+					roomId={roomId}
+				/>
 			</Box>
 		</Grid>
 	);
