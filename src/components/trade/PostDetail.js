@@ -7,7 +7,6 @@ import bad from "./img/bad.png";
 import good from "./img/good.png";
 import verygood from "./img/verygood.png";
 import excellent from "./img/excellent.png";
-// import GaugeBar from "./../common/layout/GaugeBar";
 import "./PostDetail.css";
 
 import "./Cards.css";
@@ -38,6 +37,8 @@ const PostDetail = (props) => {
     const [loginlift, setLoginLift] = useState(false);
     const navigate = useNavigate();
     const userDB = JSON.parse(localStorage.getItem("sessionInfo"));
+    const REGION = "ap-northeast-2";
+    const S3_BUCKET = 'hisdaangn';
 
     const del = async () => {
         console.log("del 실행");
@@ -62,6 +63,40 @@ const PostDetail = (props) => {
     useEffect(() => {
         if (init) setWriter(value.writer);
     }, [init]);
+    useEffect(() => {
+        if (init) {
+            if (writer.temperature < 36.5) {
+                setColor("black");
+                setImg(bad);
+            } else if (writer.temperature < 40) {
+                setColor("#1561a9");
+                setImg(good);
+            } else if (writer.temperature < 50) {
+                setColor("#df9100");
+                setImg(verygood);
+            } else {
+                setColor("#de5d06");
+                setImg(excellent);
+            }
+        }
+
+    }, [init]);
+    const theme = createTheme({
+        palette: {
+            bad: {
+                main: '#1561a9',
+            },
+            good: {
+                main: '#319e45',
+            },
+            verygood: {
+                main: '#df9100',
+            },
+            excelent: {
+                main: '#de5d06',
+            },
+        },
+    });
     useEffect(() => {
         if (init) {
             if (writer.temperature < 36.5) {
@@ -110,23 +145,6 @@ const PostDetail = (props) => {
         },
         [chatRoomId]
     );
-    const theme = createTheme({
-        palette: {
-            bad: {
-                main: '#1561a9',
-            },
-            good: {
-                main: '#319e45',
-            },
-            verygood: {
-                main: '#df9100',
-            },
-            excelent: {
-                main: '#de5d06',
-            },
-        },
-    });
-
     // POST
     async function moveToChatRoom() {
         try {
@@ -326,23 +344,12 @@ const PostDetail = (props) => {
                     transform: "translate(-50%, -50%)",
                 }}
             >
-                <div
-                    style={{
-                        width: "100%",
-                        height: "75%",
-                    }}>
-                    <img
-                        style={{
-                            width: "100%",
-                            height: "100%",
-                            objectFit: "cover",
-                        }}
-                        src={value.photoURL}
-                        alt="img"
-                    />
-                </div>
+                <img style={{
+                    width: "100%",
+                    height: "auto",
+                }} src={value.photoURL} />
 
-                <br />
+                <br /><br />
                 <div>
                     <Stack direction="row" spacing={5} justifyContent="space-between">
                         <Avatar />
@@ -386,7 +393,6 @@ const PostDetail = (props) => {
                                     </button>
                                 </Box>
                             </Modal> </div> : <></>}
-
                         <div style={{
                             float: "right",
                         }}>
@@ -428,7 +434,6 @@ const PostDetail = (props) => {
                                 매너온도
                             </div>
                         </div>
-
                     </Stack>
                 </div>
                 <hr />
