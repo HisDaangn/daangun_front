@@ -3,7 +3,7 @@ import PostList from "../../components/trade/PostList";
 import CardList from "../../components/trade/CardList";
 
 
-function ViewPost(Items) {
+function ViewPost() {
 
   
 
@@ -12,11 +12,11 @@ function ViewPost(Items) {
         <PostList />
         <div>
 							<CardList
-                    imgs={Items.imgs}
-                    title={Items.title}
-                    price={Items.price}
-                    interest={Items.interest}
-                    chatting={Items.chatting}
+                    // imgs={Items.imgs}
+                    // title={Items.title}
+                    // price={Items.price}
+                    // interest={Items.interest}
+                    // chatting={Items.chatting}
                     />
         </div>
     </div>
