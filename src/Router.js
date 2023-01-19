@@ -10,7 +10,6 @@ import ViewPost from "./pages/trade/ViewPost";
 import { drawerWidth } from "./constants/commons";
 import Header from "./components/common/layout/Header";
 import Mypage from "./components/user/Mypage";
-import Footer from "./components/common/layout/Footer";
 
 function Router() {
   return (
@@ -42,7 +41,6 @@ function Router() {
               <Route path="/websockettest" element={<WebSocketTest />} />
             </>
           </Routes>
-          <Footer />
         </Box>
       </Box>
     </BrowserRouter>
