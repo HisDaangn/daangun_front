@@ -29,7 +29,7 @@ function Card({ post }) {
 		<Box onClick={() => navigate(`/post/${post.id}`)}>
 			<div className="card-link">
 				<div className="card-top">
-					<img className="card-img" src="./img/bad.png" />
+					<img className="card-img" src={post.photoURL} />
 					<div className="card-desc">
 						<h2 className="card-title">{post.title}</h2>
 						<div className="card-price">{post.price}</div>
