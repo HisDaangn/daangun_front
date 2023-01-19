@@ -76,7 +76,7 @@ export default function Footer() {
               <td>회사 소개</td>
             </tr>
             <tr>
-              <td colspan="2">당근알바</td>
+              <td colSpan="2">당근알바</td>
               <td>인재 채용</td>
             </tr>
             <tr>
