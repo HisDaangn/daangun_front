@@ -22,19 +22,19 @@ function PostList() {
 
 
     useEffect(() => {
-            const sId = JSON.parse(localStorage.getItem("sessionInfo"))?.id;
-            if(sId == null) {
-                setLoginAdd(false);
-            }
-            else
-                setLoginAdd(true);
+        const sId = JSON.parse(localStorage.getItem("sessionInfo"))?.id;
+        if (sId == null) {
+            setLoginAdd(false);
+        }
+        else
+            setLoginAdd(true);
     }, [])
 
     const [addModalOpen, setAddModalOpen] = useState(false);
 
     const openAddModal = () => {
-        
-        if(loginAdd ){
+
+        if (loginAdd) {
             setAddModalOpen(true);
         }
         else {
@@ -61,36 +61,40 @@ function PostList() {
         color: "#212124",
         fontWeight: "bolder",
         fontSize: "16px",
+        backgroundColor: "white",
+        borderRadius: "5px",
+        marginLeft: "10px",
+        marginTop: "14px",
     };
     return (
         <div className="margin-bottom">
             <h1 style={{ textAlign: "center", fontSize: "38px", marginTop: "50px" }}>
-            중고거래 인기매물
-        </h1>
-        <p>
-            <Box style={{ textDecoration: "none" , float: "right" }}>
-            <button style={BtnStyle} onClick={openAddModal}>추가하기</button>
-             
-                <Modal 
-                    open={addModalOpen}
-                    onClose={closeAddModal}
-                        >
-                            <Box sx={style}>
-                                <AddModal
-                                    onclose = {closeAddModal}
-                                // photoURL = {value.photoURL}
-                                // title = {value.title}
-                                // price = {value.price}
-                                // content = {value.content}
-                                />
-                            </Box>
-                        </Modal>
-            
-    
-            
-            
-            </Box>
-        </p>
+                중고거래 인기매물
+            </h1>
+            <p>
+                <Box style={{ textDecoration: "none", float: "right" }}>
+                    <button style={BtnStyle} onClick={openAddModal}>추가하기</button>
+
+                    <Modal
+                        open={addModalOpen}
+                        onClose={closeAddModal}
+                    >
+                        <Box sx={style}>
+                            <AddModal
+                                onclose={closeAddModal}
+                            // photoURL = {value.photoURL}
+                            // title = {value.title}
+                            // price = {value.price}
+                            // content = {value.content}
+                            />
+                        </Box>
+                    </Modal>
+
+
+
+
+                </Box>
+            </p>
         </div>
     );
 }
