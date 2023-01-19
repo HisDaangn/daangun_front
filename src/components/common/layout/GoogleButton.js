@@ -133,6 +133,10 @@ function GoogleButton() {
                   extra.sub,
                   extra.extraAddress
                 );
+                setOpen(false);
+                alert("회원가입 완료! 다시 로그인해주세요");
+                localstorage.removeItem("sessionInfo");
+                window.location.reload();
               }}
             >
               완료
@@ -153,7 +157,7 @@ export const signup = async (
   googleId,
   address
 ) => {
-  await axios.post(`http://localhost:8080/user/signup`, {
+  await axios.post(`http://localhost:8080/user/signup/`, {
     e_address: e_address,
     name: name,
     temperature: `36.5`,
