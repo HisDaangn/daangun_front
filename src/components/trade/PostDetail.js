@@ -11,13 +11,13 @@ import "./PostDetail.css";
 
 import "./Cards.css";
 import {
-	Avatar,
-	Box,
-	Slider,
-	Stack,
-	createTheme,
-	ThemeProvider,
-	Modal,
+    Avatar,
+    Box,
+    Slider,
+    Stack,
+    createTheme,
+    ThemeProvider,
+    Modal,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
@@ -31,10 +31,10 @@ const PostDetail = (props) => {
     const [deleteModalOpen, setDeleteModalOpen] = useState(false);
     const [editModalOpen, setEditModalOpen] = useState(false);
     const [chatRoomId, setChatRoomId] = useState("");
-    const [logincheck, setLoginCheck] = useState(false);
     const [loginmy, setLoginMy] = useState(false);
     const [loginchat, setLoginChat] = useState(false);
     const [loginlift, setLoginLift] = useState(false);
+    const [isLogin, setIsLogin] = useState(false);
     const navigate = useNavigate();
     const userDB = JSON.parse(localStorage.getItem("sessionInfo"));
     const REGION = "ap-northeast-2";
@@ -42,7 +42,7 @@ const PostDetail = (props) => {
 
     const del = async () => {
         console.log("del 실행");
-        // await deleteData();
+        await deleteData();
         closeDeleteModal();
     };
     useEffect(
@@ -79,7 +79,6 @@ const PostDetail = (props) => {
                 setImg(excellent);
             }
         }
-
     }, [init]);
     const theme = createTheme({
         palette: {
@@ -101,10 +100,12 @@ const PostDetail = (props) => {
         if (init) {
             const gId = JSON.parse(localStorage.getItem("sessionInfo"))?.id;
             if (gId == null) {
-                alert("로그인부터 해주세용");
+                // alert("로그인부터 해주세용");
+                setIsLogin(false);
                 setLoginChat(true);
             }
             else {
+                setIsLogin(true);
                 if (gId == writer.id) {
                     setLoginMy(true);
                     setLoginLift(true);
@@ -176,7 +177,6 @@ const PostDetail = (props) => {
     }
     //DELETE 삭제하기
     async function deleteData() {
-        // console.log(id.id);
         try {
             //응답 성공
             const response = await axios.delete(
@@ -205,7 +205,9 @@ const PostDetail = (props) => {
     };
     const onChat = chatBtn => {
         console.log("chatBtn click !");
-        moveToChatRoom();
+        if (isLogin)
+            moveToChatRoom();
+        else alert("로그인 먼저 해주세요");
     }
     const BtnStyle = {
         border: "1px solid #d1d3d8",
@@ -215,7 +217,8 @@ const PostDetail = (props) => {
         fontSize: "16px",
         backgroundColor: "white",
         borderRadius: "5px",
-        marginLeft: "10px"
+        marginLeft: "10px",
+        marginTop: "14px",
     }
     const staticBtnStyle = {
         color: "white",
@@ -271,7 +274,7 @@ const PostDetail = (props) => {
             >
                 <img style={{
                     width: "100%",
-                    height: "auto",
+                    height: "400px",
                 }} src={value.photoURL} />
 
                 <br /><br />
@@ -344,7 +347,7 @@ const PostDetail = (props) => {
                                     '.MuiSlider-rail': {
                                         color: '#A9A9A9',
                                     },
-                                }} valueLabelDisplay="off" value={init ? writer.temperature : 36.5} />
+                                }} max={75} valueLabelDisplay="off" value={init ? writer.temperature : 36.5} />
                             </ThemeProvider>
                         </div>
                         <div>
@@ -354,6 +357,7 @@ const PostDetail = (props) => {
                                 fontSize: "8px",
                                 fontWeight: "600",
                                 color: "grey",
+                                marginRight: "2px",
                             }}>
                                 매너온도
                             </div>
