@@ -80,27 +80,12 @@ const PostDetail = (props) => {
         }
 
     }, [init]);
-    const theme = createTheme({
-        palette: {
-            bad: {
-                main: '#1561a9',
-            },
-            good: {
-                main: '#319e45',
-            },
-            verygood: {
-                main: '#df9100',
-            },
-            excelent: {
-                main: '#de5d06',
-            },
-        },
-    });
     useEffect(() => {
         if (init) {
-            const gId = JSON.parse(localStorage.getItem("sessionInfo")).id;
+            const gId = JSON.parse(localStorage.getItem("sessionInfo"))?.id;
             if (gId == null) {
-                console.log("로그인부터 해라");
+                alert("로그인부터 해주세용");
+                setLoginChat(true);
             }
             else {
                 if (gId == writer.id) {
@@ -125,6 +110,23 @@ const PostDetail = (props) => {
         },
         [chatRoomId]
     );
+    const theme = createTheme({
+        palette: {
+            bad: {
+                main: '#1561a9',
+            },
+            good: {
+                main: '#319e45',
+            },
+            verygood: {
+                main: '#df9100',
+            },
+            excelent: {
+                main: '#de5d06',
+            },
+        },
+    });
+
     // POST
     async function moveToChatRoom() {
         try {
@@ -318,23 +320,31 @@ const PostDetail = (props) => {
                 style={{
                     position: "absolute",
                     left: "50%",
-                    top: "50%",
-                    width: "50%",
+                    top: "40%",
+                    width: "33%",
                     height: "70%",
                     transform: "translate(-50%, -50%)",
                 }}
             >
-                <img
+                <div
                     style={{
                         width: "100%",
-                        height: "400px",
-                    }}
-                    src={value.photoURL}
-                    alt="img"
-                />
+                        height: "75%",
+                    }}>
+                    <img
+                        style={{
+                            width: "100%",
+                            height: "100%",
+                            objectFit: "cover",
+                        }}
+                        src={value.photoURL}
+                        alt="img"
+                    />
+                </div>
+
                 <br />
                 <div>
-                    <Stack direction="row" spacing={5} justifyContent="center">
+                    <Stack direction="row" spacing={5} justifyContent="space-between">
                         <Avatar />
                         <span style={{ marginLeft: "8px", }}>
                             <div style={{
@@ -377,45 +387,57 @@ const PostDetail = (props) => {
                                 </Box>
                             </Modal> </div> : <></>}
 
-                        <ThemeProvider theme={theme}>
-                            <Slider color='good' sx={{
-                                width: "150px",
-                                '& .MuiSlider-thumb': {
-                                    boxShadow: "none",
-                                    width: "0px",
-                                    height: "0px",
-                                },
-                                '.MuiSlider-track': {
-                                    color: { color },
-                                },
-                                '.MuiSlider-rail': {
-                                    color: '#A9A9A9',
-                                },
-                                '& .MuiSlider-valueLabel': {
-                                    fontSize: 12,
-                                    fontWeight: 'normal',
-                                    top: -6,
-                                    backgroundColor: 'unset',
-                                    color: theme.palette.text.primary,
-                                    '&:before': {
-                                        display: 'none',
+                        <div style={{
+                            float: "right",
+                        }}>
+                            <Box sx={{
+                                float: "right",
+                                fontSize: "15px",
+                                fontWeight: "600",
+                                color: { color },
+                            }}>
+                                {init ? writer.temperature : 36.5} °C
+                            </Box>
+                            <br />
+                            <ThemeProvider theme={theme}>
+                                <Slider color='good' sx={{
+                                    width: "150px",
+                                    '& .MuiSlider-thumb': {
+                                        boxShadow: "none",
+                                        width: "0px",
+                                        height: "0px",
                                     },
-                                    '& *': {
-                                        background: 'transparent',
-                                        color: theme.palette.mode === 'dark' ? '#fff' : '#000',
+                                    '.MuiSlider-track': {
+                                        color: { color },
                                     },
-                                },
+                                    '.MuiSlider-rail': {
+                                        color: '#A9A9A9',
+                                    },
 
-                            }} value={init ? writer.temperature : 36.5} />
-                        </ThemeProvider>
-                        <Avatar alt="img" src={img} />
+                                }} valueLabelDisplay="off" value={init ? writer.temperature : 36.5} />
+                            </ThemeProvider>
+                        </div>
+                        <div>
+                            <Avatar alt="img" src={img} />
+                            <div style={{
+                                float: "right",
+                                fontSize: "8px",
+                                fontWeight: "600",
+                                color: "grey",
+                            }}>
+                                매너온도
+                            </div>
+                        </div>
+
                     </Stack>
                 </div>
                 <hr />
                 <div>
-                    <Box sx={{ fontSize: 25, fontWeight: 'regular', m: 2 }}>{value.title}</Box>
-                    <Box sx={{ fontSize: 18, fontWeight: 'bold', m: 2 }}>{value.price} 원</Box>
-                    <Box sx={{ fontSize: 16, fontWeight: 'regular', m: 2 }}>{value.content}</Box>
+                    <Box sx={{ fontSize: 20, fontWeight: '600', lineHeight: '1.5', marginTop: "20px" }}>{value.title}</Box>
+                    <Box sx={{ fontSize: 13, color: "#868e96", lineHeight: '1.46', marginTop: "4px" }}>{value.created_at}</Box>
+                    <Box sx={{ fontSize: 18, fontWeight: 'bold', lineHeight: '1.76', letterSpacing: '-0.6px', marginTop: "4px" }}>{value.price}원</Box>
+                    <Box sx={{ fontSize: 17, fontWeight: 'regular', lineHeight: '1.6', letterSpacing: '-0.6px', marginTop: "4px", wordBreak: 'all-break' }}>{value.content}</Box>
+                    <Box sx={{ color: "#868e96", fontSize: "13px", lineHeight: '1.76', letterSpacing: '-0.6px', marginTop: "4px" }}>조회: {value.viewCnt}</Box>
 
                 </div >
                 <Stack direction="row" justifyContent="flex-end">
@@ -430,9 +452,7 @@ const PostDetail = (props) => {
                         </button>
                     </div> : <div></div>}
                 </Stack>
-
-
-            </div>
+            </div >
         </div >
     );
 };

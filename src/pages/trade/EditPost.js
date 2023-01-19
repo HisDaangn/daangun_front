@@ -5,12 +5,9 @@ import { Row, Col } from 'reactstrap';
 import axios from 'axios';
 import {
   Box,
-  createTheme,
-  ThemeProvider,
-  Divider,
   TextField,
   Input,
-  Checkbox, FormControlLabel,
+  Checkbox, FormControlLabel, iconClasses,
 } from "@mui/material";
 
 const EditPost = (id) => {
@@ -18,8 +15,7 @@ const EditPost = (id) => {
   const [price, setPrice] = useState(id.price);
   const [photoURL, setPhotoURL] = useState(id.photoURL);
   const [content, setContent] = useState(id.content);
-  const fileInput = useRef();
-
+  const [share, setShare] = useState(false);
   const edit = async () => {
     await axios.patch(`http://localhost:8080/trade/${id.id}`, {
       photoURL: `${photoURL}`,
@@ -47,7 +43,9 @@ const EditPost = (id) => {
   const handleFileInput = (e) => {
     setSelectedFile(e.target.files[0]);
   }
-
+  const checkShare = (e) => {
+    setShare(true);
+  }
   const uploadFile = (file) => {
     const params = {
       ACL: 'public-read',
@@ -81,53 +79,31 @@ const EditPost = (id) => {
     right: "30px",
     bottom: "30px",
   }
-  const theme = createTheme({
-    palette: {
-      primary: {
-        main: '#000000',
-      },
-      secondary: {
-        main: '#ed7833',
-      }
-    },
-  });
   return (
     <Box>
-      <ThemeProvider theme={theme}>
-        <Box sx={{ fontSize: 20, fontWeight: 'bold', m: 1 }}>중고거래 글 수정하기</Box>
-      </ThemeProvider>
-      <ThemeProvider theme={theme}>
-        <div>
-          <Row>
-            <Col>
-              <label htmlFor="ex_file">
-                <img style={{ maxWidth: "100px" }} src={id.photoURL} alt="url" />
-                <br />
-              </label>
-              {/* <Input style={{ display: "none" }} id="ex_file" color="primary" type="file" onChange={(event) => {
-                setPhotoURL('https://' + S3_BUCKET + '.s3.' + REGION + '.amazonaws.com/' + event.target.value);
-                handleFileInput(event);
-              }}
-                ref={fileInput}
-              /> */}
-              <Input style={{ display: "none" }} id="ex_file" color="primary" type="file" onChange={(event) => {
-                setPhotoURL('https://' + S3_BUCKET + '.s3.' + REGION + '.amazonaws.com/' + document.getElementById("ex_file").files[0].name);
-                handleFileInput(event);
-
-              }}
-                ref={fileInput}
-              />
-            </Col>
-          </Row>
-        </div>
-      </ThemeProvider>
-      <Divider />
-      <Input placeholder="글제목" inputProps={ariaLabel} defaultValue={title} onChange={(event) => { setTitle(event.target.value) }} />
-      <Divider />
-      <Input placeholder="가격" inputProps={ariaLabel} defaultValue={price} onChange={(event) => { setPrice(event.target.value) }} />
-      <FormControlLabel className="form_control_label" control={<Checkbox style={{ float: "right" }} defaultChecked />} label="나눔" />
-      <Divider />
+      <Box sx={{ fontSize: 20, fontWeight: 'bold', m: 1 }}>중고거래 글 수정하기</Box>
+      <br />
+      <div>
+        <Row>
+          <Col>
+            <label htmlFor="ex_file">
+              <img style={{ width: "50px", height: "30px" }} src={id.photoURL} alt="url" />
+              <br />
+            </label>
+            <Input style={{ display: "none" }} id="ex_file" color="primary" type="file" onChange={(event) => {
+              setPhotoURL('https://' + S3_BUCKET + '.s3.' + REGION + '.amazonaws.com/' + document.getElementById("ex_file").files[0].name);
+              handleFileInput(event);
+            }}
+            />
+          </Col>
+        </Row>
+      </div>
+      <hr style={{ marginLeft: "10px" }} />
+      <Input fullWidth sx={{ m: 1 }} placeholder="글제목" inputProps={ariaLabel} defaultValue={title} onChange={(event) => { setTitle(event.target.value) }} />
+      <Input sx={{ m: 1 }} placeholder="가격" inputProps={ariaLabel} defaultValue={price} onChange={(event) => { share ? setPrice(0) : setPrice(event.target.value) }} />
+      <FormControlLabel className="form_control_label" control={<Checkbox style={{ float: "right" }} onChange={(e) => checkShare(e)} />} label="나눔" />
       <TextField
+        fullWidth sx={{ m: 1 }}
         id="standard-multiline-static"
         multiline
         rows={6}
@@ -136,6 +112,7 @@ const EditPost = (id) => {
         defaultValue={content}
         onChange={(event) => { setContent(event.target.value) }}
       />
+      <br /><br /><br />
       <button style={BtnStyle} onClick={() => {
         edit();
         uploadFile(selectedFile);

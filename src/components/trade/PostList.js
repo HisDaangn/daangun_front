@@ -12,7 +12,7 @@ import {
     Modal,
 } from "@mui/material";
 
-function PostList(){
+function PostList() {
 
     const [title, setTitle] = useState();
     const [price, setPrice] = useState();
@@ -27,7 +27,6 @@ function PostList(){
     const closeAddModal = () => {
         setAddModalOpen(false);
     };
-
     const style = {
         position: 'absolute',
         top: '50%',
@@ -46,24 +45,24 @@ function PostList(){
         fontWeight: "bolder",
         fontSize: "16px",
     };
-    return(
+    return (
         <div className="margin-bottom">
             <h1 style={{ textAlign: "center", fontSize: "38px", marginTop: "50px" }}>
-            중고거래 인기매물
-        </h1>
-        <p>
-            <Box style={{ textDecoration: "none" , float: "right" }}>
-            <button style={BtnStyle} onClick={openAddModal}>추가하기</button>
-                <Modal
-                    open={addModalOpen}
-                    onClose={closeAddModal}
-                        >
-                            <Box sx={style}>
-                                <AddPost />
-                            </Box>
-                        </Modal>
-            </Box>
-        </p>
+                중고거래 인기매물
+            </h1>
+            <p>
+                <Box style={{ textDecoration: "none", float: "right" }}>
+                    <button style={BtnStyle} onClick={openAddModal}>추가하기</button>
+                    <Modal
+                        open={addModalOpen}
+                        onClose={closeAddModal}
+                    >
+                        <Box sx={style}>
+                            <AddPost />
+                        </Box>
+                    </Modal>
+                </Box>
+            </p>
         </div>
     );
 }
