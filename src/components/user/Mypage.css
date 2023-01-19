@@ -2,7 +2,8 @@
   border: 1px solid #d1d3d8;
   border-radius: 10px;
   width: 750px;
-  height: 550px;
+  height: fit-content;
+  padding: 50px;
   display: flex;
   margin: 5% auto;
   justify-content: center;

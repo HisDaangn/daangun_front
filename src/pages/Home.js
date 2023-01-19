@@ -10,56 +10,59 @@ function Home() {
   return (
     // 리팩토링과 컴포넌트화 필요함. 향후 수정 필요.
     // 전체 컨테이너
-    <>
+    <Box>
       {/* 첫번째 섹션 */}
-      <Box sx={{ backgroundColor: "#FBF7F2" }}>
-        <Box
-          position={"relative"}
-          sx={{
-            height: "760px",
-            width: "1024px",
-            padding: 0,
-            margin: "0 auto",
-          }}
-        >
-          <Container>
-            <Grid container>
-              <Grid item xs={5}>
-                <Typography
-                  variant="h2"
-                  paddingTop={"18rem"}
-                  fontWeight={"700"}
-                  lineHeight={"1.3"}
-                  marginBottom={"2.7rem"}
-                >
-                  당신 근처의
-                  <br />
-                  당근마켓
-                </Typography>
-                <Typography variant="body1" lineHeight={"1.5"}>
-                  중고 거래부터 동네 정보까지, 이웃과 함께해요.
-                  <br />
-                  가깝고 따뜻한 당신의 근처를 만들어요.
-                </Typography>
-              </Grid>
-              <Grid item xs={5}>
-                <Box
-                  component={"img"}
-                  src={"img/daangn1.webp"}
-                  position={"absolute"}
-                  width={"804px"}
-                  height={"685px"}
-                  bottom={0}
-                />
-              </Grid>
+      <Box
+        sx={{
+          backgroundColor: "#FBF7F2",
+          height: "760px",
+          width: "100%",
+          padding: 0,
+          margin: "0 auto",
+        }}
+      >
+        <Container>
+          <Grid container>
+            <Grid item xs={5}>
+              <Typography
+                marginLeft={"45px"}
+                variant="h3"
+                paddingTop={"15rem"}
+                fontWeight={"700"}
+                lineHeight={"1.3"}
+                marginBottom={"2.5rem"}
+              >
+                당신 근처의
+                <br />
+                당근마켓
+              </Typography>
+              <Typography
+                variant="body1"
+                lineHeight={"1.5"}
+                marginLeft={"50px"}
+              >
+                중고 거래부터 동네 정보까지, 이웃과 함께해요.
+                <br />
+                가깝고 따뜻한 당신의 근처를 만들어요.
+              </Typography>
             </Grid>
-          </Container>
-        </Box>
+            <Grid item xs={5}>
+              <Box
+                component={"img"}
+                src={"img/daangn1.webp"}
+                sx={{
+                  width: "804px",
+                  marginTop: "50px",
+                }}
+              />
+            </Grid>
+          </Grid>
+        </Container>
       </Box>
+
       {/* // 두번째 섹션 */}
       <Box sx={{ backgroundColor: "white" }} padding={"6rem 0"}>
         <Box
-          position={"relative"}
           sx={{
             width: "1024px",
             padding: 0,
@@ -122,7 +125,6 @@ function Home() {
       {/* 3번째 섹션 */}
       <Box sx={{ backgroundColor: "#E6F3E6" }} padding={"6rem 0"}>
         <Box
-          position={"relative"}
           sx={{
             width: "1024px",
             padding: 0,
@@ -176,7 +178,6 @@ function Home() {
       {/* // 네번째 섹션 */}
       <Box sx={{ backgroundColor: "white" }} padding={"6rem 0"}>
         <Box
-          position={"relative"}
           sx={{
             width: "1024px",
             padding: 0,
@@ -227,8 +228,7 @@ function Home() {
           </Container>
         </Box>
       </Box>
-      <Footer />
-    </>
+    </Box>
   );
 }
 export default Home;
