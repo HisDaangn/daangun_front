@@ -11,13 +11,13 @@ import "./PostDetail.css";
 
 import "./Cards.css";
 import {
-	Avatar,
-	Box,
-	Slider,
-	Stack,
-	createTheme,
-	ThemeProvider,
-	Modal,
+    Avatar,
+    Box,
+    Slider,
+    Stack,
+    createTheme,
+    ThemeProvider,
+    Modal,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
@@ -34,6 +34,7 @@ const PostDetail = (props) => {
     const [loginmy, setLoginMy] = useState(false);
     const [loginchat, setLoginChat] = useState(false);
     const [loginlift, setLoginLift] = useState(false);
+    const [isLogin, setIsLogin] = useState(false);
     const navigate = useNavigate();
     const userDB = JSON.parse(localStorage.getItem("sessionInfo"));
     const REGION = "ap-northeast-2";
@@ -41,7 +42,7 @@ const PostDetail = (props) => {
 
     const del = async () => {
         console.log("del 실행");
-        // await deleteData();
+        await deleteData();
         closeDeleteModal();
     };
     useEffect(
@@ -99,10 +100,12 @@ const PostDetail = (props) => {
         if (init) {
             const gId = JSON.parse(localStorage.getItem("sessionInfo"))?.id;
             if (gId == null) {
-                alert("로그인부터 해주세용");
+                // alert("로그인부터 해주세용");
+                setIsLogin(false);
                 setLoginChat(true);
             }
             else {
+                setIsLogin(true);
                 if (gId == writer.id) {
                     setLoginMy(true);
                     setLoginLift(true);
@@ -174,7 +177,6 @@ const PostDetail = (props) => {
     }
     //DELETE 삭제하기
     async function deleteData() {
-        // console.log(id.id);
         try {
             //응답 성공
             const response = await axios.delete(
@@ -203,7 +205,9 @@ const PostDetail = (props) => {
     };
     const onChat = chatBtn => {
         console.log("chatBtn click !");
-        moveToChatRoom();
+        if (isLogin)
+            moveToChatRoom();
+        else alert("로그인 먼저 해주세요");
     }
     const BtnStyle = {
         border: "1px solid #d1d3d8",
@@ -276,26 +280,21 @@ const PostDetail = (props) => {
                 <br /><br />
                 <div>
                     <Stack direction="row" spacing={5} justifyContent="space-between">
-                        <div style={{
-                            marginTop: '14px',
-                        }}>
-                            <Avatar />
-                            <span style={{ marginLeft: "8px", }}>
-                                <div style={{
-                                    fontSize: "15px",
-                                    fontWeight: "600",
-                                }}>
-                                    {init ? writer.name : "username"}
-                                </div>
-                                <div style={{
-                                    fontSize: "13px",
-                                    lineHeight: "1.46",
-                                }}>
-                                    {init ? writer.address : "address"}
-                                </div>
-                            </span>
-                        </div>
-
+                        <Avatar />
+                        <span style={{ marginLeft: "8px", }}>
+                            <div style={{
+                                fontSize: "15px",
+                                fontWeight: "600",
+                            }}>
+                                {init ? writer.name : "username"}
+                            </div>
+                            <div style={{
+                                fontSize: "13px",
+                                lineHeight: "1.46",
+                            }}>
+                                {init ? writer.address : "address"}
+                            </div>
+                        </span>
                         {loginmy ? <div>
                             <button style={BtnStyle} onClick={openEditModal}>수정하기</button>
                             <Modal
@@ -348,7 +347,7 @@ const PostDetail = (props) => {
                                     '.MuiSlider-rail': {
                                         color: '#A9A9A9',
                                     },
-                                }} valueLabelDisplay="off" value={init ? writer.temperature : 36.5} />
+                                }} max={75} valueLabelDisplay="off" value={init ? writer.temperature : 36.5} />
                             </ThemeProvider>
                         </div>
                         <div>
