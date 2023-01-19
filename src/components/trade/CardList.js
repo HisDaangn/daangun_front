@@ -1,11 +1,18 @@
 import React, { useEffect } from "react";
 import Card from "../../components/trade/Card";
 import './Cards.css';
+import { useState } from 'react';
 import axios from 'axios';
 
 function CardList(){
 
     const [Items, setItems] = React.useState([]);
+
+    const [user, setUser] = useState();
+
+    useEffect(()=>{
+        setUser(JSON.parse(localStorage.getItem("sessionInfo")));
+    }, [])
 
     useEffect(() => {
         loadData();

@@ -1,9 +1,10 @@
 import React from 'react';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
-import "./EditModal.css";
 import axios from 'axios';
 import ImageUpload from '../../components/trade/ImageUpload';
+import { useNavigate } from 'react-router-dom';
 import { useState, useEffect, useCallback } from 'react';
+import { useParams } from "react-router-dom";
 import {
   Box,
   createTheme,
@@ -15,45 +16,57 @@ import {
   Input,
   Checkbox, FormControlLabel,
 } from "@mui/material";
+import { Api } from '@mui/icons-material';
 
 
-const AddPost = (props) => {
+const AddPost = ({onclose}) => {
 
-  const [data, setData] = useState({
-    id: null
-  });
-  useEffect(() => {
-    if (props.data) {
-      setData(prevState => ({
-        ...prevState,
-        id: props.data.id
-      }));
-    }
-  }, [props.data]);
-  const onChangeHandler = useCallback((type, event) => {
-    setData(prevState => ({
-      ...prevState,
-      [type]: event.value
-    }))
-  }, [data]);
+  const [user, setUser] = useState();
+  const [userInit, setUserInit] = useState(false);
+  const [photoURL, setPhotoURL] = useState("www.google.com");
+  const [title, setTitle] = useState("");
+  const [price, setPrice] = useState();
+  const [content, setContent] = useState("");
+  const [view, setView] = useState(0);
+  useEffect(()=>{
+    setUser(JSON.parse(localStorage.getItem("sessionInfo")));
+  }, [])
+  
+  
+  const navigate = useNavigate();
+ 
 
-  const addItem = async (photoURL, writerId, title, price, content, viewCnt) => {
-    const adding = await axios.post(
+  const addItem = async () => {
+    await axios.post(
       `http://localhost:8080/trade/add`,
       {
+        writerId: `${user.id}`,
         photoURL: `${photoURL}`,
-        writerId: `${writerId}`,
         title: `${title}`,
         price: `${price}`,
         content: `${content}`,
-        viewCnt: `${viewCnt}`,
-      },
+        viewCnt: `${view}`,
+      }
     );
-    return adding.data;
+    onclose();
+    
   };
 
-  const { open, close } = props;
+  // const addSubmit = useCallback(async () => {
+  //   try{
+  //     const formData = new FormData();
+  //     formData.append(photoURL);
+  //     formData.append(title);
+  //     formData.append(price);
+  //     formData.append(content);
+
+  //     await 
+  //   }
+  // })
+
+
   const ariaLabel = { 'aria-label': 'description' };
+
   const theme = createTheme({
     palette: {
       primary: {
@@ -80,6 +93,8 @@ const AddPost = (props) => {
     right: "30px",
     bottom: "30px",
   }
+
+  
   
 
   return (
@@ -92,9 +107,9 @@ const AddPost = (props) => {
       <ImageUpload />
     </ThemeProvider>
     <Divider />
-    <Input placeholder="글제목" inputProps={ariaLabel} value={addItem.data.title} />
+    <Input placeholder="글제목" inputProps={ariaLabel} onChange={(event)=>setTitle(event.target.value)} />
     <Divider />
-    <Input placeholder="가격" inputProps={ariaLabel} />
+    <Input placeholder="가격" inputProps={ariaLabel} onChange={(event)=>setPrice(event.target.value)}/>
     <FormControlLabel className="form_control_label" control={<Checkbox defaultChecked />} label="나눔" />
     <Divider />
     <TextField
@@ -103,11 +118,12 @@ const AddPost = (props) => {
       rows={6}
       placeholder="게시글 내용을 작성해주세요. (판매 금지 물품은 게시가 제한될 수 있어요.)"
       variant="standard"
+      onChange={(event)=>setContent(event.target.value)}
+      // value = {addItem.content}
     />
     <button style={BtnStyle} onClick={addItem}>
       저장하기
     </button>
-
   </Box>
   );
 }

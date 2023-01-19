@@ -1,37 +1,68 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { useParams } from "react-router-dom";
-
-import CameraAltIcon from '@mui/icons-material/CameraAlt';
+import React, { useState, useRef } from 'react';
 import "./EditModal.css";
-import ImageUpload from '../../components/trade/ImageUpload';
+import AWS from 'aws-sdk';
+import { Row, Col } from 'reactstrap';
 import axios from 'axios';
-
 import {
   Box,
-  createTheme,
-  ThemeProvider,
-  Button,
-  Divider,
   TextField,
   Input,
-  Checkbox, FormControlLabel,
+  Checkbox, FormControlLabel, iconClasses,
 } from "@mui/material";
+
 const EditPost = (id) => {
   const [title, setTitle] = useState(id.title);
   const [price, setPrice] = useState(id.price);
   const [photoURL, setPhotoURL] = useState(id.photoURL);
   const [content, setContent] = useState(id.content);
-  const edit = async (
-  ) => {
-    const response = await axios.patch(`http://localhost:8080/trade/${id.id}`, {
-      photoURL: `${id.photoURL}`,
+  const [share, setShare] = useState(false);
+  const edit = async () => {
+    await axios.patch(`http://localhost:8080/trade/${id.id}`, {
+      photoURL: `${photoURL}`,
       title: `${title}`,
       price: `${price}`,
       content: `${content}`,
-    });
-    console.log(id);
-    console.log(id.title);
-    return response.data;
+    }).then(id.close);
+  }
+  const [selectedFile, setSelectedFile] = useState(null);
+  const ACCESS_KEY = 'AKIA3ZKVKUTIGQBPZ2CB';
+  const SECRET_ACCESS_KEY = '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';
+  const REGION = "ap-northeast-2";
+  const S3_BUCKET = 'hisdaangn';
+
+  AWS.config.update({
+    accessKeyId: ACCESS_KEY,
+    secretAccessKey: SECRET_ACCESS_KEY
+  });
+
+  const myBucket = new AWS.S3({
+    params: { Bucket: S3_BUCKET },
+    region: REGION,
+  });
+
+  const handleFileInput = (e) => {
+    setSelectedFile(e.target.files[0]);
+  }
+  const checkShare = (e) => {
+    setShare(true);
+  }
+  const uploadFile = (file) => {
+    const params = {
+      ACL: 'public-read',
+      Body: file,
+      Bucket: S3_BUCKET,
+      Key: file.name
+    };
+
+    myBucket.putObject(params)
+      .on('httpUploadProgress', (evt) => {
+        setTimeout(() => {
+          setSelectedFile(null);
+        }, 3000)
+      })
+      .send((err) => {
+        if (err) console.log(err)
+      })
   }
   const ariaLabel = { 'aria-label': 'description' };
   const BtnStyle = {
@@ -48,32 +79,31 @@ const EditPost = (id) => {
     right: "30px",
     bottom: "30px",
   }
-  const theme = createTheme({
-    palette: {
-      primary: {
-        main: '#000000',
-      },
-      secondary: {
-        main: '#ed7833',
-      }
-    },
-  });
   return (
     <Box>
-      <ThemeProvider theme={theme}>
-        <Box sx={{ fontSize: 20, fontWeight: 'bold', m: 1 }}>중고거래 글 수정하기</Box>
-      </ThemeProvider>
-      <ThemeProvider theme={theme}>
-        <Button variant="outlined" startIcon={<CameraAltIcon />}>0/10</Button>
-        <ImageUpload />
-      </ThemeProvider>
-      <Divider />
-      <Input placeholder="글제목" inputProps={ariaLabel} defaultValue={title} onChange={(event) => { setTitle(event.target.value) }} />
-      <Divider />
-      <Input placeholder="가격" inputProps={ariaLabel} defaultValue={price} onChange={(event) => { setPrice(event.target.value) }} />
-      <FormControlLabel className="form_control_label" control={<Checkbox style={{ float: "right" }} defaultChecked />} label="나눔" />
-      <Divider />
+      <Box sx={{ fontSize: 20, fontWeight: 'bold', m: 1 }}>중고거래 글 수정하기</Box>
+      <br />
+      <div>
+        <Row>
+          <Col>
+            <label htmlFor="ex_file">
+              <img style={{ width: "50px", height: "30px" }} src={id.photoURL} alt="url" />
+              <br />
+            </label>
+            <Input style={{ display: "none" }} id="ex_file" color="primary" type="file" onChange={(event) => {
+              setPhotoURL('https://' + S3_BUCKET + '.s3.' + REGION + '.amazonaws.com/' + document.getElementById("ex_file").files[0].name);
+              handleFileInput(event);
+            }}
+            />
+          </Col>
+        </Row>
+      </div>
+      <hr style={{ marginLeft: "10px" }} />
+      <Input fullWidth sx={{ m: 1 }} placeholder="글제목" inputProps={ariaLabel} defaultValue={title} onChange={(event) => { setTitle(event.target.value) }} />
+      <Input sx={{ m: 1 }} placeholder="가격" inputProps={ariaLabel} defaultValue={price} onChange={(event) => { share ? setPrice(0) : setPrice(event.target.value) }} />
+      <FormControlLabel className="form_control_label" control={<Checkbox style={{ float: "right" }} onChange={(e) => checkShare(e)} />} label="나눔" />
       <TextField
+        fullWidth sx={{ m: 1 }}
         id="standard-multiline-static"
         multiline
         rows={6}
@@ -82,13 +112,14 @@ const EditPost = (id) => {
         defaultValue={content}
         onChange={(event) => { setContent(event.target.value) }}
       />
-      <button style={BtnStyle} onClick={edit}>
+      <br /><br /><br />
+      <button style={BtnStyle} onClick={() => {
+        edit();
+        uploadFile(selectedFile);
+      }}>
         저장하기
       </button>
-
     </Box>
-
   );
-
 }
 export default EditPost;

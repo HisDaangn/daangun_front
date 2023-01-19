@@ -2,10 +2,8 @@ import { useState } from "react";
 import AWS from 'aws-sdk';
 import { Row, Col, Button, Input, Alert } from 'reactstrap';
 
-function ImageUpload() {
-    const [progress, setProgress] = useState(0);
+function ImageUpload(url) {
     const [selectedFile, setSelectedFile] = useState(null);
-    const [showAlert, setShowAlert] = useState(false);
 
     const ACCESS_KEY = 'AKIA3ZKVKUTIGQBPZ2CB';
     const SECRET_ACCESS_KEY = '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';
@@ -23,13 +21,6 @@ function ImageUpload() {
     });
 
     const handleFileInput = (e) => {
-        const file = e.target.files[0];
-        const fileExt = file.name.split('.').pop();
-        if (file.type !== 'image/jpeg' || fileExt !== 'jpg') {
-            alert('jpg 파일만 Upload 가능합니다.');
-            return;
-        }
-        setProgress(0);
         setSelectedFile(e.target.files[0]);
     }
 
@@ -38,15 +29,12 @@ function ImageUpload() {
             ACL: 'public-read',
             Body: file,
             Bucket: S3_BUCKET,
-            Key: "upload/" + file.name
+            Key: file.name
         };
 
         myBucket.putObject(params)
             .on('httpUploadProgress', (evt) => {
-                setProgress(Math.round((evt.loaded / evt.total) * 100))
-                setShowAlert(true);
                 setTimeout(() => {
-                    setShowAlert(false);
                     setSelectedFile(null);
                 }, 3000)
             })
@@ -59,16 +47,12 @@ function ImageUpload() {
             <div>
                 <Row>
                     <Col>
-                        {showAlert ?
-                            <Alert color="primary">업로드 진행률 : {progress}%</Alert>
-                            :
-                            <Alert color="primary">파일을 선택해 주세요.</Alert>
-                        }
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>
-                        <Input color="primary" type="file" onChange={handleFileInput} />
+                        <label htmlFor="ex_file">
+                            <img style={{ maxWidth: "100px" }} src={url.url} alt="url" />
+                            <br />
+                        </label>
+
+                        <Input style={{ display: "none" }} id="ex_file" color="primary" type="file" onChange={handleFileInput} />
                         {selectedFile ? (
                             <Button color="primary" onClick={() => uploadFile(selectedFile)}> Upload to S3</Button>
                         ) : null}
