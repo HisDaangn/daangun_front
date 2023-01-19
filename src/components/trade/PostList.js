@@ -18,21 +18,28 @@ function PostList() {
     const [photoURL, setPhotoURL] = useState("www.google.com");
     const [content, setContent] = useState();
 
-    const [loginAdd, setLoginAdd] = useState();
+    const [loginAdd, setLoginAdd] = useState(false);
 
 
     useEffect(() => {
             const sId = JSON.parse(localStorage.getItem("sessionInfo"))?.id;
-            if(sId !=null) {
-                setLoginAdd(true);
+            if(sId == null) {
+                setLoginAdd(false);
             }
-            
+            else
+                setLoginAdd(true);
     }, [])
 
     const [addModalOpen, setAddModalOpen] = useState(false);
 
     const openAddModal = () => {
-        setAddModalOpen(true);
+        
+        if(loginAdd ){
+            setAddModalOpen(true);
+        }
+        else {
+            alert("로그인 먼저 해주세요");
+        }
     };
     const closeAddModal = () => {
         setAddModalOpen(false);
@@ -63,7 +70,7 @@ function PostList() {
         <p>
             <Box style={{ textDecoration: "none" , float: "right" }}>
             <button style={BtnStyle} onClick={openAddModal}>추가하기</button>
-            {loginAdd ? 
+             
                 <Modal 
                     open={addModalOpen}
                     onClose={closeAddModal}
@@ -78,11 +85,9 @@ function PostList() {
                                 />
                             </Box>
                         </Modal>
-            : <div >{
-                alert("로그인부터 해주세용!!!")
-                }</div>
+            
     
-                }
+            
             
             </Box>
         </p>
