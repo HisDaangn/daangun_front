@@ -37,6 +37,13 @@ export default function MainMessage({ profileImg, pubName, roomId }) {
 			}),
 		[getAllMessages]
 	);
+	useEffect(
+		() =>
+			chatPage.current?.scrollIntoView({
+				behavior: "smooth",
+			}),
+		[]
+	);
 
 	useEffect(() => {
 		const sock = new SockJS("http://localhost:8080/stomp/chat");
@@ -64,6 +71,7 @@ export default function MainMessage({ profileImg, pubName, roomId }) {
 					const newMessage = JSON.parse(chat.body);
 					setCheck(!check);
 					// client.current.receiveMessage(newMessage);
+					window.location.reload();
 					console.log("fsdfdsf");
 				});
 			});
