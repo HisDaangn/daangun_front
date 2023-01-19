@@ -3,11 +3,9 @@ import { MessageLeft, MessageRight } from "./message";
 import { TextInput } from "./textInput";
 import styles from "./mainMessage.module.css";
 import SockJS from "sockjs-client";
-// import * as StompJS from "@stomp/stompjs";
 import StompJS from "stompjs";
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
-import { ReportProblem } from "@mui/icons-material";
 
 export default function MainMessage({ profileImg, pubName, roomId }) {
 	const userDB = JSON.parse(localStorage.getItem("sessionInfo"));
@@ -50,57 +48,6 @@ export default function MainMessage({ profileImg, pubName, roomId }) {
 			console.log(e);
 		}
 	}
-
-	// const connect = () => {
-	// 	client.current = new StompJS.Client({
-	// 		brokerURL: "ws://localhost:8080/stomp/chat",
-	// 		debug: function (str) {
-	// 			console.log(str);
-	// 		},
-	// 		// reconnectDelay: 5000,
-	// 		// heartbeatIncoming: 4000,
-	// 		// heartbeatOutgoing: 4000,
-	// 		onConnect: (frame) => {
-	// 			console.log(frame);
-	// 			subscribe();
-	// 		},
-	// 		onStompError: (frame) => {
-	// 			console.log(frame);
-	// 		},
-	// 	});
-
-	// 	client.current.activate();
-	// };
-
-	// const disconnect = () => {
-	// 	client.current.deactivate();
-	// };
-
-	// const subscribe = () => {
-	// 	if (client != null) {
-	// 		client.current.subscribe(`/sub/chat/room/${roomId}`, (chat) => {
-	// 			console.log(chat);
-	// 			const newMessage = JSON.parse(chat.body).message;
-	// 			addContent(newMessage);
-	// 		});
-	// 	}
-	// };
-
-	// const addContent = (message) => {
-	// 	setContent(content.concat(message));
-	// };
-
-	// const onClickSend = (message) => {
-	// 	console.log(client.connected);
-	// 	if (!client.connected) return;
-
-	// 	client.publish({
-	// 		destination: `/pub/chat/room/${roomId}`,
-	// 		body: JSON.stringify({
-	// 			message: message,
-	// 		}),
-	// 	});
-	// };
 
 	const stompConnect = () => {
 		try {
@@ -153,12 +100,6 @@ export default function MainMessage({ profileImg, pubName, roomId }) {
 			})
 		);
 		setCheck(!check);
-		// client.current.publish({
-		// 	destination: `/pub/chat/room/${roomId}`,
-		// 	body: JSON.stringify({
-		// 		message: message,
-		// 	}),
-		// });
 	};
 
 	return (
@@ -194,65 +135,10 @@ export default function MainMessage({ profileImg, pubName, roomId }) {
 						)
 					)}
 					<div ref={chatPage} />
-					{/* <MessageLeft
-						message="테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다"
-						timestamp="MM/DD 00:00"
-						photoURL="/img/profile_default.png"
-						displayName={pubName}
-						avatarDisp={true}
-					/>
-					<MessageLeft
-						message="테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다"
-						timestamp="MM/DD 00:00"
-						photoURL="/img/profile_default.png"
-						displayName={pubName}
-						avatarDisp={false}
-					/>
-					<MessageRight
-						message="테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다"
-						timestamp="MM/DD 00:00"
-						photoURL=""
-						displayName="사용자"
-						avatarDisp={true}
-					/>
-					<MessageRight
-						message="테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다"
-						timestamp="MM/DD 00:00"
-						photoURL=""
-						displayName="사용자"
-						avatarDisp={false}
-					/>
-					<MessageLeft
-						message="테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다"
-						timestamp="MM/DD 00:00"
-						photoURL="/img/profile_default.png"
-						displayName={pubName}
-						avatarDisp={false}
-					/>
-					<MessageRight
-						message="테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다"
-						timestamp="MM/DD 00:00"
-						photoURL=""
-						displayName="사용자"
-						avatarDisp={true}
-					/>
-					<MessageLeft
-						message="테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다"
-						timestamp="MM/DD 00:00"
-						photoURL="/img/profile_default.png"
-						displayName={pubName}
-						avatarDisp={false}
-					/>
-					<MessageRight
-						message="테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다테스트 메시지입니다"
-						timestamp="MM/DD 00:00"
-						photoURL=""
-						displayName="사용자"
-						avatarDisp={true}
-					/> */}
 				</Paper>
 				<TextInput onClick={onClickSend} />
 			</Paper>
 		</div>
 	);
 }
+

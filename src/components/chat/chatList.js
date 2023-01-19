@@ -21,7 +21,10 @@ function ChatList({ roomId, userId }) {
 	const chatLists = tempData;
 	const [chatList, setChatList] = useState([]);
 	const userDB = JSON.parse(localStorage.getItem("sessionInfo"));
+<<<<<<< HEAD
 	const navigate = useNavigate();
+=======
+>>>>>>> dev
 
 	useEffect(function async() {
 		getAllChatRoom();

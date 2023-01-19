@@ -7,6 +7,7 @@ import { useCallback, useState } from "react";
 import { Link } from "react-router-dom";
 
 function Room({ room }) {
+	console.log(room);
 	return (
 		<Link to={`/chat/room/${room.roomId}`} style={{ textDecoration: "none" }}>
 			<ListItemButton
