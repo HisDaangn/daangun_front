@@ -12,10 +12,7 @@ import {
     Modal,
 } from "@mui/material";
 import { PropaneSharp } from '@mui/icons-material';
-
-function PostList(){
-
-    
+function PostList() {
     const [title, setTitle] = useState();
     const [price, setPrice] = useState();
     const [photoURL, setPhotoURL] = useState("www.google.com");
@@ -29,7 +26,6 @@ function PostList(){
     const closeAddModal = () => {
         setAddModalOpen(false);
     };
-
     const style = {
         position: 'absolute',
         top: '50%',
@@ -48,7 +44,7 @@ function PostList(){
         fontWeight: "bolder",
         fontSize: "16px",
     };
-    return(
+    return (
         <div className="margin-bottom">
             <h1 style={{ textAlign: "center", fontSize: "38px", marginTop: "50px" }}>
             중고거래 인기매물
