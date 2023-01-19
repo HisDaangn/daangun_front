@@ -23,7 +23,7 @@ function Room({ room }) {
 				</ListItemAvatar>
 				<ListItemText
 					primary={room.pubName}
-					secondary={room.post.content}
+					secondary={room.post.title}
 					style={{
 						color: "black",
 					}}

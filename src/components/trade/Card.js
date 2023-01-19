@@ -32,7 +32,7 @@ function Card({ post }) {
 					<img className="card-img" src={post.photoURL} />
 					<div className="card-desc">
 						<h2 className="card-title">{post.title}</h2>
-						<div className="card-price">{post.price}</div>
+						<div className="card-price">{post.price}원</div>
 						<div className="card-content">
 							<span>조회: {post.viewCnt}</span> ∙ <span>채팅: {chatCount}</span>
 						</div>
