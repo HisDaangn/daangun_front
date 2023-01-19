@@ -43,6 +43,7 @@ const PostDetail = (props) => {
     const del = async () => {
         console.log("del 실행");
         await deleteData();
+        navigate(`/post`);
         closeDeleteModal();
     };
     useEffect(
@@ -116,18 +117,6 @@ const PostDetail = (props) => {
             console.log("writer.id: " + writer.id);
         }
     }, [init])
-    useEffect(
-        function () {
-            if (chatRoomId !== "") {
-                if (chatRoomId === "deleted") {
-                    alert("삭제된 물품입니다");
-                } else {
-                    navigate(`/chat/room/${chatRoomId}`);
-                }
-            }
-        },
-        [chatRoomId]
-    );
     // POST
     async function moveToChatRoom() {
         try {
