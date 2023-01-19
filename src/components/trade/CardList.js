@@ -33,11 +33,6 @@ function CardList(){
 				    <Card 
                     key = { Item.id }
                     post = {Item}
-                    // imgs={ Item.photoURL }
-                    // title={ Item.title }
-                    // price={ Item.price }
-                    // interest={ Item.viewCnt }
-                    // // chatting={ Item.chatCnt }
                     />
 			    ))}
                 </div> 

@@ -14,6 +14,7 @@ import tempData from "../../components/chat/tempData";
 import { Link } from "react-router-dom";
 import Room from "./room";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function ChatList({ roomId, userId }) {
 	// tempData 가져오기
@@ -39,6 +40,10 @@ function ChatList({ roomId, userId }) {
 			console.log(e);
 		}
 	}
+
+	// function roomClick(roomId) {
+	// 	navigate(`/chat/room/${roomId}`);
+	// }
 
 	return (
 		<Grid
@@ -122,7 +127,11 @@ function ChatList({ roomId, userId }) {
 						<Box minHeight={"calc(78vh - 64px)"}>
 							{/* 실제 다른 유저와의 채팅룸 */}
 							{chatList.map((room) => (
-								<Room key={room.roomId} room={room} />
+								<Room
+									key={room.roomId}
+									room={room}
+									// onClick={roomClick(room.roomId)}
+								/>
 							))}
 						</Box>
 					</List>

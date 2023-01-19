@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './Cards.css';
 import Btn from "../../components/common/layout/Btn";
-import AddPost from "../../pages/trade/AddPost";
+import AddModal from "../../pages/trade/AddPost";
 import {
     Avatar,
     Box,
@@ -17,6 +17,17 @@ function PostList() {
     const [price, setPrice] = useState();
     const [photoURL, setPhotoURL] = useState("www.google.com");
     const [content, setContent] = useState();
+
+    const [loginAdd, setLoginAdd] = useState();
+
+
+    useEffect(() => {
+            const sId = JSON.parse(localStorage.getItem("sessionInfo"))?.id;
+            if(sId !=null) {
+                setLoginAdd(true);
+            }
+            
+    }, [])
 
     const [addModalOpen, setAddModalOpen] = useState(false);
 
@@ -52,20 +63,27 @@ function PostList() {
         <p>
             <Box style={{ textDecoration: "none" , float: "right" }}>
             <button style={BtnStyle} onClick={openAddModal}>추가하기</button>
-                <Modal
+            {loginAdd ? 
+                <Modal 
                     open={addModalOpen}
                     onClose={closeAddModal}
                         >
                             <Box sx={style}>
-                                <AddPost
+                                <AddModal
                                     onclose = {closeAddModal}
                                 // photoURL = {value.photoURL}
                                 // title = {value.title}
                                 // price = {value.price}
-                                // content = {value.content} 
+                                // content = {value.content}
                                 />
                             </Box>
                         </Modal>
+            : <div >{
+                alert("로그인부터 해주세용!!!")
+                }</div>
+    
+                }
+            
             </Box>
         </p>
         </div>
