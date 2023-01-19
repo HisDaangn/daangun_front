@@ -1,5 +1,6 @@
 import { CssBaseline, ThemeProvider, Box, Paper } from "@mui/material";
 import { SnackbarProvider } from "notistack";
+import Footer from "./components/common/layout/Footer";
 import Router from "./Router";
 import { theme } from "./theme/theme";
 function App() {
