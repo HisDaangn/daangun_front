@@ -31,7 +31,6 @@ const PostDetail = (props) => {
     const [deleteModalOpen, setDeleteModalOpen] = useState(false);
     const [editModalOpen, setEditModalOpen] = useState(false);
     const [chatRoomId, setChatRoomId] = useState("");
-    const [logincheck, setLoginCheck] = useState(false);
     const [loginmy, setLoginMy] = useState(false);
     const [loginchat, setLoginChat] = useState(false);
     const [loginlift, setLoginLift] = useState(false);
@@ -79,7 +78,6 @@ const PostDetail = (props) => {
                 setImg(excellent);
             }
         }
-
     }, [init]);
     const theme = createTheme({
         palette: {
@@ -290,7 +288,8 @@ const PostDetail = (props) => {
         fontSize: "16px",
         backgroundColor: "white",
         borderRadius: "5px",
-        marginLeft: "10px"
+        marginLeft: "10px",
+        marginTop: "14px",
     }
     const staticBtnStyle = {
         color: "white",
@@ -346,27 +345,32 @@ const PostDetail = (props) => {
             >
                 <img style={{
                     width: "100%",
-                    height: "auto",
+                    height: "400px",
                 }} src={value.photoURL} />
 
                 <br /><br />
                 <div>
                     <Stack direction="row" spacing={5} justifyContent="space-between">
-                        <Avatar />
-                        <span style={{ marginLeft: "8px", }}>
-                            <div style={{
-                                fontSize: "15px",
-                                fontWeight: "600",
-                            }}>
-                                {init ? writer.name : "username"}
-                            </div>
-                            <div style={{
-                                fontSize: "13px",
-                                lineHeight: "1.46",
-                            }}>
-                                {init ? writer.address : "address"}
-                            </div>
-                        </span>
+                        <div style={{
+                            marginTop: '14px',
+                        }}>
+                            <Avatar />
+                            <span style={{ marginLeft: "8px", }}>
+                                <div style={{
+                                    fontSize: "15px",
+                                    fontWeight: "600",
+                                }}>
+                                    {init ? writer.name : "username"}
+                                </div>
+                                <div style={{
+                                    fontSize: "13px",
+                                    lineHeight: "1.46",
+                                }}>
+                                    {init ? writer.address : "address"}
+                                </div>
+                            </span>
+                        </div>
+
                         {loginmy ? <div>
                             <button style={BtnStyle} onClick={openEditModal}>수정하기</button>
                             <Modal
@@ -429,6 +433,7 @@ const PostDetail = (props) => {
                                 fontSize: "8px",
                                 fontWeight: "600",
                                 color: "grey",
+                                marginRight: "2px",
                             }}>
                                 매너온도
                             </div>
