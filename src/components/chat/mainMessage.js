@@ -23,11 +23,19 @@ export default function MainMessage({ profileImg, pubName, roomId }) {
 	useEffect(
 		function async() {
 			getAllMessages();
-			chatPage.current?.scrollIntoView({
-				behavior: "smooth",
-			});
+			// chatPage.current?.scrollIntoView({
+			// 	behavior: "smooth",
+			// });
+			console.log("뜨는데 왜 안되는데!");
 		},
 		[check]
+	);
+	useEffect(
+		() =>
+			chatPage.current?.scrollIntoView({
+				behavior: "smooth",
+			}),
+		[getAllMessages]
 	);
 
 	useEffect(() => {
@@ -54,7 +62,7 @@ export default function MainMessage({ profileImg, pubName, roomId }) {
 			client.current.connect({}, () => {
 				client.current.subscribe("/sub/chat/room/" + roomId, (chat) => {
 					const newMessage = JSON.parse(chat.body);
-					// setCheck(!check);
+					setCheck(!check);
 					// client.current.receiveMessage(newMessage);
 					console.log("fsdfdsf");
 				});
@@ -99,7 +107,6 @@ export default function MainMessage({ profileImg, pubName, roomId }) {
 				roomId: roomId,
 			})
 		);
-		setCheck(!check);
 	};
 
 	return (
@@ -141,4 +148,3 @@ export default function MainMessage({ profileImg, pubName, roomId }) {
 		</div>
 	);
 }
-
