@@ -419,7 +419,6 @@ const PostDetail = (props) => {
                                     '.MuiSlider-rail': {
                                         color: '#A9A9A9',
                                     },
-
                                 }} valueLabelDisplay="off" value={init ? writer.temperature : 36.5} />
                             </ThemeProvider>
                         </div>
@@ -434,6 +433,7 @@ const PostDetail = (props) => {
                                 매너온도
                             </div>
                         </div>
+
                     </Stack>
                 </div>
                 <hr />

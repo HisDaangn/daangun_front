@@ -12,10 +12,7 @@ import {
     Modal,
 } from "@mui/material";
 import { PropaneSharp } from '@mui/icons-material';
-
 function PostList() {
-
-
     const [title, setTitle] = useState();
     const [price, setPrice] = useState();
     const [photoURL, setPhotoURL] = useState("www.google.com");
@@ -50,27 +47,27 @@ function PostList() {
     return (
         <div className="margin-bottom">
             <h1 style={{ textAlign: "center", fontSize: "38px", marginTop: "50px" }}>
-                중고거래 인기매물
-            </h1>
-            <p>
-                <Box style={{ textDecoration: "none", float: "right" }}>
-                    <button style={BtnStyle} onClick={openAddModal}>추가하기</button>
-                    <Modal
-                        open={addModalOpen}
-                        onClose={closeAddModal}
-                    >
-                        <Box sx={style}>
-                            <AddPost
-                                onclose={closeAddModal}
-                            // photoURL = {value.photoURL}
-                            // title = {value.title}
-                            // price = {value.price}
-                            // content = {value.content} 
-                            />
-                        </Box>
-                    </Modal>
-                </Box>
-            </p>
+            중고거래 인기매물
+        </h1>
+        <p>
+            <Box style={{ textDecoration: "none" , float: "right" }}>
+            <button style={BtnStyle} onClick={openAddModal}>추가하기</button>
+                <Modal
+                    open={addModalOpen}
+                    onClose={closeAddModal}
+                        >
+                            <Box sx={style}>
+                                <AddPost
+                                    onclose = {closeAddModal}
+                                // photoURL = {value.photoURL}
+                                // title = {value.title}
+                                // price = {value.price}
+                                // content = {value.content} 
+                                />
+                            </Box>
+                        </Modal>
+            </Box>
+        </p>
         </div>
     );
 }
