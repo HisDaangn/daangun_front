@@ -3,7 +3,7 @@
 }
 
 .paper {
-	height: calc(80.7vh - 64px);
+	height: calc(81.3vh - 64px);
 	min-width: 70vw;
 	max-width: fit-content;
 	max-height: fit-content;

@@ -8,6 +8,12 @@ export const TextInput = ({ onClick }) => {
 	const onChange = useCallback((event) => {
 		setMsg(event.target.value);
 	}, []);
+	const onEnterClick = (e) => {
+		if (e.key === "Enter") {
+			onClick(msg);
+			setMsg("");
+		}
+	};
 
 	return (
 		<>
@@ -18,6 +24,8 @@ export const TextInput = ({ onClick }) => {
 					className={styles.wrapText}
 					value={msg}
 					onChange={onChange}
+					onKeyPress={onEnterClick}
+					autoFocus
 					//margin="normal"
 				/>
 				<Button

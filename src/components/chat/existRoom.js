@@ -13,6 +13,8 @@ import MainMessage from "./mainMessage";
 
 function ExistRoom({ roomId }) {
 	const [pubName, setPubName] = useState("");
+	const [subName, setSubName] = useState("");
+	const [writerId, setWriterId] = useState(0);
 	const [photoURL, setPhotoURL] = useState("");
 	const [title, setTitle] = useState("");
 	const [price, setPrice] = useState(0);
@@ -25,6 +27,8 @@ function ExistRoom({ roomId }) {
 			);
 			// console.log(response);
 			setPubName(response.data.pubName);
+			setSubName(response.data.subName);
+			setWriterId(response.data.post.writerId);
 			setPhotoURL(response.data.post.photoURL);
 			setTitle(response.data.post.title);
 			setPrice(response.data.post.price);
@@ -91,9 +95,9 @@ function ExistRoom({ roomId }) {
 			</List>
 			<Box>
 				<MainMessage
-					messages={null}
-					profileImg={null}
 					pubName={pubName}
+					subName={subName}
+					writerId={writerId}
 					roomId={roomId}
 				/>
 			</Box>
