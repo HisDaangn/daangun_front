@@ -6,44 +6,29 @@ import SockJS from "sockjs-client";
 import StompJS from "stompjs";
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
+import shortid from "shortid";
 
-export default function MainMessage({ profileImg, pubName, roomId }) {
+export default function MainMessage({ pubName, subName, writerId, roomId }) {
 	const userDB = JSON.parse(localStorage.getItem("sessionInfo"));
 	const [messages, setMessages] = useState([]);
-	const [content, setContent] = useState("");
 	const [check, setCheck] = useState(false);
 	const client = useRef();
-	const chatPage = useRef();
+	const messagesEndRef = useRef(null);
+	let displayName;
+
 	useEffect(
-		function async() {
+		function () {
 			getAllMessages();
 		},
-		[roomId]
+		[messages]
 	);
-	useEffect(
-		function async() {
-			getAllMessages();
-			// chatPage.current?.scrollIntoView({
-			// 	behavior: "smooth",
-			// });
-			console.log("뜨는데 왜 안되는데!");
-		},
-		[check]
-	);
-	useEffect(
-		() =>
-			chatPage.current?.scrollIntoView({
-				behavior: "smooth",
-			}),
-		[getAllMessages]
-	);
-	useEffect(
-		() =>
-			chatPage.current?.scrollIntoView({
-				behavior: "smooth",
-			}),
-		[]
-	);
+
+	useEffect(() => {
+		setTimeout(
+			() => messagesEndRef.current?.scrollIntoView({ behavior: "auto" }),
+			150
+		);
+	}, [roomId]);
 
 	useEffect(() => {
 		const sock = new SockJS("http://localhost:8080/stomp/chat");
@@ -69,10 +54,9 @@ export default function MainMessage({ profileImg, pubName, roomId }) {
 			client.current.connect({}, () => {
 				client.current.subscribe("/sub/chat/room/" + roomId, (chat) => {
 					const newMessage = JSON.parse(chat.body);
-					setCheck(!check);
-					// client.current.receiveMessage(newMessage);
-					window.location.reload();
-					console.log("fsdfdsf");
+					setMessages([...messages, newMessage]);
+					messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+					// window.location.reload();
 				});
 			});
 		} catch (error) {
@@ -88,7 +72,6 @@ export default function MainMessage({ profileImg, pubName, roomId }) {
 			console.log(error);
 		}
 	};
-
 	function waitForConnection(client, callback) {
 		setTimeout(
 			function () {
@@ -105,7 +88,6 @@ export default function MainMessage({ profileImg, pubName, roomId }) {
 	}
 
 	const onClickSend = (message) => {
-		console.log(message);
 		client.current.send(
 			"/pub/chat/room/" + roomId,
 			{},
@@ -113,9 +95,16 @@ export default function MainMessage({ profileImg, pubName, roomId }) {
 				message: message,
 				writerId: userDB.id,
 				roomId: roomId,
+				randomKey: shortid.generate(),
 			})
 		);
 	};
+
+	if (userDB.id !== writerId) {
+		displayName = pubName;
+	} else {
+		displayName = subName;
+	}
 
 	return (
 		<div className={styles.container}>
@@ -131,7 +120,7 @@ export default function MainMessage({ profileImg, pubName, roomId }) {
 					{messages.map((message) =>
 						message.writerId === userDB.id ? (
 							<MessageRight
-								key={message.id}
+								key={message.randomKey}
 								message={message.message}
 								timestamp={message.send_at}
 								photoURL="/img/profile_default.png"
@@ -140,16 +129,16 @@ export default function MainMessage({ profileImg, pubName, roomId }) {
 							/>
 						) : (
 							<MessageLeft
-								key={message.id}
+								key={message.randomKey}
 								message={message.message}
 								timestamp={message.send_at}
 								photoURL="/img/profile_default.png"
-								displayName={pubName}
+								displayName={displayName}
 								avatarDisp={true}
 							/>
 						)
 					)}
-					<div ref={chatPage} />
+					<div ref={messagesEndRef}></div>
 				</Paper>
 				<TextInput onClick={onClickSend} />
 			</Paper>
