@@ -16,13 +16,6 @@ export default function MainMessage({ pubName, subName, writerId, roomId }) {
 	const messagesEndRef = useRef(null);
 	let displayName;
 
-	// useEffect(
-	// 	function () {
-	// 		getAllMessages();
-	// 		messagesEndRef.current?.scrollIntoView({ behavior: "auto" });
-	// 	},
-	// 	[roomId]
-	// );
 	useEffect(
 		function () {
 			getAllMessages();
